@@ -1,0 +1,11 @@
+'use strict'
+function User(username, password){
+    this.username = username;
+    this.password = password;
+}
+
+function Post(){
+	
+}
+
+module.exports = User;
