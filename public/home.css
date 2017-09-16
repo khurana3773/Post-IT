@@ -34,6 +34,7 @@
         li:hover:not(.ord){
             background-color: #111;
         }
+		
         header{
             position: static;
         }
@@ -82,3 +83,19 @@
             text-transform: uppercase;
             color: #2b3647;
         }
+		
+		li form button {
+			font-family: "Roboto", sans-serif;
+			text-transform: uppercase;
+			outline: 0;
+			background: #5190af;
+			width: 100%;
+			border: 0;
+			padding: 15px;
+			color: #FFFFFF;
+			font-size: 14px;
+			cursor: pointer;
+		}
+		li form button:hover,.form button:active,.form button:focus {
+			background: #52809f;
+		}

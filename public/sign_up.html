@@ -14,22 +14,22 @@
         <fieldset>
             <legend>Your basic info</legend>
             <label for="first_name">First Name:</label>
-            <input type="text" id="first_name" name="first_name" maxlength="20">
+            <input type="text" id="first_name" name="first_name" maxlength="20" required>
 
             <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" maxlength="20">
+            <input type="text" id="last_name" name="last_name" maxlength="20" required>
 
             <label for="student_id">Student ID:</label>
-            <input type="tel" maxlength="9" id="student_id" name="student_id">
+            <input type="tel" maxlength="9" id="student_id" name="student_id" required>
 
             <label for="mail">Email:</label>
-            <input type="email" pattern="^.+@.+\..{2,4}$"id="mail" name="email">
+            <input type="email" placeholder= "Ex.: web.ex@gmail.com" pattern="^.+\.+.+@.+\..{2,4}$"id="mail" name="email" required>
 
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username">
+            <input type="text" id="username" name="username" required>
 
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password">
+            <input type="password" id="password" name="password" required>
             <button type="submit">Sign Up</button>
         </fieldset>
     </div>

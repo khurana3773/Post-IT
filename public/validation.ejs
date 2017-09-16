@@ -4,14 +4,20 @@
 <head>
 	<title>Validation</title>
 	<link rel="stylesheet" type="text/css" href="validation.css">
+	<% if (alert) { %>
+     <script>
+        alert("Incorrect Code, please insert 1111");            
+     </script>
+	<% } %>
 </head>
+
 <body>
 <div class="validation-page">
 
      <div class="form">
-	 	<form class="code-form" action="valid-it">
+	 	<form method="post" class="code-form" action="valid-it">
             <label for="code">Unique code send from your email</label>
-	 		<input type="text" placeholder="Enter Unique Code" id="code" name="code"/>
+	 		<input type="text" placeholder="Enter 1111" id="code" name="code"/>
 	 		<button>Submit</button>
 	 	</form>
 	 </div>

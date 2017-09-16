@@ -18,15 +18,24 @@
         <input type="search" placeholder="Search"/>
         <!--<input type="submit" value="Search"/>-->
         <!--Order will be reversed-->
-        <li class="ord" id="sign-up"><a href="/sign_up.html">Sign Up</a></li>
-        <li class="ord" id="login"><a href="/login.html">Login</a></li>
+		<% if(sayhi===" "){%>
+			<li class="ord" id="sign-up"><form method="post" action="sign-up"><button type="submit">Sign Up</button></form></li>
+			<li class="ord" id="login"><form method="post" action="sign-in"><button type="submit">Sign In</button></form></li>
+		<%}else{%>
+			<li class="ord" id="logout"><form method="post" action="sign-out"><button type="submit">Sign Out</button></form></li>
+		<%}%>
     </ul>
 </header>
 
 <main>
 
     <div id="products">
-        <h2 id="head-line">Listings:</h2>
+		<% if(sayhi===" "){%>
+			<h2 id="head-line">Welcome to <i>PostIt!</i></h2>
+		<%}else{%>	
+			<h2 id="head-line"><%= sayhi %>!</h2>
+		<%}%>
+		<h3><em> Listings: <em></h3>
         <div class="gallery">
             <img class="product" src="test_images/bigjava.jpg">
             <p class="desc">Big Java For Sale!</p>
