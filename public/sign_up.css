@@ -49,6 +49,16 @@
             margin: 0 4px 8px 0;
         }
 
+        input:required {
+        border: 1px solid blue;
+        }
+
+        input:invalid {
+        color: white;
+        /*background-color: red; */
+        border: 2px solid red;
+        }
+
         select {
             padding: 6px;
             height: 32px;
