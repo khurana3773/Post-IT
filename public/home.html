@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Home</title>
+
+<link rel="stylesheet" type="text/css" href="home.css">
+<script type="text/javascript">
+	window.onload = function() {
+	var elem = document.getElementById("valid");
+	if(typeof(elem) === 'undefined' || elem === null){
+		document.getElementById("logout").style.display = 'none';
+	}
+	else{
+		document.getElementById("login").style.display = 'none';
+		document.getElementById("sign-up").style.display = 'none';
+		
+	}};
+</script>	
+</head>
+<body>
+
+<header>
+   <ul id="nag-bar">
+       <li><a href="#home">Home</a></li>
+       <li><a href="#sale">For Sale</a></li>
+       <li><a href="#rent">For Rent</a></li>
+       <li><a href="#purchase">For Purchase</a></li>
+       <input type="search" placeholder="Search"/>
+       <!--<input type="submit" value="Search"/>-->
+       <!--Order will be reversed-->
+		<li class="ord" id="sign-up"><form method="post" action="sign-up"><button type="submit">Sign Up</button></form></li>
+		<li class="ord" id="login"><form method="post" action="sign-in"><button type="submit">Sign In</button></form></li>
+		<li class="ord" id="logout"><form method="post" action="sign-out"><button type="submit">Sign Out</button></form></li>
+
+   </ul>
+</header>
+
+<main>
+
+   <div id="products">
+
+<h2 id="head-line">Welcome to <i>PostIt!</i></h2>
+
+<h3><em> Listings: <em></h3>
+       <div class="gallery">
+           <img class="product" src="test_images/bigjava.jpg">
+           <p class="desc">Big Java For Sale!</p>
+       </div>
+       <div class="gallery">
+           <img class="product" src="test_images/bigjava.jpg">
+           <p class="desc">Big Java For Sale!</p>
+       </div>
+       <div class="gallery">
+           <img class="product" src="test_images/bigjava.jpg">
+           <p class="desc">Big Java For Sale!</p>
+       </div>
+       <div class="gallery">
+           <img class="product" src="test_images/bigjava.jpg">
+           <p class="desc">Big Java For Sale!</p>
+       </div>
+   </div>
+
+</main>
+
+</body>
+</html>
