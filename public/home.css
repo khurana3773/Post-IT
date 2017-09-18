@@ -1,101 +1,100 @@
- body{
-            background-color: whitesmoke;
-        }
-        input[type="search"]{
-            width: 40%;
-            line-height: 20px;
-            margin-top: 1em;
-        }
+body{
+    background-color: whitesmoke;
+    font-family: "Roboto", sans-serif;
+}
+input[type="search"]{
+    width: 40%;
+    line-height: 20px;
+    margin-top: 1em;
+}
 
-        #nag-bar {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #bbbbbf;
-            position: static;
-        }
+#nag-bar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #bbbbbf;
+    position: static;
+}
 
-        li{
-            float: left;
-        }
+li{
+    float: left;
+}
 
-        li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-        .ord{
-            background-color: #5190af;
-            float: right;
-        }
-        li:hover:not(.ord){
-            background-color: #111;
-        }
-		
-        header{
-            position: static;
-        }
-        /*Listing Products*/
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+.ord{
+    background-color: #5190af;
+    float: right;
+}
+li:hover:not(.ord){
+    background-color: #111;
+}
 
-        #products{
-            margin: auto;
+header{
+    position: static;
+}
+/*Listing Products*/
 
-        }
+#products{
+    margin: auto;
 
-        .product{
-            height: 10%;
-            width: 10%;
-        }
+}
 
-        #products{
-            margin: auto;
-            width: 50%;
-            padding: 10px;
-        }
-        /*The Images*/
-        .product{
-            width: 100%;
-            height: auto;
-        }
+.product{
+    height: 10%;
+    width: 10%;
+}
 
-        .desc{
-            font-family: "Roboto", sans-serif;
-            text-align: center;
-            color: #115cd6;
-        }
+#products{
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+/*The Images*/
+.product{
+    width: 100%;
+    height: auto;
+}
 
-        .desc: hover{
-            color: #031a3f;
-        }
+.desc{
+    font-family: "Roboto", sans-serif;
+    text-align: center;
+    color: #115cd6;
+}
 
-        div.gallery{
-            margin: 5px;
-            float: left;
-            width: 180px;
-        }
+.desc:hover{
+    color: #031a3f;
+}
 
-        #head-line{
-            text-align: center;
-            font-family: "Roboto", sans-serif;
-            text-transform: uppercase;
-            color: #2b3647;
-        }
-		
-		li form button {
-			font-family: "Roboto", sans-serif;
-			text-transform: uppercase;
-			outline: 0;
-			background: #5190af;
-			width: 100%;
-			border: 0;
-			padding: 15px;
-			color: #FFFFFF;
-			font-size: 14px;
-			cursor: pointer;
-		}
-		li form button:hover,.form button:active,.form button:focus {
-			background: #52809f;
-		}
+div.gallery{
+    margin: 5px;
+    float: left;
+    width: 180px;
+}
+
+#head-line{
+    text-align: center;
+    text-transform: uppercase;
+    color: #2b3647;
+}
+
+li form button {
+    text-transform: uppercase;
+    outline: 0;
+    background: #5190af;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+}
+li form button:hover,.form button:active,.form button:focus {
+    background: #52809f;
+}
