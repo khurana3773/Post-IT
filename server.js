@@ -1,11 +1,11 @@
 'use strict';
-var bodyParser = require('body-parser');
-var express = require('express');
-var path = require('path');
-var ejs = require('ejs');
-var fs = require('fs');
-var lineReader = require('line-reader');
-
+const bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const ejs = require('ejs');
+const fs = require('fs');
+const lineReader = require('line-reader');
+const db = require('./database/database');
 
 // Create the app.
 var app = express();
@@ -123,6 +123,7 @@ app.post('/'+'validate-signup',
 //Controller to handle validation of code
 app.post('/'+ 'validate-code',
 	function (req, res){
+        console.log('validate-code');
 		var code = req.param("code");
 		if(code === '1111'){// If code is valid, redirect to homepage and send welcome message
 			valid_user = User;
@@ -137,3 +138,20 @@ app.post('/'+ 'validate-code',
 	}
 );
 
+/**
+ * Handles post.html file
+ */
+
+app.post('/'+'post-it',
+	function (req, res) {
+		console.log("post-it");
+
+		var title = req.body.title;
+		var about = req.body.about;
+
+		var object = {"title": title, "about":about};
+
+		db.insertToDB(object, "post");
+
+    }
+);

@@ -20,7 +20,7 @@
     	resize: none; 
     
     }
-    #description{
+    #about{
     	width: 80%;
         height:35em;
     	 
@@ -35,11 +35,24 @@
 </head>
 <body>
 
-<h3>Post It</h3> 
-<textarea id="title" rows="1" cols="50" placeholder="product name..."></textarea>
-<textarea id="description" rows="4" cols="100" placeholder="enter your descriptions"></textarea> 
+<!--
+Once user inputs data to this html file, the data is sent to the database
 
-<p>Upload photos:</p>
+Document: Post
+-->
+
+<form action="/post-it" method="post">
+    <h3>Post It</h3>
+    <textarea id="title" name="title" rows="1" cols="50" placeholder="product name..."></textarea>
+    <textarea id="about" name="about" rows="4" cols="100" placeholder="enter your descriptions"></textarea>
+
+    <p>Upload photos:</p>
+
+    <input type="submit" value="Post It">
+
+</form>
+
+
 
 </body>
 </html>
