@@ -12,13 +12,15 @@ var app = express();
 app.listen(8080);
 
 var html_file_name ='./public/home.html';
+
+//To store valid user credentials
+var valid_password="xxxx"; 
+var valid_user="xxxx";
+
 //Variables for EJS
 var User= " ";
 var alert= 0;
 var credential= 0;
-var valid_password="xxxx";
-var valid_user="xxxx";
-
 
 // Use the bodyParser() middleware for all routes.
 app.use(bodyParser());
@@ -29,8 +31,7 @@ app.get('/' ,
    function(req, res)
    {	
         var html = '';
-		var i=0; //counter to allow dynamically add message on valid user login.
-
+		var i=0; //counter allows to dynamically add message on valid user login, at a certain line(45).
 		
         lineReader.eachLine(html_file_name,
            function(line, last)
@@ -57,7 +58,7 @@ app.get('/' ,
 
 
 //Controller to handle validation of Login form
-app.post('/'+'login-valid',
+app.post('/'+'validate-signin',
 	function(req, res)
 	{
 		var username = req.param('username');
@@ -66,7 +67,7 @@ app.post('/'+'login-valid',
 		if( username === valid_user && password === valid_password){// If credentials are valid, redirect to homepage and send welcome message
 			User = username;
 			res.redirect('/');
-        }else{ // If credentials are invalid, redirect to same login page and send flag credential
+        }else{ // If credentials are invalid, redirect to same login page and send flag- credential to alert
 			credential=1;
 			res.render('../public/login.ejs',{credential:credential});
 		}	
@@ -94,7 +95,7 @@ app.post('/'+'sign-up',
 app.post('/'+'sign-out',
 	function(req, res)
 	{
-		User= " ";//resetting variables, other than valid credentials for user to relogin
+		User= " ";//resetting variables, other than valid credentials to allow user to re-signin
 		alert= 0;
 		credential= 0;
 		res.redirect('/');
@@ -102,7 +103,7 @@ app.post('/'+'sign-out',
 );
 
 //Controller to handle validation of sign-up page
-app.post('/'+'code-post',
+app.post('/'+'validate-signup',
 	function (req, res) {
 		var firstName = req.param("first_name");
 		var lastName = req.param("last_name");
@@ -111,7 +112,8 @@ app.post('/'+'code-post',
 		var userName = req.param("username");
 		var password = req.param("password");
 		
-		//populate the variables for server to remember user credentials
+		//Populate the variables for server to remember user credentials
+		//For mockup, we havent stored other details.
 		User = userName ;
 		valid_password = password;
 		res.render('../public/validation.ejs',{alert:alert});
@@ -119,7 +121,7 @@ app.post('/'+'code-post',
 );
 
 //Controller to handle validation of code
-app.post('/'+ 'valid-it',
+app.post('/'+ 'validate-code',
 	function (req, res){
 		var code = req.param("code");
 		if(code === '1111'){// If code is valid, redirect to homepage and send welcome message
@@ -129,7 +131,6 @@ app.post('/'+ 'valid-it',
 
 		}else{ // If code is invalid, redirect to same page and send flag alert
 			alert = 1;
-			console.log("inside alert"+alert);
 			res.render('../public/validation.ejs',{alert:alert});
 		}
 

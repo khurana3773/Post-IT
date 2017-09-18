@@ -5,26 +5,27 @@
     <title>Sign Up</title>
     <link rel="stylesheet" type="text/css" href="sign_up.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" />
+
 </head>
 <body>
 
-<form method="post" action="/code-post">
+<form onsubmit="return validateForm();"  method="post" action="/validate-signup" >
     <div class="container">
         <h1>Sign Up</h1>
 
         <fieldset>
             <legend>Your basic info</legend>
             <label for="first_name">First Name:</label>
-            <input type="text" id="first_name" name="first_name" maxlength="20" required>
+            <input type="text" id="first_name" name="first_name" required>
 
             <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" maxlength="20" required>
+            <input type="text" id="last_name" name="last_name" required>
 
             <label for="student_id">Student ID:</label>
-            <input type="tel" maxlength="9" id="student_id" name="student_id" required>
+            <input type="tel" id="student_id" name="student_id" required>
 
             <label for="mail">Email:</label>
-            <input type="email" placeholder= "Ex.: web.ex@gmail.com" pattern="^.+@.+\..{2,4}$" id="mail" name="email" required>
+            <input type="email" placeholder= "Ex.: web.ex@gmail.com" id="mail" name="email" required>
 
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -35,8 +36,6 @@
         </fieldset>
     </div>
 </form>
-
-
 <script type="text/javascript" src="sign_up.js"></script>
 </body>
 </html>
