@@ -29,3 +29,24 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+.form {
+    text-align: center;
+    padding: 15% 30% 0% 30%;
+}
+
+fieldset {
+    padding: 50px;
+}
+
+#code {
+    text-align: center;
+    background-color: darkgray;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+button {
+    width: 40%;
+    border-radius: 8px;
+}
