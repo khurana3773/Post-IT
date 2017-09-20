@@ -37,8 +37,19 @@ function insertToDB(obj, collectionName) {
 
           db.close();
        });
-    });
+    }); 
+}
 
+function deletePost(theTitle, theUserName){ 
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var myquery = { title: theTitle, theUserName: theUserName};
+    db.collection("customers").deleteOne(myquery, function(err, obj) {
+      if (err) throw err;
+      console.log("1 document deleted");
+      db.close();
+    });
+  }); 
 }
 
 module.exports.insertToDB = insertToDB;

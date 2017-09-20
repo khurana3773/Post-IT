@@ -146,12 +146,12 @@ app.post('/'+'post-it',
 	function (req, res) {
 		console.log("post-it");
 
-		var title = req.body.title;
-		var about = req.body.about;
+		var title = req.param("title");
+		var about = req.param("about");
 
-		var object = {"title": title, "about":about};
+		console.log("title: " + title);
 
-		db.insertToDB(object, "post");
+		//db.insertToDB(object, "post");
 
     }
 );
