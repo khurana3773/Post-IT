@@ -4,7 +4,7 @@
  * Will turn inputs to json string which
  * will then be sent to database to be stored.
  */
-function send() {
+function sendFromPost() {
 
     let title = document.getElementById("title").value;
     let about = document.getElementById("about").value;
