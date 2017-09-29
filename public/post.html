@@ -12,29 +12,20 @@
         font-family: "Roboto", sans-serif;
     }
 
-    h3{
-        color: #5190af;
-    }
+    h3{ color: #5190af; }
     
-    textarea{
-    	resize: none; 
-    
-    }
+    textarea{  resize: none;  }
+
     #about{
     	width: 80%;
         height:35em;
-    	 
-    }
-    
-    #title{
-    
-    
-    }
 
+    }
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/jquery.js"></script>
     <script src="util/post.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+    <script src="js/jquery-ui.min.js"></script>
 </head>
 <body>
 
@@ -43,13 +34,13 @@ Once user inputs data to this html file, the data is sent to the database
 
 Collection: Post
 -->
-<h3>Post It</h3>
+<h1 class="ui-state-default">Post It</h1>
 <textarea id="title" name="title" rows="1" cols="50" placeholder="product name..."></textarea>
 <textarea id="about" name="about" rows="4" cols="100" placeholder="enter your descriptions"></textarea>
 
 <p>Upload photos:</p>
 
-<button onclick="sendFromPost()">Post</button>
+<button class="ui-button" onclick="sendFromPost()">Post</button>
 
 
 
