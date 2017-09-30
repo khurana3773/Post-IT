@@ -5,6 +5,7 @@ $(init);
 
 function init(){
     fileCount = 0;
+    $("#photo-holder").sortable();
     /**
      * Add drop functionality to our holder,
      * This is standard HTML5 File API
