@@ -87,7 +87,7 @@ app.post('/'+'sign-in',
 app.post('/'+'sign-up',
 	function(req, res)
 	{
-		res.redirect('/sign_up.html');
+		res.redirect('/sign-up.html');
 	}
 );
 

@@ -6,8 +6,8 @@
  */
 function sendFromPost() {
 
-    let title = document.getElementById("title").value;
-    let about = document.getElementById("about").value;
+    var title = document.getElementById("title").value;
+    var about = document.getElementById("about").value;
 
     var today = new Date();
 

@@ -4,3 +4,9 @@ nodemon server.js
 --------------MongoDB----------------
 mongod
 mongo
+--------------CSS---------------------
+
+
+background: #52809f;
+background: #5190af;
+#FFFFFF;
