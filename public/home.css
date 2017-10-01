@@ -5,6 +5,7 @@ body{
     font-family: "Roboto", sans-serif;
 }
 input[type="search"]{
+    float: left;
     width: 40%;
     line-height: 20px;
     margin-top: 1em;
@@ -19,23 +20,21 @@ input[type="search"]{
     position: static;
 }
 
-li{
-    float: left;
-}
-
-li a {
+a {
+    float:left;
     display: block;
     color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    background: #5190af; 
 }
 .ord{
     background-color: #5190af;
     float: right;
 }
-li:hover:not(.ord){
-    background-color: #111;
+a:hover:not(.ord){
+    background: #52809f;
 }
 
 header{
@@ -85,17 +84,18 @@ div.gallery{
     color: #2b3647;
 }
 
-li form button {
+button {
     text-transform: uppercase;
     outline: 0;
-    background: #5190af;
-    width: 100%;
+    background: #5190af; 
     border: 0;
     padding: 15px;
     color: #FFFFFF;
     font-size: 14px;
     cursor: pointer;
+    float: left;
+    display: block;
 }
-li form button:hover,.form button:active,.form button:focus {
+button:hover,.form button:active,.form button:focus {
     background: #52809f;
 }

@@ -21,28 +21,28 @@
 <body>
 
 <header>
-   <ul id="nag-bar">
-       <li><a href="#home">Home</a></li>
-       <li><a href="#sale">For Sale</a></li>
-       <li><a href="#rent">For Rent</a></li>
-       <li><a href="#purchase">For Purchase</a></li>
-       <input type="search" placeholder="Search"/>
-       <!--<input type="submit" value="Search"/>-->
-       <!--Order will be reversed-->
-		<li class="ord" id="sign-up"><form method="post" action="sign-up"><button type="submit">Sign Up</button></form></li>
-		<li class="ord" id="login"><form method="post" action="sign-in"><button type="submit">Sign In</button></form></li>
-		<li class="ord" id="logout"><form method="post" action="sign-out"><button type="submit">Sign Out</button></form></li>
+   <nag id="nag-bar">
+       <a href="#home">Home</a>
+       <a href="#sale">For Sale</a>
+       <a href="#rent">For Rent</a>
+       <a href="#purchase">For Purchase</a>
+      <input type="search" placeholder="Search"/>
+       <!--<input type="submit" value="Search"/>--> 
+		  <form id="sign-up" method="post" action="sign-up"><button type="submit">Sign Up</button></form>
+		  <form id="sign-in" method="post" action="sign-in"><button type="submit">Sign In</button></form>
+		  <form id="sign-out" method="post" action="sign-out"><button type="submit">Sign Out</button> </form>
 
-   </ul>
+
+   </nag>
 </header>
 
 <main>
 
-   <div id="products">
+<div id="products">
 
-<h2 id="head-line">Welcome to <i>PostIt!</i></h2>
+  <h2 id="head-line">Welcome to <i>PostIt</i></h2>
 
-<h3><em> Listings: </em></h3>
+  <h3><em> Listings: </em></h3>
        <div class="gallery">
            <img class="product" src="test_images/bigjava.jpg">
            <p class="desc">Big Java For Sale!</p>
@@ -59,7 +59,7 @@
            <img class="product" src="test_images/bigjava.jpg">
            <p class="desc">Big Java For Sale!</p>
        </div>
-   </div>
+  </div>
 
 </main>
 
