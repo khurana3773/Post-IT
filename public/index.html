@@ -8,70 +8,57 @@
 	<script src="js/jquery-ui.min.js"></script>
 
 	<style>
-		body{
-			background-color: #FFF;
-			font-family: "Roboto", sans-serif;
+		nav {
+			width: 100%;
+			background: #f0f0f0;
+			border: 1px solid #ccc;
+			border-right: none;
 		}
 
-		h3{ color: #5190af; }
-
-		#about {
-			width: 80%;
-			height: 35em;
-		}
-		#holder{
-			width:100px;
-			height:100px;
-			line-height:100px;
-			border:5px dashed #CCC;
-			float: left;
-			text-align:center;
-		}
-
-		div{
-			width:100px;
-			height:100px;
-			line-height:100px;
-			border:5px #CCC;
-			float: left;
-		}
-
-		img{
-			width:100px;
-			height:100px;
-			line-height:100px;
-			margin-left: 2px;
-			border:5px solid gray;
-		}
-
-		li{
-			float:left;
-		}
-
-		ul {
-			list-style-type: none;
+		nav ul {
+			overflow: hidden;
 			margin: 0;
 			padding: 0;
-			overflow: hidden;
+		}
+
+		nav ul li {
+			list-style: none;
+			float: left;
+			text-align: center;
+			border-left: 1px solid #fff;
+			border-right: 1px solid #ccc;
+			width: 16.6667%; /* fallback for non-calc() browsers */
+			width: calc(100% / 6);
+			box-sizing: border-box;
+		}
+
+		nav ul li:first-child {
+			border-left: none;
+		}
+
+		nav ul li a {
+			display: block;
+			text-decoration: none;
+			color: #616161;
+			padding: 10px 0;
+		}
+
+		input{
+			width: 40%;
+			height: 50px;
 		}
 	</style>
 </head>
 <body>
 
-<h1 class="ui-state-default">Post It</h1>
-<textarea id="title" name="title" rows="1" cols="50" placeholder="product name..."></textarea>
-<textarea id="about" name="about" rows="4" cols="100" placeholder="enter your descriptions"></textarea>
-
-<p>Upload photos:</p>
-
-
-<ul id="photo-holder">
-	<div id="holder">
-		<p>Drag Here</p>
-	</div>
-</ul>
-<button class="ui-button" onclick="sendFromPost()">Post</button>
-
+<nav>
+	<ul>
+		<li><a href="home.html">Home</a></li>
+		<input type="search" placeholder="What are you looking for?"/>
+		<li><a href="create-post.html">Post</a>  </li>
+		<li><a href="products.html">Products</a></li>
+	</ul>
+</nav>
 
 </body>
 </html>

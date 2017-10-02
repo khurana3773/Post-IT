@@ -139,7 +139,7 @@ app.post('/'+ 'validate-code',
 );
 
 /**
- * Handles post.html file
+ * Handles selling-post.html file
  */
 
 app.post('/'+'post-it',

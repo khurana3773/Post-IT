@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--Users will be prompted from the home page.
+    This is where creating a new post begins-->
+    <meta charset="UTF-8">
+    <title>Post It</title>
+
+    <script>
+
+        $(init);
+
+        function init() {
+
+            $("#selling").hide();
+            $("#job").hide();
+
+        }
+
+        function purposeOnClick(buttonId){
+
+            if(buttonId==='for-selling'){
+
+            }else if(buttonId==='for-renting'){
+
+            }else{
+
+            }
+
+        }
+
+    </script>
+
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div id="purpose">
+
+    <p>What is your purpose</p>
+
+    <button id="for-selling" onclick="purposeOnClick(this.id)">Selling</button>
+    <button id="for-renting" onclick="purposeOnClick(this.id)">Renting</button>
+    <button id="for-job" onclick="purposeOnClick(this.id)">Job</button>
+
+</div>
+
+<!--Dynamacially display html file-->
+
+<div id="selling">
+
+</div>
+
+<div id="renting">
+
+</div>
+
+
+<div id="job">
+
+</div>
+
+
+
+</body>
+</html>
