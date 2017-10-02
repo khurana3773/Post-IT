@@ -4,53 +4,42 @@ body{
     background-color: #e0e0dd;
     font-family: "Roboto", sans-serif;
 }
-input[type="search"]{
-    float: left;
-    width: 40%;
-    padding: 0;
-
+ul {
+    list-style-type: none;
 }
-
-#nag-bar {
-    overflow: visible;
-    margin: 0;
-    padding: 0;
-    background-color: #bbbbbf;
+#nav {
+    background: #52809f;
+    position: fixed;
     width: 100%;
-    position: static;
+    top: 0px;
 }
-
-a {
-    float:left;
+#nav-wrapper {
+    width: 90%;
+    margin: 0px auto;
+    text-align: left;
+}
+#nav ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+#nav ul li {
+    display: inline-block;
+}
+#nav ul li:hover {
+    background: #52a5c3;
+}
+#nav ul li a, visited {
     display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    background: #5190af;
-}
-
-a:hover{
-    background: #52809f;
-}
-
-
-button.admin{
-    text-transform: uppercase;
-    outline: 0;
-    background: #5190af;
-    border: 0;
     padding: 15px;
-    color: #FFFFFF;
-    font-size: 14px;
-    cursor: pointer;
-    float: left;
-    display: block;
-}
-button:hover,.form button:active,.form button:focus {
-    background: #52809f;
+    color: #CCC;
+    text-decoration: none;
 }
 
+#search-bar{
+    width: 40%;
+    height: 2em;
+}
 .category{
     text-transform: uppercase;
     display: block;
@@ -61,10 +50,43 @@ button:hover,.form button:active,.form button:focus {
     width: 200px;
     background-color: #f5f5f2;
 }
+
+.side-bar{
+    margin-top: 3em;
+}
+
+#more{
+    text-transform: uppercase;
+    outline: 0;
+    background: #52809f;
+    border: 0;
+    color: #FFFFFF;
+    font-size: 14px;
+
+    top: 101em;
+    margin-left: 20px;
+    padding: 0;
+}
+
+.dropdown-content{
+    float:right;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+#dropdown-list{
+
+}
+
+
 .shadow{
     -moz-box-shadow: 3px 3px 4px #ccc;
     -webkit-box-shadow: 3px 3px 4px #ccc;
     box-shadow: 3px 3px 4px #ccc; /* For IE 8 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc')"; /* For IE 5.5 - 7 */
-    filter: progid:DXImageTransform.Microsoft.Shadow(Strength = 4, Direction = 135, Color = '#cccccc');
+-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc')"; /* For IE 5.5 - 7 */
+filter: progid:DXImageTransform.Microsoft.Shadow(Strength = 4, Direction = 135, Color = '#cccccc');
 }

@@ -14,6 +14,8 @@
     function init() {
         $("#slider").slider({max: 50});
         $("#slider").slider({change: handleSliderValue});
+        autocompleteSearchBar();
+        toggleDropDownContent();
 
     }
     function handleSliderValue(event, ui) {
@@ -22,6 +24,39 @@
     
     function onBarClicked() {
         
+    }
+
+    function toggleVisibility(id){
+
+    }
+    // Will dynamically generate search bar population with ajax from our database
+    function autocompleteSearchBar(){
+        var availableTags = [
+            "T-Shirt",
+            "Job",
+            "Love",
+            "Bob Dylan",
+            "iPhone",
+            "Meaning of Life"
+        ];
+        $("#search-bar").autocomplete({
+            source: availableTags
+        });
+    }
+
+
+    var toggleDropDown = false;
+
+    function toggleDropDownContent() {
+
+        if(!toggleDropDown){
+            $('.dropdown-content').hide();
+        }else{
+            $('.dropdown-content').show();
+        }
+
+        toggleDropDown = !toggleDropDown;
+
     }
     </script>
 
@@ -42,18 +77,34 @@
 </head>
 <body>
 
-<header>
-   <nag id="nag-bar">
-       <a href="home.html">Home</a>
-       <input type="search" placeholder="What are you looking for?"/>
-       <a href="create-post.html">Post</a>
+<div id="nav">
+    <div id="nav-wrapper">
+        <ul><button onclick="toggleDropDownContent()" id="more">&#9776;</button>
+            <li><a href="home.html">Home</a>
+            </li>
+            <li><a href="create-post.html">Post Something</a>
+            </li>
+            <input id="search-bar" name="search" type="text" placeholder="What are you looking for?">
+            <input id="search-button" name="search_submit" type="submit" value="Search!">
 
-       <button class="admin" type="submit">Sign In</button>
-       <button class="admin" type="submit">Sign Out</button>
-       <button class="admin">&#9776;</button>
-   </nag>
-</header>
+            <li><a href="login.html" onclick="toggleVisibility('Login')">Login</a>
+            </li>
+            <li><a href="#sign-out" onclick="toggleVisibility('Sign-out')">Sign Out</a>
+            </li>
 
+
+        </ul>
+    </div>
+</div>
+
+<div class="dropdown-content">
+    <ul id="dropdown-list">
+        <li><a href="#"> Something</a></li>
+        <li><a href="#"> Something</a></li>
+        <li><a href="#"> Something</a></li>
+        <li><a href="about.html"> Want a job or contact us?</a></li>
+    </ul>
+</div>
 <!-- Sidebar -->
 <div class="side-bar" style="width:25%">
     <h3 class="categories">Categories</h3>
@@ -64,8 +115,13 @@
     <button class="category">Jobs</button>
     <button class="category">Fashion</button>
     <button class="category">Other</button>
-    <p id="p-distance">Distance</p>
+    <p id="p-distance">Distance in Miles</p>
     <div id="slider"></div>
+
+    <div id="slider-wrapper-label ">
+        <label for="slider">1</label>
+        <label for="slider" style="margin-left: 10em">50+ </label>
+    </div>
 </div>
 
 <main>
