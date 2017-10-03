@@ -20,6 +20,12 @@
         // test
         addToPost();
 
+        $("#shopping-list").draggable();
+        $("#shopping-list").resizable();
+        $("#shopping-list").addClass("ui-widget").addClass("ui-widget-content").addClass("ui-corner-all");
+        $("#a-list").draggable();
+        $("#shopping-list").droppable();
+
 
     }
     function handleSliderValue(event, ui) {
@@ -76,9 +82,22 @@
         list.innerHTML = s;
     }
 
+    var toggleShoppingList = false;
+    
+    function toggleShoppingList() {
 
+        if(toggleShoppingList == false){
+            $("#shopping-list").hide();
+
+        }else{
+            $("#shopping-list").show();
+        }
+        toggleShoppingList = !toggleShoppingList;
+
+        
+    }
     function makeAPost(){
-        return "<li>\n" +
+        return "<li id=\'a-list\'>\n" +
             "            <div class=\"product\">\n" +
             "                <img src=\"test_images/cook.jpg\" height=\"225\" width=\"300\" style=\"float:left;\">\n" +
             "                <p> I am a product </p>\n" +
@@ -112,12 +131,12 @@
         }
 
         #products{ 
-            width: 60%;
+            width: 40%;
             height: 90%;
             overflow-y: scroll;
+            overflow-x: hidden;
             float: right;
             box-shadow: 10px 15px 10px 0px #888;
-            z-index: 2;
         }
         main{
             overflow: hidden;
@@ -127,6 +146,16 @@
             display: inline-block;
             width: 60%;
             margin-bottom: 2em;
+        }
+
+        #shopping-list{
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            float: right;
+            margin-top: 2em;
+            z-index: 1;
+            background-color: white;
         }
 
         ::-webkit-scrollbar {
@@ -189,6 +218,10 @@
     <ul id="products-list">
 
     </ul>
+</div>
+
+<div id="shopping-list">
+    <p>Shopping List</p>
 </div>
 
 
