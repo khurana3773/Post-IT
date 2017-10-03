@@ -20,12 +20,15 @@
         // test
         addToPost();
 
-        $("#shopping-list").draggable();
-        $("#shopping-list").resizable();
-        $("#shopping-list").addClass("ui-widget").addClass("ui-widget-content").addClass("ui-corner-all");
-        $("#a-list").draggable();
-        $("#shopping-list").droppable();
+        $("#shopping-list").resizable({
+            handles: 'n, e, s, w'
+        });
 
+        $("#shopping-list").draggable();
+
+        $("#shopping-list").droppable({ accept: '#a-list' });
+        $("#a-list").draggable({ revert: 'invalid' });
+        $("#a-list").css("zIndex", 101);
 
     }
     function handleSliderValue(event, ui) {
@@ -74,7 +77,7 @@
 
         var s = "";
 
-        for(var i = 0; i < 10; i++){
+        for(var i = 0; i < 2; i++){
             s += makeAPost() + '\n';
 
         }
@@ -99,7 +102,7 @@
     function makeAPost(){
         return "<li id=\'a-list\'>\n" +
             "            <div class=\"product\">\n" +
-            "                <img src=\"test_images/cook.jpg\" height=\"225\" width=\"300\" style=\"float:left;\">\n" +
+            "                <img src=\"test_images/cook.jpg\" height=\"100\" width=\"100\" style=\"float:left;\">\n" +
             "                <p> I am a product </p>\n" +
             "            </div>\n" +
             "        </li>";
@@ -131,12 +134,11 @@
         }
 
         #products{ 
-            width: 40%;
+            width: 50%;
             height: 90%;
             overflow-y: scroll;
             overflow-x: hidden;
-            float: right;
-            box-shadow: 10px 15px 10px 0px #888;
+            float: right; 
         }
         main{
             overflow: hidden;
@@ -152,9 +154,9 @@
             width: 200px;
             height: 200px;
             text-align: center;
-            float: right;
             margin-top: 2em;
-            z-index: 1;
+            float: right;
+            z-index: 0;
             background-color: white;
         }
 
@@ -173,7 +175,7 @@
             <li><a href="create-post.html">Post Something</a>
             </li>
             <input id="search-bar" name="search" type="text" placeholder="What are you looking for?">
-            <input id="search-button" name="search_submit" type="submit" value="Search!">
+            <input class="ui-icon ui-icon-circle-zoomin" id="search-button" name="search_submit" type="submit" value="Search!">
 
             <li><a href="login.html" onclick="toggleVisibility('Login')">Login</a>
             </li>
@@ -218,12 +220,14 @@
     <ul id="products-list">
 
     </ul>
-</div>
 
+
+
+
+</div>
 <div id="shopping-list">
     <p>Shopping List</p>
 </div>
-
 
 </body>
 </html>
