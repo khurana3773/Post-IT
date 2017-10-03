@@ -16,6 +16,10 @@
         $("#slider").slider({change: handleSliderValue});
         autocompleteSearchBar();
         toggleDropDownContent();
+        $(window).resize();
+        // test
+        addToPost();
+
 
     }
     function handleSliderValue(event, ui) {
@@ -58,21 +62,75 @@
         toggleDropDown = !toggleDropDown;
 
     }
+
+    function addToPost() {
+        var list = document.getElementById("products-list");
+
+        var s = "";
+
+        for(var i = 0; i < 10; i++){
+            s += makeAPost() + '\n';
+
+        }
+
+        list.innerHTML = s;
+    }
+
+
+    function makeAPost(){
+        return "<li>\n" +
+            "            <div class=\"product\">\n" +
+            "                <img src=\"test_images/cook.jpg\" height=\"225\" width=\"300\" style=\"float:left;\">\n" +
+            "                <p> I am a product </p>\n" +
+            "            </div>\n" +
+            "        </li>";
+    }
+
+    $(window).resize(function(){
+
+        $('#products').css({
+            position:'absolute',
+            left: ($(window).width() - $('#products').outerWidth())/2,
+            top: 70
+        });
+
+    });
     </script>
 
     <style>
-    #slider {
-        margin: 0;
-    }
-    .ui-slider-horizontal {
-        height: 8px;
-        width: 200px;
-    }
-    .ui-slider .ui-slider-handle {
-        height: 15px;
-        width: 4px;
-        padding-left: 5px;
-    }
+        #slider {
+            margin: 0;
+        }
+        .ui-slider-horizontal {
+            height: 8px;
+            width: 200px;
+        }
+        .ui-slider .ui-slider-handle {
+            height: 15px;
+            width: 4px;
+            padding-left: 5px;
+        }
+
+        #products{
+            border: 3px solid gray;
+            width: 60%;
+            height: 90%;
+            overflow-y: scroll;
+            float: right;
+        }
+        main{
+            overflow: hidden;
+        }
+        .product{
+            float: left;
+            display: inline-block;
+            width: 60%;
+            margin-bottom: 2em;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -106,7 +164,7 @@
     </ul>
 </div>
 <!-- Sidebar -->
-<div class="side-bar" style="width:25%">
+<div class="side-bar" style="width:25%; position: fixed;">
     <h3 class="categories">Categories</h3>
     <button class="category">Electronics</button>
     <button class="category">Sports, Leisure and Games</button>
@@ -124,15 +182,14 @@
     </div>
 </div>
 
-<main>
-
 <!--Dynamically stream products here by category-->
 <div id="products">
 
+    <ul id="products-list">
 
+    </ul>
 </div>
 
-</main>
 
 </body>
 </html>
