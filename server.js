@@ -11,7 +11,7 @@ const db = require('./database/database');
 var app = express();
 app.listen(8080);
 
-var html_file_name ='./public/home.html';
+var html_file_name ='./public/index.html';
 
 //To store valid user credentials
 var valid_password="xxxx"; 

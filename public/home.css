@@ -12,6 +12,9 @@ ul {
     position: fixed;
     width: 100%;
     top: 0px;
+
+    margin: 0px;
+    padding: 0px;
 }
 #nav-wrapper {
     width: 90%;
@@ -55,7 +58,7 @@ ul {
     margin-top: 3em;
 }
 
-#more{
+.nag-button{
     text-transform: uppercase;
     outline: 0;
     background: #52809f;
@@ -64,9 +67,13 @@ ul {
     font-size: 14px;
 
     top: 101em;
-    margin-left: 20px;
-    padding: 0;
+    padding: 13px;
 }
+
+.nag-button:hover{
+    background: #52a5c3;
+}
+
 
 .dropdown-content{
     float:right;
@@ -76,17 +83,56 @@ ul {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     padding: 12px 16px;
     z-index: 1;
+    top: 50px;
 }
 
 #dropdown-list{
 
 }
 
-
-.shadow{
-    -moz-box-shadow: 3px 3px 4px #ccc;
-    -webkit-box-shadow: 3px 3px 4px #ccc;
-    box-shadow: 3px 3px 4px #ccc; /* For IE 8 */
--ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc')"; /* For IE 5.5 - 7 */
-filter: progid:DXImageTransform.Microsoft.Shadow(Strength = 4, Direction = 135, Color = '#cccccc');
+#slider {
+    margin: 0;
 }
+.ui-slider-horizontal {
+    height: 8px;
+    width: 200px;
+}
+.ui-slider .ui-slider-handle {
+    height: 15px;
+    width: 4px;
+    padding-left: 5px;
+}
+
+#products{
+    width: 50%;
+    height: 90%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    float: right;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+main{
+    overflow: hidden;
+}
+.product{
+    float: left;
+    display: inline-block;
+    width: 60%;
+    margin-bottom: 2em;
+}
+
+#shopping-list{
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    top: 10px;
+    left: 50%;
+    z-index: 5;
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
