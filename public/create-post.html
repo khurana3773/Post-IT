@@ -5,7 +5,7 @@
     This is where creating a new post begins-->
     <meta charset="UTF-8">
     <title>Post It</title>
-
+	<link rel="stylesheet" type="text/css" href="create-post.css">
     <script>
 
         $(init);
@@ -39,30 +39,35 @@
 
 <div id="purpose">
 
-    <p>What is your purpose</p>
+    <h1>What is your purpose?</h1>
 
-    <button id="for-selling" onclick="purposeOnClick(this.id)">Selling</button>
-    <button id="for-renting" onclick="purposeOnClick(this.id)">Renting</button>
-    <button id="for-job" onclick="purposeOnClick(this.id)">Job</button>
+    <div id="selling">
+    		<br/>
+    		<span class= "italic">Too much stocked up?</span>
+    		<br/><br/><br/>
+    		You can sell items through our amazing categories for easy lookup and great value! 
+    		<br/><br/><br/><br/>
+    		<button class="button" style="vertical-align:middle" id="for-selling" onclick="purposeOnClick(this.id)"><span>Check out Selling options!</span></button>
+    </div>
+
+    <div id="job">
+    		<br/>
+    		<span class= "italic">Looking for mini jobs options?</span>
+    		<br/><br/><br/>
+    		You can surf our this section for easy-weeze ways to earn some extra cash! 
+    		<br/><br/><br/><br/>
+    		<button class="button" style="vertical-align:middle" id="for-job" onclick="purposeOnClick(this.id)"><span>Check out Job options!</span></button>
+
+    </div>    
+    <div id="renting">
+    		<br/>
+    		<span class= "italic">Don't want to buy?</span>
+    		<br/><br/><br/>
+    		You can rent out amazing items from our various categories, hazel free!
+    		<br/><br/><br/><br/>
+    		<button class="button" style="vertical-align:middle" id="for-renting" onclick="purposeOnClick(this.id)"><span>Check out Renting options!</span></button>
+    </div>
 
 </div>
-
-<!--Dynamacially display html file-->
-
-<div id="selling">
-
-</div>
-
-<div id="renting">
-
-</div>
-
-
-<div id="job">
-
-</div>
-
-
-
 </body>
 </html>

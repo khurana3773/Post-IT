@@ -1,0 +1,110 @@
+body {
+	background: url("/images/theme.jpg")no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height:100vh;
+}
+
+h1{
+	color: white;
+	text-align: center;
+	font-size:60px;
+	padding: 10px;
+	text-shadow:5px 5px 10px grey;
+}
+
+#selling{
+	padding: 2px;
+	background: rgba(0,0,0, 0.82);
+	float: left;
+    border-radius: 25px;
+    border: 2px solid #05ffc9;
+	font-size:20px;
+	width:30%;
+	text-align: center;
+	color: white;
+	height: 80%;
+}
+
+#renting{
+	padding: 2px;
+	background: rgba(0,0,0, 0.82);
+    border-radius: 25px;
+    border: 2px solid #05ffc9;
+	font-size:20px;
+	width:30%;
+	text-align: center;
+	display: inline-block;
+    margin: 0 auto;
+	height: 80%;
+	color: white;
+}
+
+#job{
+	padding: 2px;
+	background: rgba(0,0,0, 0.82);
+    border-radius: 25px;
+    border: 2px solid #05ffc9;
+	font-size:20px;
+	width:30%;
+	text-align: center;
+	height: 80%;
+	color: white;
+	float:right;
+}
+
+.italic{
+	font-style: italic;
+	font-size:25px;
+	padding: 12px;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+#purpose{
+	width: 100%;
+	text-align:center;	
+	height: 60%;
+}
+
+.button {
+	display: inline-block;
+    border-radius: 25px;
+    background-color: rgba(89, 119, 171, 0.62);
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 25px;
+    padding: 5px;
+    width: 90%;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00BB';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 28px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
