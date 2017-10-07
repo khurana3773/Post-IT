@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <script src="js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+    <script src="js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="home.css">
+    <script type="text/javascript">
+
+        $(init);
+
+        function init() {
+            $("#slider").slider({max: 50});
+            $("#slider").slider({change: handleSliderValue});
+            autocompleteSearchBar();
+            toggleDropDownContent();
+            toggleShoppingList();
+            $(window).resize();
+            // test
+            addToPost();
+            $("#shopping-list").draggable();
+            $("#shopping-list").resizable({
+                handles: 'n, e, s, w'
+            });
+            $("#shopping-list").droppable({ accept: '#a-list' });
+            $("#shopping-list").bind("drop", dragObject);
+            $("#a-list").draggable({ revert: 'invalid' });
+            $("#a-list").css("zIndex", 101);
+        }
+
+        function handleSliderValue(event, ui) {
+
+
+        }
+
+        function dragObject(event, ui){
+            alert("Hello");
+        }
+
+        function onBarClicked() {
+
+        }
+
+        function toggleVisibility(id){
+
+        }
+        // Will dynamically generate search bar population with ajax from our database
+        function autocompleteSearchBar(){
+            var availableTags = [
+                "T-Shirt",
+                "Job",
+                "Love",
+                "Bob Dylan",
+                "iPhone",
+                "Meaning of Life"
+            ];
+            $("#search-bar").autocomplete({
+                source: availableTags
+            });
+        }
+
+
+        function toggleDropDownContent() {
+            toggleVisibility('.dropdown-content');
+        }
+
+        function addToPost() {
+            var list = document.getElementById("products-list");
+
+            var s = "";
+
+            for(var i = 0; i < 1; i++){
+                s += makeAPost() + '\n';
+
+            }
+
+            list.innerHTML = s;
+        }
+
+        function toggleShoppingList() {
+            toggleVisibility("#shopping-list");
+
+        }
+
+        function toggleVisibility(idOrClass){
+            if ( $(idOrClass).is(":visible")){
+                $(idOrClass).hide();
+            }else{
+                $(idOrClass).show();
+            }
+        }
+
+        function makeAPost(){
+            return "<li id=\'a-list\'>\n" +
+                "            <div class=\"product\">\n" +
+                "                <img src=\"test_images/cook.jpg\" height=\"100\" width=\"100\" style=\"float:left;\">\n" +
+                "                <p> I am a product </p>\n" +
+                "            </div>\n" +
+                "        </li>";
+        }
+
+        $(window).resize(function(){
+
+            $('#products').css({
+                position:'absolute',
+                left: ($(window).width() - $('#products').outerWidth())/2,
+                top: 70
+            });
+
+        });
+    </script>
+
+</head>
+<body>
+
+<div id="nav">
+    <div id="nav-wrapper">
+        <ul>
+            <button onclick="toggleDropDownContent()" class="nag-button">&#9776;</button>
+
+            <li><a href="index.html">Home</a>
+            </li>
+            <li><a href="create-post.html">Post Something</a>
+            </li>
+            <button onclick="toggleShoppingList()" class="nag-button">Wish List</button>
+            <input id="search-bar" name="search" type="text" placeholder="What are you looking for?">
+            <input id="search-button" name="search_submit" type="submit" value="Search!">
+
+            <li><a href="login.html" onclick="toggleVisibility('Login')">Login</a>
+            </li>
+            <li style="display: none;"><a href="#sign-out" onclick="toggleVisibility('Sign-out')">Sign Out</a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+<div class="dropdown-content">
+    <ul id="dropdown-list">
+        <li><a href="profile.html"> Profile </a></li>
+        <li><a href="#"> Settings </a></li>
+        <li><a href="posts/my-posts.html"> My Posts </a></li>
+        <li><a href="about.html"> Want a job or contact us?</a></li>
+    </ul>
+</div>
+<!-- Sidebar -->
+<div class="side-bar" style="width:25%; position: fixed;">
+    <h3 class="categories">Categories</h3>
+    <button class="category">Electronics</button>
+    <button class="category">Sports, Leisure and Games</button>
+    <button class="category">Home and Garden</button>
+    <button class="category">Movies, Books and Music</button>
+    <button class="category">Jobs</button>
+    <button class="category">Fashion</button>
+    <button class="category">Other</button>
+    <p id="p-distance">Distance in Miles</p>
+    <div id="slider"></div>
+
+    <div id="slider-wrapper-label ">
+        <label for="slider">1</label>
+        <label for="slider" style="margin-left: 10em">50+ </label>
+    </div>
+</div>
+
+<!--Dynamically stream products here by category-->
+<div id="products">
+    <ul id="products-list">
+
+    </ul>
+</div>
+<div id="shopping-list">
+    <p>Shopping List</p>
+</div>
+
+</body>
+</html>
