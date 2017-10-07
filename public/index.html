@@ -38,7 +38,7 @@
         function dragObject(event, ui){
             $("#a-list").remove();
 
-            var item = "<li>The Product</li>";
+            var item = "<li>Product dropped</li>";
             document.getElementById("list").innerHTML += item;
 
 
@@ -98,7 +98,7 @@
         }
 
         function makeAPost(){
-            return "<li style='border: dashed 2px; width: 50px' id=\'a-list\'>\n" +
+            return "<li style='width: 50px' id=\'a-list\'>\n" +
                 "            <div id='tester' class=\"product\">\n" +
                 "                <img src=\"test_images/cook.jpg\" height=\"100\" width=\"100\" style=\"float:left;\">\n" +
                 "                <p> I am a product </p>\n" +
@@ -178,7 +178,7 @@
 <div id="shopping-list">
     <p>Shopping List</p>
 
-    <ul id="list">
+    <ul style="padding: 0px;" id="list">
 
     </ul>
 </div>
