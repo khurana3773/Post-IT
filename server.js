@@ -36,7 +36,6 @@ var Storage = multer.diskStorage({
     },
     filename: function (req, file, callback) {
     	file_name[counter]=file.fieldname + "_" + Date.now() + "_" + file.originalname;
-    	console.log("file names:"+file_name[counter]+" and counter:"+counter );
     	callback(null, file_name[counter]);
         counter++;
     }
@@ -141,7 +140,6 @@ app.post('/'+'validate-signup',
 //Controller to handle validation of code
 app.post('/'+ 'validate-code',
 	function (req, res){
-        console.log('validate-code');
 		var code = req.param("code");
 		if(code === '1111'){// If code is valid, redirect to homepage and send welcome message
 			valid_user = User;
@@ -186,17 +184,19 @@ app.post('/'+'post-it',
 	        var title = req.param("title");
 			var about = req.param("about");
 			
-			var html="<!DOCTYPE html><html><head>" +
-					"<style>body{margin:10px;background-color: ##e0e0dd;}.imgclass {display: inline-block;margin-left: auto;margin-right: auto;height: 40%;width:30%;box-shadow: 2px 2px 34px #888888;border-radius: 8px;}#divclass{text-align:center;}</style></head><body>" +
-					"<h1 style=\"color:white;border: 2px solid black;border-radius: 8px;background-color: #52809f;height:10%;text-align:left\"><a href="/">Post It</a></h1>" +
-					"<h2 style=\"color:white;border: 2px solid black;border-radius: 8px;background-color: #52809f;height:10%;text-align:center\">Post uploaded sucessfully with below details!</h1>"
-				+"<h3 style=\"color:white;border: 2px solid black;border-radius: 8px;background-color: #52809f;height:10%\"> Product name: </h3><p style=\"border: 2px solid black;border-radius: 8px;background-color: white;font-style:italic\">"+title+ "</p><br/>"
-				+"<h3 style=\"color:white;border: 2px solid black;border-radius: 8px;background-color: #52809f;\"> Product description:</h3><pre style=\"border: 2px solid black;border-radius: 8px;background-color: white;font-style:italic\"> "+about+ "</pre><br/>"
-				+"<h3 style=\"color:white;border: 2px solid black;border-radius: 8px;background-color: #52809f;\"> Product picture(s):</h3>";
+			var html="<!DOCTYPE html><html  lang=\"en\"><head>" +
+					"<style>body{margin:2px;background-color: white;}#nav ul li a, visited {display: block;padding: 15px;color: #CCC; text-decoration: none; list-style-type: none;}#nav {background: #52809f; float:left;width: 100%;top: 0px;margin: 0px;padding: 0px;color:#e0e0dd;}." +
+					"imgclass {display: inline-block;margin-left: 10px;margin-right: 10px;height: 240px;width:240px;box-shadow: 2px 2px 34px #888888;border-radius: 8px;border-color:white}#divclass{text-align:center;clear:both;}</style></head><body>" +
+					"<div id=\"nav\"><div id=\"nav-wrapper\"><ul style=\"list-style: none;\"><li><a href=\"index.html\">Home</a></li></ul></div></div>" +
+					"<div style=\"display:block;clear:both\"><h2 style=\"color:black;text-align:center;\">Post uploaded sucessfully with below details!</h1>"
+				+"<div id= divclass><h3 style=\"box-shadow: 2px 2px 34px #888888;width:20%;display: inline-block;color:#52809f;margin:10px;\"> Product name: </h3><p style=\"word-wrap:break-word;margin:40px;font-style:italic\">"+title+ "</p></div><br/>"
+				+"<div id=divclass><h3 style=\"box-shadow: 2px 2px 34px #888888;width:20%;display: inline-block;color: #52809f;margin:10px;\"> Product description:</h3><pre style=\"white-space: pre-wrap;/* Since CSS 2.1 */ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */" +
+						"white-space: -pre-wrap; /* Opera 4-6 */white-space: -o-pre-wrap;/* Opera 7 */ word-wrap: break-word; margin:40px;font-style:italic\"> "+about+ "</pre></div><br/>"
+				+"<div id=divclass><h3 style=\"box-shadow: 2px 2px 34px #888888;width:20%;display: inline-block;color:#52809f;margin:10px;\"> Product picture(s):</h3>";
 			
-			html+="<div class=\"divclass\"><img class=\"imgclass\"  src='/images/"+file_name[0]+"'>"
+			html+="<div id=\"divclass\"><img class=\"imgclass\"  src='/images/"+file_name[0]+"'>"
 				+"<img class=\"imgclass\" onerror=\"this.style.display = 'none'\" src='/images/"+file_name[1]+"'>"
-				+"<img class=\"imgclass\"  onerror=\"this.style.display = 'none'\" src='/images/"+file_name[2]+"'></div></body></html>";
+				+"<img class=\"imgclass\"  onerror=\"this.style.display = 'none'\" src='/images/"+file_name[2]+"'></div></div></div></body></html>";
 						
 	        return res.end(html);
 	        }
