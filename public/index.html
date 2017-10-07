@@ -27,7 +27,7 @@
             $("#shopping-list").droppable({ accept: '#a-list' });
             $("#shopping-list").bind("drop", dragObject);
             $("#a-list").draggable({ revert: 'invalid' });
-            $("#a-list").css("zIndex", 101);
+            $("#a-list").css("zIndex", 100);
         }
 
         function handleSliderValue(event, ui) {
@@ -36,7 +36,12 @@
         }
 
         function dragObject(event, ui){
-            alert("Hello");
+            $("#a-list").remove();
+
+            var item = "<li>The Product</li>";
+            document.getElementById("list").innerHTML += item;
+
+
         }
 
         function onBarClicked() {
@@ -93,8 +98,8 @@
         }
 
         function makeAPost(){
-            return "<li id=\'a-list\'>\n" +
-                "            <div class=\"product\">\n" +
+            return "<li style='border: dashed 2px; width: 50px' id=\'a-list\'>\n" +
+                "            <div id='tester' class=\"product\">\n" +
                 "                <img src=\"test_images/cook.jpg\" height=\"100\" width=\"100\" style=\"float:left;\">\n" +
                 "                <p> I am a product </p>\n" +
                 "            </div>\n" +
@@ -172,6 +177,10 @@
 </div>
 <div id="shopping-list">
     <p>Shopping List</p>
+
+    <ul id="list">
+
+    </ul>
 </div>
 
 </body>
