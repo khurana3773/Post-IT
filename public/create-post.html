@@ -5,29 +5,15 @@
     This is where creating a new post begins-->
     <meta charset="UTF-8">
     <title>Post It</title>
+    <script src="js/jquery.js"></script>
 	<link rel="stylesheet" type="text/css" href="create-post.css">
     <script>
 
-        $(init);
+        $(window).on('load', function () {
+            $('#for-job').addClass('disabled');
+            $('#for-renting').addClass('disabled');
 
-        function init() {
-
-            $("#selling").hide();
-            $("#job").hide();
-
-        }
-
-        function purposeOnClick(buttonId){
-
-            if(buttonId==='for-selling'){
-
-            }else if(buttonId==='for-renting'){
-
-            }else{
-
-            }
-
-        }
+        });
 
     </script>
 
@@ -47,25 +33,27 @@
     		<br/><br/><br/>
     		You can sell items through our amazing categories for easy lookup and great value! 
     		<br/><br/><br/><br/>
-    		<button class="button" style="vertical-align:middle" id="for-selling" onclick="purposeOnClick(this.id)"><span>Check out Selling options!</span></button>
+    		<form method=GET action="/sell">
+    			<button type="submit" class="button" style="vertical-align:middle" id="for-selling"><span>Check out Selling options!</span></button>
+    		</form>
     </div>
 
-    <div id="job">
+    <div id="job" >
     		<br/>
     		<span class= "italic"> Need to get a job done?</span>
     		<br/><br/><br/>
     		You can use our this section for easy-weeze way to post a job! 
     		<br/><br/><br/><br/>
-    		<button class="button" style="vertical-align:middle" id="for-job" onclick="purposeOnClick(this.id)"><span>Check out Job options!</span></button>
+    		<button class="button" style="vertical-align:middle" id="for-job" ><span>Check out Job options!</span></button>
 
     </div>    
-    <div id="renting">
+    <div id="renting" >
     		<br/>
     		<span class= "italic">Want to Rent out?</span>
     		<br/><br/><br/>
     		You can rent out amazing items from our various categories, hazel free!
     		<br/><br/><br/><br/>
-    		<button class="button" style="vertical-align:middle" id="for-renting" onclick="purposeOnClick(this.id)"><span>Check out Renting options!</span></button>
+    		<button class="button" style="vertical-align:middle" id="for-renting"><span>Check out Renting options!</span></button>
     </div>
 
 </div>

@@ -6,74 +6,71 @@
     <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css">
     <script src="../js/jquery-ui.min.js"></script>
     <script src="../js/drag-photos.js"></script>
-    <style>
-        body{
-            background-color: #FFF;
-            font-family: "Roboto", sans-serif;
+    <script src="Scripts/jquery-3.1.1.min.js"></script>
+    <script src="Scripts/jquery.form.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="selling-post.css">
+	<script>
+
+		
+        $(document).ready(function () {
+            var options = {
+                beforeSubmit: showRequest,  // pre-submit callback
+                success: showResponse  // post-submit callback
+            };
+			
+            holder.ondragover = holder.ondragenter = function(evt) {
+      		  //evt.preventDefault();
+      		};
+
+      		holder.ondrop = function(evt) {
+      		  // pretty simple -- but not for IE :(
+      		  fileup.files = evt.dataTransfer.files;
+      		  //evt.preventDefault();
+      		};
+      		
+            // bind to the form's submit event
+            $('#upload').submit(function () {
+                $(this).ajaxSubmit(options);
+                // always return false to prevent standard browser submit and page navigation
+                return false;
+            });
+        });
+        
+        // pre-submit callback
+        function showRequest(formData, jqForm, options) {
+            alert('Uploading is starting.');
+            return true;
         }
 
-        h3{ color: #5190af; }
-
-        #about {
-            width: 80%;
-            height: 35em;
+        // post-submit callback
+        function showResponse(responseText, statusText, xhr, $form) {
+            alert('status: ' + statusText + '\n\nresponseText: \n' + responseText );
         }
-        #holder{
-            width:100px;
-            height:100px;
-            line-height:100px;
-            border:5px dashed #CCC;
-            float: left;
-            text-align:center;
-        }
-
-        div{
-            width:100px;
-            height:100px;
-            line-height:100px;
-            border:5px #CCC;
-            float: left;
-        }
-
-        img{
-            width:100px;
-            height:100px;
-            line-height:100px;
-            margin-left: 2px;
-            border:5px solid gray;
-        }
-
-        li{
-            float:left;
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-        textarea {
-            resize: none;
-        }
-    </style>
+    </script>
 </head>
 <body>
 
-<h1 class="ui-state-default">Post It</h1>
-<textarea id="title" name="title" rows="1" cols="50" placeholder="product name..."></textarea>
-<textarea id="about" name="about" rows="4" cols="100" placeholder="enter your descriptions"></textarea>
+<h1 class="ui-state-default"><a href="/">Post It</a></h1>
+<div>
+	<form id="upload" method= POST action="/post-it" enctype="multipart/form-data">
+	    <label for="title">Product Name</label>
+	    <input type="text" id="title" name="title" required>
+	    <br/>
+		<label for="about">Product Description</label>
+		<textarea id="about" name="about" placeholder="Enter your description" required></textarea>
+		<br/>
+		<label for="photo-holder">Product Images</label>
+		<br/>
+		<ul>
+			<div id="holder">
+				<p>Drag Here</p>
 
-<p>Upload photos:</p>
-
-
-<ul id="photo-holder">
-    <div id="holder">
-        <p>Drag Here</p>
-    </div>
-</ul>
-<button class="ui-button" onclick="sendFromPost()">Post</button>
-
-
+			</div>	
+		</ul>
+		<input type="file" name="imgUploader" id="fileup" multiple required>
+		<br/>
+		<button type="submit">Post</button>
+	</form>
+</div> 
 </body>
 </html>
