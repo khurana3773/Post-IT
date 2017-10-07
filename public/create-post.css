@@ -1,5 +1,5 @@
 body {
-	background: url("/images/theme.jpg")no-repeat center center fixed; 
+	background-color: #e0e0dd;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -20,7 +20,6 @@ h1{
 	background: rgba(0,0,0, 0.82);
 	float: left;
     border-radius: 25px;
-    border: 2px solid #05ffc9;
 	font-size:20px;
 	width:30%;
 	text-align: center;
@@ -32,7 +31,6 @@ h1{
 	padding: 2px;
 	background: rgba(0,0,0, 0.82);
     border-radius: 25px;
-    border: 2px solid #05ffc9;
 	font-size:20px;
 	width:30%;
 	text-align: center;
@@ -46,7 +44,6 @@ h1{
 	padding: 2px;
 	background: rgba(0,0,0, 0.82);
     border-radius: 25px;
-    border: 2px solid #05ffc9;
 	font-size:20px;
 	width:30%;
 	text-align: center;
