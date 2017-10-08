@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Home</title>
     <script src="js/jquery.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
     <script src="js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="home.css">
     <script type="text/javascript">
 
@@ -115,11 +115,21 @@
             });
 
         });
+
+        $( function() {
+           $( "#menu" ).menu();
+          } );
+
     </script>
+
+    <style>
+       .ui-menu { width: 150px; }
+    </style>
 
 </head>
 <body>
 
+<div class="mainBody">
 <div id="nav">
     <div id="nav-wrapper">
         <ul>
@@ -150,16 +160,37 @@
         <li><a href="about.html"> Want a job or contact us?</a></li>
     </ul>
 </div>
+
+
 <!-- Sidebar -->
 <div class="side-bar" style="width:25%; position: fixed;">
     <h3 class="categories">Categories</h3>
-    <button class="category">Electronics</button>
-    <button class="category">Sports, Leisure and Games</button>
-    <button class="category">Home and Garden</button>
-    <button class="category">Movies, Books and Music</button>
-    <button class="category">Jobs</button>
-    <button class="category">Fashion</button>
-    <button class="category">Other</button>
+
+   <ul id="menu">
+
+    <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Free Stuff</div></li>
+
+      <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Sports, Leisure and Games</div></li>
+      <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
+      <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
+
+        <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Electronics<span class="ui-icon ui-icon-caret-1-e"></span></div>
+
+        <ul>
+          <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Cell Phone & Accessories</div></li>
+          <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Headphones</div></li>
+          <li><div class="category ui-state-disabled"><span class="ui-icon ui-icon-tag"></span>Bluetooth & Wireless Speakers</div></li>
+        </ul>
+
+      </li>
+
+     <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
+     <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
+     <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
+
+      </ul>
+
+
     <p id="p-distance">Distance in Miles</p>
     <div id="slider"></div>
 
@@ -181,6 +212,7 @@
     <ul style="padding: 0px;" id="list">
 
     </ul>
+</div>
 </div>
 
 </body>

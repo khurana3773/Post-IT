@@ -46,16 +46,24 @@ ul {
 .category{
     text-transform: uppercase;
     display: block;
-    border: 0;
-    padding: 15px;
+    font-size: 12px;
+    font-weight: bolder;
     cursor: pointer;
     outline: 0;
-    width: 200px;
+    width: 180px;
+    height: 30px;
     background-color: #f5f5f2;
+    border: 1.5;
+    z-index: 11;
+}
+
+.mainBody{
+  margin:  auto;
 }
 
 .side-bar{
     margin-top: 3em;
+    padding-left: 30px;
 }
 
 .nag-button{
@@ -135,4 +143,3 @@ main{
 ::-webkit-scrollbar {
     display: none;
 }
-
