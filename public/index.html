@@ -24,22 +24,19 @@
             $("#shopping-list").resizable({
                 handles: 'n, e, s, w'
             });
-            $("#shopping-list").droppable({ accept: '#a-list' });
-            $("#shopping-list").bind("drop", dragObject);
-            $("#a-list").draggable({ revert: 'invalid' });
-            $("#a-list").css("zIndex", 100);
-        }
+            $("#shopping-list").droppable({ 
+			accept: '#a-list',
+			drop: function(ev,ui){
+			var droppedItem = $(ui.draggable).clone();
+			$(this).append(droppedItem); 
+			}
+			});      			
+			 $('#a-list').draggable( {			
+			helper : 'clone' 			
+			} );	
+	     }
 
         function handleSliderValue(event, ui) {
-
-
-        }
-
-        function dragObject(event, ui){
-            $("#a-list").remove();
-
-            var item = "<li>Product dropped</li>";
-            document.getElementById("list").innerHTML += item;
 
 
         }
@@ -51,6 +48,9 @@
         function toggleVisibility(id){
 
         }
+		
+		
+		
         // Will dynamically generate search bar population with ajax from our database
         function autocompleteSearchBar(){
             var availableTags = [
@@ -67,6 +67,10 @@
         }
 
 
+		function close1() {
+			toggleVisibility("#shopping-list");		
+			  
+		}
         function toggleDropDownContent() {
             toggleVisibility('.dropdown-content');
         }
@@ -124,6 +128,9 @@
             $( document ).tooltip();
           } );
 
+		  
+		  
+		  
     </script>
 
     <style>
@@ -211,7 +218,8 @@
     </ul>
 </div>
 <div id="shopping-list">
-    <p>Shopping List</p>
+    <p>Shopping List<button class="close" onclick="close1()">X</button></p>
+	  
 
     <ul style="padding: 0px;" id="list">
 

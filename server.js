@@ -10,7 +10,10 @@ var multer = require('multer');
 
 // Create the app.
 var app = express();
-app.listen(8081);
+var port = 8081;
+app.listen(port,function () {
+  console.log('Example app listening on port :' + port)
+})
 
 var html_file_name ='./public/index.html';
 
