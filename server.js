@@ -181,6 +181,7 @@ app.post('/'+'post-it',
 		
 		upload(req, res, function (err) {
 	        if (err) {
+
 	            return res.end("<h1 style=\"text-align:center\">Something went wrong!<h1>"
 	            		+"<p style=\"text-align:center\"> Please <a href=\"/posts/selling-post.html\">click here</a> to go back and try again!</p>");
 	        }else{

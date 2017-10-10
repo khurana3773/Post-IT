@@ -46,13 +46,21 @@
         function showResponse(responseText, statusText, xhr, $form) {
             alert('status: ' + statusText + '\n\nresponseText: \n' + responseText );
         }
+
+        function checkSize(){
+        	if(fileup.files.length> 3 ){
+        		alert("Max three images allowed!");
+        		return false;
+        	}	
+        	return true;
+        }
     </script>
 </head>
 <body>
 
 <h1 class="ui-state-default"><a href="/">Post It</a></h1>
 <div>
-	<form id="upload" method= POST action="/post-it" enctype="multipart/form-data">
+	<form id="upload" method= POST action="/post-it" enctype="multipart/form-data"  onsubmit=" return checkSize();">
 	    <label for="title">Product Name</label>
 	    <input type="text" id="title" name="title" required>
 	    <br/>
