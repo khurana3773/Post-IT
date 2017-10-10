@@ -137,15 +137,14 @@ main{
 }
 
 #shopping-list{
-	background-color: Green;
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     text-align: center;
     top: 10px;
     left: 50%;
     z-index: 0;
+    background-color: white;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	overflow: auto;
 }
 
 .close{
