@@ -10,12 +10,14 @@
     <script type="text/javascript">
         // Limit to how many items can be store in wish list
         const LIST_LIMT = 10;
+        var shoppingList = [];
+
         $(init);
 
         function init() {
             $("#slider").slider({max: 50});
             $("#slider").slider({change: handleSliderValue});
-            autocommitSearchBar();
+            autoCompleteSearchBox();
             toggleDropDownContent();
             toggleShoppingList();
             $(window).resize();
@@ -41,21 +43,16 @@
             document.getElementById("list").innerHTML += item;
         }
 
+        // Handles slider value
+        // From 1 miles to 50+ miles
+        // Will query from mongodb
         function handleSliderValue(event, ui) {
 
 
         }
 
-        function onBarClicked() {
-
-        }
-
-        function toggleVisibility(id){
-
-        }
-
         // Will dynamically generate search bar population with ajax from our database
-        function autocommitSearchBar(){
+        function autoCompleteSearchBox(){
             var availableTags = [
                 "T-Shirt",
                 "Job",
@@ -64,8 +61,12 @@
                 "iPhone",
                 "Meaning of Life"
             ];
+            appendToCompleteSearchBox(availableTags);
+        }
+        // search input is an array
+        function appendToCompleteSearchBox(searchInput){
             $("#search-bar").autocomplete({
-                source: availableTags
+                source: searchInput
             });
         }
 
@@ -99,24 +100,28 @@
                 $(idOrClass).show();
             }
         }
+        /*
+         * Parse JSON to html code
+         * Will use AJAX
+         */
+        function buildProduct(aJson){
 
+        }
         /*
          * Converts to html
          * Should use DOM function to do so
          */
-        function buildProduct(image) {
+        function buildProduct(id, image, title, productDescription, tags, location) {
 
         }
 
 
         function appendToProductStream(theProduct){
-
+            var unorderList = document.getElementById("products-list");
+            // append to list
         }
 
-        /*
-         * Test
-         */
-
+        // Test
         function makeAPost(){
             return "<li style='width: 50px' id=\'a-list\'>\n" +
                 "            <div id='tester' class=\"product\">\n" +
@@ -146,10 +151,6 @@
 
 
     </script>
-
-    <style>
-       .ui-menu { width: 150px; }
-    </style>
 
 </head>
 <body>

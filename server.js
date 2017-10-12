@@ -167,8 +167,8 @@ app.get('/'+'sell',
  */
 
 app.post('/'+'post-it',
-	(req, res) =>{
-		counter=0;
+	function(req, res){
+		var counter=0;
         
 		if(file_name[0])
 			delete file_name[0];
