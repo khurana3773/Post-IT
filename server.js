@@ -6,14 +6,12 @@ const ejs = require('ejs');
 const fs = require('fs');
 const lineReader = require('line-reader');
 const db = require('./database/database');
-var multer = require('multer');
+const multer = require('multer');
 
 // Create the app.
 var app = express();
 var port = 8081;
-app.listen(port,function () {
-  console.log('Example app listening on port :' + port)
-})
+app.listen(port);
 
 var html_file_name ='./public/index.html';
 
@@ -44,7 +42,7 @@ var Storage = multer.diskStorage({
     }
 });
 
-let upload = multer({ storage: Storage}).array("imgUploader", 3);
+const upload = multer({ storage: Storage}).array("imgUploader", 3);
 
 //Controller to render application home page
 app.get('/' ,

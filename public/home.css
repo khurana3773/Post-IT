@@ -137,6 +137,8 @@ main{
 }
 
 #shopping-list{
+    min-height: 100px;
+    min-width: 100px;
     width: 200px;
     height: 200px;
     text-align: center;

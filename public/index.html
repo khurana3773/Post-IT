@@ -8,18 +8,18 @@
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="home.css">
     <script type="text/javascript">
-
+        // Limit to how many items can be store in wish list
+        const LIST_LIMT = 10;
         $(init);
 
         function init() {
             $("#slider").slider({max: 50});
             $("#slider").slider({change: handleSliderValue});
-            autocompleteSearchBar();
+            autocommitSearchBar();
             toggleDropDownContent();
             toggleShoppingList();
             $(window).resize();
-            // test
-            addToPost();
+
             $("#shopping-list").draggable();
             $("#shopping-list").resizable({
                 handles: 'n, e, s, w'
@@ -29,6 +29,11 @@
             $("#a-list").draggable({ revert: 'invalid' });
             $("#a-list").css("zIndex", 100);
 	     }
+
+	     /*
+	      * Handles what happens when user decides to add product to list.
+	      * Wish List/Shopping List UI is a list view. Is link to product.
+          */
 
         function dragObject(event, ui){
             $("#a-list").remove();
@@ -50,7 +55,7 @@
         }
 
         // Will dynamically generate search bar population with ajax from our database
-        function autocompleteSearchBar(){
+        function autocommitSearchBar(){
             var availableTags = [
                 "T-Shirt",
                 "Job",
@@ -64,11 +69,6 @@
             });
         }
 
-
-		function close1() {
-			toggleVisibility("#shopping-list");		
-			  
-		}
         function toggleDropDownContent() {
             toggleVisibility('.dropdown-content');
         }
@@ -90,13 +90,27 @@
             toggleVisibility("#shopping-list");
 
         }
-
+        // jQuery function to handle visibility
+        // used for login/sign out button
         function toggleVisibility(idOrClass){
             if ( $(idOrClass).is(":visible")){
                 $(idOrClass).hide();
             }else{
                 $(idOrClass).show();
             }
+        }
+
+        /*
+         * Converts to html
+         * Should use DOM function to do so
+         */
+        function buildProduct(image) {
+
+        }
+
+
+        function appendToProductStream(theProduct){
+
         }
 
         /*
@@ -217,6 +231,7 @@
 
     </ul>
 </div>
+
 <div id="shopping-list">
     <p>Shopping List</p>
     <ul style="padding: 0px;" id="list">
