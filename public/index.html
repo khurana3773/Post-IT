@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <!-- Add Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA12J6t5guwaxlwmAn_XTULgPfJk_n_Qto&callback=googleMaps"></script>
     <script src="js/jquery.js"></script>
     <script src="js/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
@@ -15,6 +17,11 @@
         $(init);
 
         function init() {
+            initProductSteamLocation();
+            initShoppingList();
+            initList();
+            initSearchBox();
+
             $("#slider").slider({max: 50});
             $("#slider").slider({change: handleSliderValue});
             autoCompleteSearchBox();
@@ -22,30 +29,51 @@
             toggleShoppingList();
             $(window).resize();
 
-            $("#shopping-list").draggable();
-            $("#shopping-list").resizable({
-                handles: 'n, e, s, w'
-            });
-            $("#shopping-list").droppable({ accept: '#a-list' });
-            $("#shopping-list").bind("drop", dragObject);
-            $("#a-list").draggable({ revert: 'invalid' });
-            $("#a-list").css("zIndex", 100);
 	     }
+	     
+	     function initSearchBox() {
+             $("#search-bar").keyup(function(event){
+                 if(event.keyCode == 13){
+                     //TODO: Enable search from database
+                     let searchValue = $("#search-bar").val();
+                     alert(searchValue);
 
-	     /*
+                     //clear search bar value
+                     $("#search-bar").val("");
+
+
+                 }
+             });
+         }
+
+	     function initShoppingList(){
+             $("#shopping-list").draggable();
+             $("#shopping-list").resizable({
+                 handles: 'n, e, s, w'
+             });
+             $("#shopping-list").droppable({ accept: '#a-list' });
+             $("#shopping-list").bind("drop", dragObject);
+         }
+
+         function initList() {
+             $("#a-list").draggable({ revert: 'invalid' });
+             $("#a-list").css("zIndex", 100);
+         }
+	     /**
 	      * Handles what happens when user decides to add product to list.
 	      * Wish List/Shopping List UI is a list view. Is link to product.
           */
-
         function dragObject(event, ui){
             $("#a-list").remove();
             var item = "<li>The Product</li>";
             document.getElementById("list").innerHTML += item;
         }
 
-        // Handles slider value
-        // From 1 miles to 50+ miles
-        // Will query from mongodb
+        /** 
+         * Handles slider value
+         * From 1 miles to 50+ miles
+         * Will query from mongodb
+         */ 
         function handleSliderValue(event, ui) {
 
 
@@ -131,16 +159,20 @@
                 "        </li>";
         }
 
-        $(window).resize(function(){
+        /**
+         * Dynamically centers product streams
+         */
+        function initProductSteamLocation() {
+            $(window).resize(function(){
 
-            $('#products').css({
-                position:'absolute',
-                left: ($(window).width() - $('#products').outerWidth())/2,
-                top: 70
+                $('#products').css({
+                    position:'absolute',
+                    left: ($(window).width() - $('#products').outerWidth())/2,
+                    top: 70
+                });
+
             });
-
-        });
-
+        }
         $( function() {
            $( "#menu" ).menu();
           } );
@@ -149,6 +181,93 @@
             $( document ).tooltip();
           } );
 
+
+        /**
+         * Enables pop up on background
+         */
+        function addPopUp() {
+            let overlay = document.getElementById("overLay");
+            let popup   = document.getElementById("popup");
+            popup.style.display = "block";
+            overlay.style.display = "block";
+
+            /**
+             * Current template.
+             * Only for testing.
+             * Should change soon.
+             */
+            displayLocation("1 Washington Sq", "San Jose", "CA", "95192");
+            // should be able to undo pop up
+            enableRemovePopUp();
+        }
+        /**
+         * Enable to hide pop up
+         */
+        function enableRemovePopUp() {
+            let overlay = document.getElementById("overLay");
+            overlay.onclick = removePopUp;
+        }
+        /**
+         * Disable pop up on background
+         */
+        function removePopUp() {
+            let overlay = document.getElementById("overLay");
+            let popup   = document.getElementById("popup");
+            overlay.style.display = "none";
+            popup.style.display = "none";
+        }
+        /**
+         * Add a child to pop up
+         */
+        function addChildToPopup(aChild) {
+            let popup = document.getElementById("popup");
+            popup.appendChild(aChild);
+        }
+        /**
+         * Display Google Maps
+         */
+        function googleMaps(lat, lng) {
+            let mapOptions = {
+                center: new google.maps.LatLng(lat, lng),
+                zoom: 10,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        }
+        /**
+         * Displays the location
+         * All must be strings
+         */
+        function displayLocation(street, city, state, zipcode) {
+            let addressJSON = {"street": street, "city": city, "state": state, "zipcode": zipcode};
+            onLatitudeLongitude(googleMaps, addressJSON);
+        }
+
+        /**
+         * Converts address to lat long for Google Maps
+         * Address is a JSON
+         * Example: { "street": "1 Washingon Sq", "city": "San Jose", "state": "CA", "zipcode":"95192"}
+         */
+        function onLatitudeLongitude(callback, addressJSON) {
+            let address = addressJSON.street + "," + "," + addressJSON.city + "," + addressJSON.state + "," + addressJSON.zipcode;
+
+            let geocoder = new google.maps.Geocoder();
+            if (geocoder) {
+                geocoder.geocode({
+                    'address': address
+                }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        let result = results[0];
+                        let lat = result.geometry.location.lat();
+                        let lng = result.geometry.location.lng();
+
+                        callback(lat, lng);
+                    }
+                });
+            }
+        }
 
     </script>
 
@@ -167,7 +286,6 @@
             </li>
             <button onclick="toggleShoppingList()" class="nag-button">Wish List</button>
             <input id="search-bar" name="search" type="text" placeholder="What are you looking for?">
-            <input id="search-button" name="search_submit" type="submit" value="Search!">
 
             <li><a href="login.html" onclick="toggleVisibility('Login')">Login</a>
             </li>
@@ -189,32 +307,18 @@
 
 
 <!-- Sidebar -->
-<div class="side-bar" style="width:25%; position: fixed;">
+<div id="side-bar">
     <h3 class="categories">Categories</h3>
-
-   <ul id="menu">
-
-    <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Free Stuff</div></li>
-
-      <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Sports, Leisure and Games</div></li>
-      <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
-      <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
-
-        <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Electronics<span class="ui-icon ui-icon-caret-1-e"></span></div>
-
-        <ul>
-          <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Cell Phone & Accessories</div></li>
-          <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Headphones</div></li>
-          <li><div class="category "><span class="ui-icon ui-icon-tag"></span><span class="tooltipTitle"><a title="Sold Out!! Please check again."></span>Bluetooth & Wireless Speakers</a></div></li>
-        </ul>
-
-      </li>
-
-     <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
-     <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
-     <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
-
-      </ul>
+    <ul id="menu">
+       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Free Stuff</div></li>
+       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Sports, Leisure and Games</div></li>
+       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
+       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
+       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Electronics></div></li>
+       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
+       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
+       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
+    </ul>
 
 
     <p id="p-distance">Distance in Miles</p>
@@ -229,17 +333,50 @@
 <!--Dynamically stream products here by category-->
 <div id="products">
     <ul id="products-list">
+        <li>
+            <div class="product" onclick="addPopUp()">
+                <p>Product name</p>
+                <p>Product description</p>
 
+                <img src="test_images/couch.jpg" height="225" width="300">
+                <p>Location: the location</p>
+            </div>
+        </li>
     </ul>
 </div>
-
+<!-- Contains references to shopping list-->
 <div id="shopping-list">
     <p>Shopping List</p>
     <ul style="padding: 0px;" id="list">
 
     </ul>
 </div>
+
+<!--Enable a user to leave popup box when user clicks bg-->
+<div id="overLay"></div>
+<!-- The pop up container -->
+<div class="popupBox" id="popup">
+    <!--Add information about product/service here-->
+    <p id="title">Title of product</p>
+
+    <!-- Description of Product Here -->
+    <p id="description">
+        Description of Product
+    </p>
+
+    <!-- Contact Here -->
+    <p id="contact">
+        Contact seller: <a href="mailto:example@sjsu.edu">Email</a>
+    </p>
+
+    <!-- Google Maps of product -->
+    <div id="map" style="width: 200px;height:200px;background:white">
+        <p>Loading...</p>
+    </div>
 </div>
+
+
+
 
 </body>
 </html>
