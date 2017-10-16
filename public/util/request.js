@@ -8,13 +8,17 @@
 /**
  * Request auto complete data from server
  * The response must be an array
+ *
+ * Example:
+ *
+ * $(selector).post("url", data, callback)
  */
-function requestAutoComplete(selector){
+function requestAutoComplete(selector, data, callback){
 
 }
 
 /**
- * Request a product 
+ * Request a product
  * The return must be a JSON
  * A product:
  *  {
