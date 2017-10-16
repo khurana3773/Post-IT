@@ -21,6 +21,7 @@
             initShoppingList();
             initList();
             initSearchBox();
+            setCategoriesEvent();
 
             $("#slider").slider({max: 50});
             $("#slider").slider({change: handleSliderValue});
@@ -30,6 +31,22 @@
             $(window).resize();
 
 	     }
+
+	     /**
+          * Set event for categories.
+          */
+	     function setCategoriesEvent(){
+	         $(".category").click(searchForCategory);
+         }
+         /**
+          * Gets products with category from database.
+          * Update product stream
+          */
+         function searchForCategory() {
+             var id = $(this).attr('id');
+             alert(id);
+
+         }
 	     
 	     function initSearchBox() {
              $("#search-bar").keyup(function(event){
@@ -102,19 +119,6 @@
             toggleVisibility('.dropdown-content');
         }
 
-        function addToPost() {
-            var list = document.getElementById("products-list");
-
-            var s = "";
-
-            for(var i = 0; i < 1; i++){
-                s += makeAPost() + '\n';
-
-            }
-
-            list.innerHTML = s;
-        }
-
         function toggleShoppingList() {
             toggleVisibility("#shopping-list");
 
@@ -143,20 +147,12 @@
 
         }
 
-
-        function appendToProductStream(theProduct){
+        /**
+         * Add productJSON to product stream
+         */
+        function appendToProductStream(productJSON){
             var unorderList = document.getElementById("products-list");
             // append to list
-        }
-
-        // Test
-        function makeAPost(){
-            return "<li style='width: 50px' id=\'a-list\'>\n" +
-                "            <div id='tester' class=\"product\">\n" +
-                "                <img src=\"test_images/cook.jpg\" height=\"100\" width=\"100\" style=\"float:left;\">\n" +
-                "                <p> I am a product </p>\n" +
-                "            </div>\n" +
-                "        </li>";
         }
 
         /**
@@ -310,14 +306,14 @@
 <div id="side-bar">
     <h3 class="categories">Categories</h3>
     <ul id="menu">
-       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Free Stuff</div></li>
-       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Sports, Leisure and Games</div></li>
-       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
-       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
-       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Electronics</div></li>
-       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
-       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
-       <li><div class="category"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
+       <li><div class="category" id="free-stuff"><span class="ui-icon ui-icon-tag"></span>Free Stuff</div></li>
+       <li><div class="category" id="sports"><span class="ui-icon ui-icon-tag"></span>Sports, Leisure and Games</div></li>
+       <li><div class="category" id="home-and-garden"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
+       <li><div class="category" id="entertainment"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
+       <li><div class="category" id="electronics"><span class="ui-icon ui-icon-tag"></span>Electronics</div></li>
+       <li><div class="category" id="jobs"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
+       <li><div class="category" id="fashion"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
+       <li><div class="category" id="other"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
     </ul>
 
 
