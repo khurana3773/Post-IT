@@ -165,7 +165,7 @@ main{
 }
 
 .popupBox {
-    display:none;
+    display: none;
     position: fixed;
     width: 400px;
     height: 500px;
@@ -178,7 +178,7 @@ main{
 }
 
 #overLay {
-    display:none;
+    display: none;
     position: fixed;
     width: 100%;
     height: 100%;

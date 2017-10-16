@@ -125,11 +125,11 @@
         }
         // jQuery function to handle visibility
         // used for login/sign out button
-        function toggleVisibility(idOrClass){
-            if ( $(idOrClass).is(":visible")){
-                $(idOrClass).hide();
+        function toggleVisibility(id){
+            if($(id).is(":visible")){
+                $(id).hide();
             }else{
-                $(idOrClass).show();
+                $(id).show();
             }
         }
         /*
@@ -160,7 +160,6 @@
          */
         function initProductSteamLocation() {
             $(window).resize(function(){
-
                 $('#products').css({
                     position:'absolute',
                     left: ($(window).width() - $('#products').outerWidth())/2,
@@ -186,7 +185,6 @@
             let popup   = document.getElementById("popup");
             popup.style.display = "block";
             overlay.style.display = "block";
-
             /**
              * Current template.
              * Only for testing.
