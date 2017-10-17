@@ -12,79 +12,73 @@
     <script src="util/request.js"></script>
     <script src="util/handler.js"></script>
     <script type="text/javascript">
-
         $(init);
-
         function init() {
+            initCompleteSearchBox();
             initProductSteamLocation();
             initShoppingList();
             initList();
             initSearchBox();
             setCategoriesEvent();
-            toggleVisibility("#popup");
-            toggleVisibility("#overLay");
 
+            $("#popup").toggle();
+            $(".dropdown-content").toggle();
+            $("#shopping-list").toggle();
+            $("#overLay").toggle();
+            
             $("#slider").slider({max: 50});
             $("#slider").slider({change: handleSliderValue});
-            initCompleteSearchBox();
-            toggleDropDownContent();
-            toggleShoppingList();
+
+
             $(window).resize();
+        }
+        /**
+         * Set event for categories.
+         */
+        function setCategoriesEvent(){
+            $(".category").click(searchForCategory);
+        }
+        /**
+         * Gets products with category from database.
+         * Update product stream
+         */
+        function searchForCategory() {
+            var id = $(this).attr('id');
+            alert(id);
+        }
 
-	     }
-
-	     /**
-          * Set event for categories.
-          */
-	     function setCategoriesEvent(){
-	         $(".category").click(searchForCategory);
-         }
-         /**
-          * Gets products with category from database.
-          * Update product stream
-          */
-         function searchForCategory() {
-             var id = $(this).attr('id');
-             alert(id);
-
-         }
-	     
-	     function initSearchBox() {
-             $("#search-bar").keyup(function(event){
-                 if(event.keyCode == 13){
-                     //TODO: Enable search from database
-                     let searchValue = $("#search-bar").val();
-                     requestProduct(searchValue, appendToProductStream);
-
-                     //clear search bar value
-                     $("#search-bar").val("");
-                 }
-             });
-         }
-
-	     function initShoppingList(){
-             $("#shopping-list").draggable();
-             $("#shopping-list").resizable({
-                 handles: 'n, e, s, w'
-             });
-             $("#shopping-list").droppable({ accept: '#a-list' });
-             $("#shopping-list").bind("drop", dragObject);
-         }
-
-         function initList() {
-             $("#a-list").draggable({ revert: 'invalid' });
-             $("#a-list").css("zIndex", 100);
-         }
-	     /**
-	      * Handles what happens when user decides to add product to list.
-	      * Wish List/Shopping List UI is a list view. Is link to product.
-          */
+        function initSearchBox() {
+            $("#search-bar").keyup(function(event){
+                if(event.keyCode == 13){
+                    //TODO: Enable search from database
+                    let searchValue = $("#search-bar").val();
+                    requestProduct(searchValue, appendToProductStream);
+                    //clear search bar value
+                    $("#search-bar").val("");
+                }
+            });
+        }
+        function initShoppingList(){
+            $("#shopping-list").draggable();
+            $("#shopping-list").resizable({
+                handles: 'n, e, s, w'
+            });
+            $("#shopping-list").droppable({ accept: '#a-list' });
+            $("#shopping-list").bind("drop", dragObject);
+        }
+        function initList() {
+            $("#a-list").draggable({ revert: 'invalid' });
+            $("#a-list").css("zIndex", 100);
+        }
+        /**
+         * Handles what happens when user decides to add product to list.
+         * Wish List/Shopping List UI is a list view. Is link to product.
+         */
         function dragObject(event, ui){
             $("#a-list").remove();
             var item = "<li>The Product</li>";
             document.getElementById("list").innerHTML += item;
         }
-
         /**
          * Filters products currently on stream by miles
          *
@@ -92,19 +86,14 @@
          */
         function handleSliderValue(event, ui) {
             var miles = ui.value;
-
             alert(miles);
-
-
         }
-
         // Will dynamically generate search bar population with ajax from our database
         function initCompleteSearchBox(){
             $("#search-bar").keyup(function () {
                 let val = $("#search-bar").val();
                 requestAutoComplete(val, setCompleteSearchBox);
             });
-
         }
         // search input is an array
         function setCompleteSearchBox(searchInput){
@@ -112,25 +101,6 @@
                 source: searchInput
             });
         }
-
-        function toggleDropDownContent() {
-            toggleVisibility('.dropdown-content');
-        }
-
-        function toggleShoppingList() {
-            toggleVisibility("#shopping-list");
-
-        }
-        // jQuery function to handle visibility
-        // used for login/sign out button
-        function toggleVisibility(id){
-            if($(id).is(":visible")){
-                $(id).hide();
-            }else{
-                $(id).show();
-            }
-        }
-
 
         /**
          * Add productJSON to product stream
@@ -141,7 +111,6 @@
             // tester
             alert(productJSON.location);
         }
-
         /**
          * Dynamically centers product streams
          */
@@ -152,49 +121,42 @@
                     left: ($(window).width() - $('#products').outerWidth())/2,
                     top: 70
                 });
-
             });
         }
         $( function() {
-           $( "#menu" ).menu();
-          } );
-
-          $( function() {
+            $( "#menu" ).menu();
+        } );
+        $( function() {
             $( document ).tooltip();
-          } );
-
+        } );
         function fetchPopupInfo(){
             requestProductPopup('tester', onPopUp);
-
         }
         /**
          * Enables pop up on background
          */
         function onPopUp(popupJSON) {
-            toggleVisibility("#popup");
-            toggleVisibility("#overLay");
-
+            $("#popup").toggle();
+            $("#overLay").toggle();
             let addressJSON = popupJSON.address;
             displayLocation(addressJSON);
             // should be able to undo pop up
             enableRemovePopUp();
-
-
         }
         /**
          * Enable to hide pop up
          */
         function enableRemovePopUp() {
             let overlay = document.getElementById("overLay");
-            overlay.onclick = removePopUp;
+            /**
+             * Disable pop up on background
+             */
+            overlay.onclick = function () {
+                $("#popup").toggle();
+                $("#overLay").toggle();
+            }
         }
-        /**
-         * Disable pop up on background
-         */
-        function removePopUp() {
-            $("#overLay").hide();
-            $("#popup").hide();
-        }
+
         /**
          * Add a child to pop up
          */
@@ -202,115 +164,113 @@
             let popup = document.getElementById("popup");
             popup.appendChild(aChild);
         }
-
-
     </script>
 
 </head>
 <body>
 
 <div class="mainBody">
-<div id="nav">
-    <div id="nav-wrapper">
-        <ul>
-            <button onclick="toggleDropDownContent()" class="nag-button">&#9776;</button>
+    <div id="nav">
+        <div id="nav-wrapper">
+            <ul>
+                <button onclick="$('.dropdown-content').toggle();" class="nag-button">&#9776;</button>
 
-            <li><a href="index.html">Home</a>
-            </li>
-            <li><a href="create-post.html">Post Something</a>
-            </li>
-            <button onclick="toggleShoppingList()" class="nag-button">Wish List</button>
-            <input id="search-bar" name="search" type="text" placeholder="What are you looking for?">
+                <li><a href="index.html">Home</a>
+                </li>
+                <li><a href="create-post.html">Post Something</a>
+                </li>
+                <button onclick="$('#shopping-list').toggle();" class="nag-button">Wish List</button>
+                <input id="search-bar" name="search" type="text" placeholder="What are you looking for?">
 
-            <li><a href="login.html" onclick="toggleVisibility('Login')">Login</a>
+                <li><a href="login.html">Login</a>
+                </li>
+                <li style="display: none;"><a href="#sign-out">Sign Out</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="dropdown-content">
+        <ul id="dropdown-list">
+            <li><a href="profile.html"> Profile </a></li>
+            <li><a href="#"> Settings </a></li>
+            <li><a href="posts/my-posts.html"> My Posts </a></li>
+            <li><a href="about.html"> Want a job or contact us?</a></li>
+        </ul>
+    </div>
+
+
+    <!-- Sidebar -->
+    <div id="side-bar">
+        <h3 class="categories">Categories</h3>
+        <ul id="menu">
+            <li><div class="category" id="free-stuff"><span class="ui-icon ui-icon-tag"></span>Free Stuff</div></li>
+            <li><div class="category" id="sports"><span class="ui-icon ui-icon-tag"></span>Sports, Leisure and Games</div></li>
+            <li><div class="category" id="home-and-garden"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
+            <li><div class="category" id="entertainment"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
+            <li><div class="category" id="electronics"><span class="ui-icon ui-icon-tag"></span>Electronics</div></li>
+            <li><div class="category" id="jobs"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
+            <li><div class="category" id="fashion"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
+            <li><div class="category" id="other"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
+        </ul>
+
+
+        <p id="p-distance">Distance in Miles</p>
+        <div id="slider"></div>
+
+        <div id="slider-wrapper-label ">
+            <label for="slider">1</label>
+            <label for="slider" style="margin-left: 10em">50+ </label>
+        </div>
+    </div>
+
+    <!--Dynamically stream products here by category-->
+    <div id="products">
+        <ul id="products-list">
+            <li>
+                <div class="product" onclick="fetchPopupInfo()">
+                    <p>Product name</p>
+                    <p>Product description</p>
+
+                    <img src="test_images/couch.jpg" height="225" width="300">
+                    <p>Location: the location</p>
+                </div>
             </li>
-            <li style="display: none;"><a href="#sign-out" onclick="toggleVisibility('Sign-out')">Sign Out</a>
-            </li>
+        </ul>
+    </div>
+    <!-- Contains references to shopping list-->
+    <div id="shopping-list">
+        <p>Shopping List</p>
+        <ul style="padding: 0px;" id="list">
 
         </ul>
     </div>
-</div>
 
-<div class="dropdown-content">
-    <ul id="dropdown-list">
-        <li><a href="profile.html"> Profile </a></li>
-        <li><a href="#"> Settings </a></li>
-        <li><a href="posts/my-posts.html"> My Posts </a></li>
-        <li><a href="about.html"> Want a job or contact us?</a></li>
-    </ul>
-</div>
+    <!--Enable a user to leave popup box when user clicks bg-->
+    <div id="overLay"></div>
+    <!-- The pop up container -->
+    <div class="popupBox" id="popup">
+        <!--Add information about product/service here-->
+        <p id="title">Title of product</p>
 
+        <!-- Description of Product Here -->
+        <p id="description">
+            Description of Product
+        </p>
 
-<!-- Sidebar -->
-<div id="side-bar">
-    <h3 class="categories">Categories</h3>
-    <ul id="menu">
-       <li><div class="category" id="free-stuff"><span class="ui-icon ui-icon-tag"></span>Free Stuff</div></li>
-       <li><div class="category" id="sports"><span class="ui-icon ui-icon-tag"></span>Sports, Leisure and Games</div></li>
-       <li><div class="category" id="home-and-garden"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
-       <li><div class="category" id="entertainment"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
-       <li><div class="category" id="electronics"><span class="ui-icon ui-icon-tag"></span>Electronics</div></li>
-       <li><div class="category" id="jobs"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
-       <li><div class="category" id="fashion"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
-       <li><div class="category" id="other"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
-    </ul>
+        <!-- Contact Here -->
+        <p id="contact">
+            Contact seller: <a href="mailto:example@sjsu.edu">Email</a>
+        </p>
 
 
-    <p id="p-distance">Distance in Miles</p>
-    <div id="slider"></div>
+        <!-- Google Maps of product -->
+        <div id="map" style="width: 200px;height:200px;background:none">
+            <p>Loading...</p>
+        </div>
 
-    <div id="slider-wrapper-label ">
-        <label for="slider">1</label>
-        <label for="slider" style="margin-left: 10em">50+ </label>
     </div>
-</div>
-
-<!--Dynamically stream products here by category-->
-<div id="products">
-    <ul id="products-list">
-        <li>
-            <div class="product" onclick="fetchPopupInfo()">
-                <p>Product name</p>
-                <p>Product description</p>
-
-                <img src="test_images/couch.jpg" height="225" width="300">
-                <p>Location: the location</p>
-            </div>
-        </li>
-    </ul>
-</div>
-<!-- Contains references to shopping list-->
-<div id="shopping-list">
-    <p>Shopping List</p>
-    <ul style="padding: 0px;" id="list">
-
-    </ul>
-</div>
-
-<!--Enable a user to leave popup box when user clicks bg-->
-<div id="overLay"></div>
-<!-- The pop up container -->
-<div class="popupBox" id="popup">
-    <!--Add information about product/service here-->
-    <p id="title">Title of product</p>
-
-    <!-- Description of Product Here -->
-    <p id="description">
-        Description of Product
-    </p>
-
-    <!-- Contact Here -->
-    <p id="contact">
-        Contact seller: <a href="mailto:example@sjsu.edu">Email</a>
-    </p>
-
-
-    <!-- Google Maps of product -->
-    <div id="map" style="width: 200px;height:200px;background:none">
-        <p>Loading...</p>
-    </div>
-
-</div>
 
 
 </div>
