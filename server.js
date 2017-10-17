@@ -155,6 +155,39 @@ app.post('/'+ 'validate-code',
 	}
 );
 
+/**
+ * Handles input value from search box
+ * Returns a json
+ */
+app.post('/'+'search',
+	function (req, res) {
+		console.log("search");
+		let searchKey = req.param("searchKey");
+
+
+
+    }
+);
+
+// handles auto-complete data request from request.js
+app.post('/'+'auto-complete',
+	function (req, res) {
+		console.log('auto-complete');
+
+		let keyword = req.param("suggested");
+		var source = [
+            "T-Shirt",
+            "Job",
+            "Love",
+            "Bob Dylan",
+            "iPhone",
+            "Meaning of Life"
+        ];
+
+		res.send(JSON.stringify(source));
+    }
+);
+
 //Controller to render selling-post page
 app.get('/'+'sell',
 	function(req, res)

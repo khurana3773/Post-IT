@@ -9,6 +9,7 @@
     <script src="js/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="home.css">
+    <script src="util/request.js"></script>
     <script type="text/javascript">
         // Limit to how many items can be store in wish list
         const LIST_LIMT = 10;
@@ -25,7 +26,7 @@
 
             $("#slider").slider({max: 50});
             $("#slider").slider({change: handleSliderValue});
-            autoCompleteSearchBox();
+            initCompleteSearchBox();
             toggleDropDownContent();
             toggleShoppingList();
             $(window).resize();
@@ -53,12 +54,10 @@
                  if(event.keyCode == 13){
                      //TODO: Enable search from database
                      let searchValue = $("#search-bar").val();
-                     alert(searchValue);
+                     requestProduct(searchValue, appendToProductStream);
 
                      //clear search bar value
                      $("#search-bar").val("");
-
-
                  }
              });
          }
@@ -97,19 +96,15 @@
         }
 
         // Will dynamically generate search bar population with ajax from our database
-        function autoCompleteSearchBox(){
-            var availableTags = [
-                "T-Shirt",
-                "Job",
-                "Love",
-                "Bob Dylan",
-                "iPhone",
-                "Meaning of Life"
-            ];
-            appendToCompleteSearchBox(availableTags);
+        function initCompleteSearchBox(){
+            $("#search-bar").keyup(function () {
+                let val = $("#search-bar").val();
+                requestAutoComplete(val, setCompleteSearchBox);
+            });
+
         }
         // search input is an array
-        function appendToCompleteSearchBox(searchInput){
+        function setCompleteSearchBox(searchInput){
             $("#search-bar").autocomplete({
                 source: searchInput
             });

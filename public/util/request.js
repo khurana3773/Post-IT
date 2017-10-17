@@ -13,8 +13,11 @@
  *
  * $(selector).post("url", data, callback)
  */
-function requestAutoComplete(selector, data, callback){
-
+function requestAutoComplete(val, setCompleteSearchBox){
+    $.post('/auto-complete', {suggested: val}, function (result) {
+        let source = JSON.parse(result);
+        setCompleteSearchBox(source);
+    });
 }
 
 /**
@@ -31,6 +34,9 @@ function requestAutoComplete(selector, data, callback){
  *  }
  *
  */
-function requestProduct(selector) {
+function requestProduct(searchValue, callback) {
+    $.post('/search', {searchKey: searchValue}, function (result) {
 
+
+    });
 }
