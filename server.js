@@ -174,9 +174,35 @@ app.post('/'+'search',
 
 		};
 
-		res.send(JSON.stringify(productJSON));
+		var responses = [];
+
+
+		for(var i = 0; i<4; i++){
+			responses.push(productJSON);
+		}
+		console.log(JSON.stringify(responses));
+		res.send(JSON.stringify(responses));
 
     }
+);
+
+/**
+ * Allows user to request a pop up menu
+ * of the current item.
+ */
+app.post('/'+'popup',
+	function (req, res){
+		// tester
+		var productPopupJSON = {
+			title: "The title",
+			description: "a description",
+			contact: "example@sjsu.edu",
+        	address: { street: "1 Washingon Sq", city: "San Jose", state: "CA", zipcode:"95192"}
+		};
+
+		res.send(JSON.stringify(productPopupJSON));
+
+	}
 );
 
 // handles auto-complete data request from request.js
@@ -195,7 +221,16 @@ app.post('/'+'auto-complete',
             "Meaning of Life"
         ];
 
+
 		res.send(JSON.stringify(source));
+    }
+);
+
+app.post('/'+'slider',
+	function (req, res) {
+		let miles = req.param("miles");
+		console.log(miles);
+
     }
 );
 

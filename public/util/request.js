@@ -36,7 +36,21 @@ function requestAutoComplete(val, setCompleteSearchBox){
  */
 function requestProduct(searchValue, appendToProductStream) {
     $.post('/search', {searchKey: searchValue}, function (result) {
-        let productJSON = JSON.parse(result);
-        appendToProductStream(productJSON);
+        // the result will be a string array
+        // as a search could return more than one item
+        let productList = JSON.parse(result);
+        // loop through
+        for(let i = 0; i < productList.length; i++){
+            appendToProductStream(productList[i]);
+        }
+
     });
+}
+
+
+function requestProductPopup(id, callback) {
+    $.post('/popup', {id: id}, function (result) {
+        callback(JSON.parse(result));
+    });
+    
 }

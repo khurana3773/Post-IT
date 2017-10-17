@@ -10,10 +10,8 @@
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="home.css">
     <script src="util/request.js"></script>
+    <script src="util/handler.js"></script>
     <script type="text/javascript">
-        // Limit to how many items can be store in wish list
-        const LIST_LIMT = 10;
-        var shoppingList = [];
 
         $(init);
 
@@ -23,6 +21,8 @@
             initList();
             initSearchBox();
             setCategoriesEvent();
+            toggleVisibility("#popup");
+            toggleVisibility("#overLay");
 
             $("#slider").slider({max: 50});
             $("#slider").slider({change: handleSliderValue});
@@ -85,12 +85,15 @@
             document.getElementById("list").innerHTML += item;
         }
 
-        /** 
-         * Handles slider value
-         * From 1 miles to 50+ miles
-         * Will query from mongodb
-         */ 
+        /**
+         * Filters products currently on stream by miles
+         *
+         *
+         */
         function handleSliderValue(event, ui) {
+            var miles = ui.value;
+
+            alert(miles);
 
 
         }
@@ -127,20 +130,7 @@
                 $(id).show();
             }
         }
-        /*
-         * Parse JSON to html code
-         * Will use AJAX
-         */
-        function buildProduct(aJson){
 
-        }
-        /*
-         * Converts to html
-         * Should use DOM function to do so
-         */
-        function buildProduct(id, image, title, productDescription, tags, location) {
-
-        }
 
         /**
          * Add productJSON to product stream
@@ -148,7 +138,8 @@
         function appendToProductStream(productJSON){
             var unorderList = document.getElementById("products-list");
             // append to list
-            alert(productJSON.timestamp);
+            // tester
+            alert(productJSON.location);
         }
 
         /**
@@ -172,24 +163,23 @@
             $( document ).tooltip();
           } );
 
+        function fetchPopupInfo(){
+            requestProductPopup('tester', onPopUp);
 
+        }
         /**
          * Enables pop up on background
          */
-        function addPopUp() {
-            let overlay = document.getElementById("overLay");
-            let popup   = document.getElementById("popup");
-            popup.style.display = "block";
-            overlay.style.display = "block";
-            /**
-             * TESTER
-             * Current template.
-             * Only for testing.
-             * Should change soon.
-             */
-            displayLocation("1 Washington Sq", "San Jose", "CA", "95192");
+        function onPopUp(popupJSON) {
+            toggleVisibility("#popup");
+            toggleVisibility("#overLay");
+
+            let addressJSON = popupJSON.address;
+            displayLocation(addressJSON);
             // should be able to undo pop up
             enableRemovePopUp();
+
+
         }
         /**
          * Enable to hide pop up
@@ -202,10 +192,8 @@
          * Disable pop up on background
          */
         function removePopUp() {
-            let overlay = document.getElementById("overLay");
-            let popup   = document.getElementById("popup");
-            overlay.style.display = "none";
-            popup.style.display = "none";
+            $("#overLay").hide();
+            $("#popup").hide();
         }
         /**
          * Add a child to pop up
@@ -214,51 +202,7 @@
             let popup = document.getElementById("popup");
             popup.appendChild(aChild);
         }
-        /**
-         * Display Google Maps
-         */
-        function googleMaps(lat, lng) {
-            let mapOptions = {
-                center: new google.maps.LatLng(lat, lng),
-                zoom: 10,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
 
-            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        }
-        /**
-         * Displays the location
-         * All must be strings
-         */
-        function displayLocation(street, city, state, zipcode) {
-            let addressJSON = {"street": street, "city": city, "state": state, "zipcode": zipcode};
-            onLatitudeLongitude(googleMaps, addressJSON);
-        }
-
-        /**
-         * Converts address to lat long for Google Maps
-         * Address is a JSON
-         * Example: { "street": "1 Washingon Sq", "city": "San Jose", "state": "CA", "zipcode":"95192"}
-         */
-        function onLatitudeLongitude(callback, addressJSON) {
-            let address = addressJSON.street + "," + "," + addressJSON.city + "," + addressJSON.state + "," + addressJSON.zipcode;
-
-            let geocoder = new google.maps.Geocoder();
-            if (geocoder) {
-                geocoder.geocode({
-                    'address': address
-                }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        let result = results[0];
-                        let lat = result.geometry.location.lat();
-                        let lng = result.geometry.location.lng();
-
-                        callback(lat, lng);
-                    }
-                });
-            }
-        }
 
     </script>
 
@@ -325,7 +269,7 @@
 <div id="products">
     <ul id="products-list">
         <li>
-            <div class="product" onclick="addPopUp()">
+            <div class="product" onclick="fetchPopupInfo()">
                 <p>Product name</p>
                 <p>Product description</p>
 
@@ -360,14 +304,16 @@
         Contact seller: <a href="mailto:example@sjsu.edu">Email</a>
     </p>
 
+
     <!-- Google Maps of product -->
-    <div id="map" style="width: 200px;height:200px;background:white">
+    <div id="map" style="width: 200px;height:200px;background:none">
         <p>Loading...</p>
     </div>
+
 </div>
 
 
-
+</div>
 
 </body>
 </html>
