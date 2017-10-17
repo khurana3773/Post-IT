@@ -163,8 +163,18 @@ app.post('/'+'search',
 	function (req, res) {
 		console.log("search");
 		let searchKey = req.param("searchKey");
+		console.log(searchKey);
 
+		// tester
+		var productJSON = {
+			userId: "12312321",
+			tag: ["a", "b", "c"],
+			location: "2001 Pacific Ave, Alameda, CA",
+			timestamp: "time"
 
+		};
+
+		res.send(JSON.stringify(productJSON));
 
     }
 );
@@ -175,6 +185,7 @@ app.post('/'+'auto-complete',
 		console.log('auto-complete');
 
 		let keyword = req.param("suggested");
+		// tester
 		var source = [
             "T-Shirt",
             "Job",

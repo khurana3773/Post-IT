@@ -34,9 +34,9 @@ function requestAutoComplete(val, setCompleteSearchBox){
  *  }
  *
  */
-function requestProduct(searchValue, callback) {
+function requestProduct(searchValue, appendToProductStream) {
     $.post('/search', {searchKey: searchValue}, function (result) {
-
-
+        let productJSON = JSON.parse(result);
+        appendToProductStream(productJSON);
     });
 }
