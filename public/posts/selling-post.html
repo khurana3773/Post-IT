@@ -69,6 +69,18 @@
 		<label for="about">Product Description</label>
 		<textarea id="about" name="about" placeholder="Enter your description" required></textarea>
 		<br/>
+
+		<label for="category-selector">Category</label><br>
+		<select id="category-selector">
+			<option value="free-stuff">Free Stuff</option>
+			<option value="sports">Sports, Leisure and Games</option>
+			<option value="home-and-garden">Home and Garden</option>
+			<option value="entertainment">Movies, Books and Music</option>
+			<option value="electronics">Electronics</option>
+			<option value="fashion">Fashion</option>
+			<option value="other">Other</option>
+		</select> <br>
+
 		<label>Product Images</label>
 		<br/>
 		<ul id="photo-holder">
@@ -77,10 +89,11 @@
 
 			</div>
 
-
 		</ul>
 		<input type="file" name="imgUploader" id="fileup" multiple required>
 		<br/>
+
+
 		<button type="submit">Post</button>
 	</form>
 </div> 

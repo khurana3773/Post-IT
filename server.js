@@ -241,10 +241,30 @@ app.get('/'+'sell',
 		res.redirect('/posts/selling-post.html');
 	}
 );
+
+app.post('/'+'append-selling',
+	function (req, res) {
+
+    }
+);
+
+app.post('/'+'append-job',
+    function (req, res) {
+
+    }
+);
+
+app.post('/'+'append-renting',
+    function (req, res) {
+
+    }
+);
+
+
+
 /**
  * Handles selling-post.html file
  */
-
 app.post('/'+'post-it',
 	function(req, res){
 		var counter=0;
