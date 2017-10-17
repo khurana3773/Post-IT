@@ -38,7 +38,7 @@ function init(){
             (function(i){
                 var reader = new FileReader();
                 reader.onload = function (event) {
-                    var image = createImage(event.target.result);
+                    let image = createImage(event.target.result);
 
                     appendImage(image);
 
