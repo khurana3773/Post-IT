@@ -41,3 +41,17 @@ function onLatitudeLongitude(callback, addressJSON) {
         });
     }
 }
+
+function getLocation(){
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(onPosition);
+    }
+
+    return null;
+}
+
+function onPosition(position){
+    var x = "Latitude: " + position.coords.latitude +
+        "<br>Longitude: " + position.coords.longitude;
+    alert(x);
+}

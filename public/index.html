@@ -85,6 +85,7 @@
         }
         function initList() {
             $(".product").draggable({ revert: 'invalid' });
+
             $(".product").css("zIndex", 100);
         }
         /**
@@ -94,9 +95,19 @@
         function dragObject(event, ui){
             //$("#product").remove();
 
+            let product = ui.draggable;
+
+            let id = $(ui.draggable).attr("id");
+            alert(id);
+
             ui.draggable.remove();
+            //ui.draggable.remove();
             var item = "<li>The Product</li>";
             document.getElementById("list").innerHTML += item;
+        }
+
+        function appendProduct() {
+
         }
         /**
          * Filters products currently on stream by miles
@@ -260,7 +271,9 @@
         <ul id="products-list">
             <li>
                 <!-- All streams of products must be under class product-->
-                <div class="product" onclick="fetchPopupInfo()">
+
+                <!-- This is not for UI. It is to hold reference-->
+                <div id="4j34j43ijo34i5oj543io" class="product" onclick="fetchPopupInfo()">
                     <p>Product name</p>
                     <p>Product description</p>
 
@@ -282,6 +295,7 @@
     <div id="overLay"></div>
     <!-- The pop up container -->
     <div class="popupBox" id="popup">
+
         <!--Add information about product/service here-->
         <p id="title">Title of product</p>
 

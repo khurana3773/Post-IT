@@ -52,5 +52,22 @@ function requestProductPopup(id, callback) {
     $.post('/popup', {id: id}, function (result) {
         callback(JSON.parse(result));
     });
-    
+}
+
+/**
+ * Contact back end
+ * @param id
+ */
+function removeItemFromWishList(id){
+
+}
+
+/**
+ * Contact back end
+ * @param id
+ */
+
+function appendItemToWishList(id) {
+
+
 }
