@@ -45,20 +45,24 @@
             alert('status: ' + statusText + '\n\nresponseText: \n' + responseText );
         }
 
-        function checkSize(){
-        	if(fileup.files.length> 3 ){
-        		alert("Max three images allowed!");
-        		return false;
-        	}	
-        	return true;
-        }
+        function checkSize(num){
+            if(fileup.files.length > num ){
+                alert("Max three images allowed!");
+                return false;
+            }
+            return true;
+		}
+
+		function photosLessThanFive(){
+            return checkSize(5);
+		}
     </script>
 </head>
 <body>
 
 <h1 class="ui-state-default"><a href="/">Post It</a></h1>
 <div>
-	<form id="upload" method= POST action="/post-it" enctype="multipart/form-data"  onsubmit=" return checkSize();">
+	<form id="upload" method= POST action="/post-it" enctype="multipart/form-data"  onsubmit=" return photosLessThanFive();">
 	    <label for="title">Product Name</label>
 	    <input type="text" id="title" name="title" required>
 	    <br/>
