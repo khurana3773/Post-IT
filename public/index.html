@@ -12,6 +12,9 @@
     <script src="util/request.js"></script>
     <script src="util/handler.js"></script>
     <script type="text/javascript">
+        var dropdownShowing = false;
+        var userLoggedIn = false; 
+
         $(init);
         function init() {
             initCompleteSearchBox();
@@ -21,11 +24,12 @@
             initSearchBox();
             setCategoriesEvent();
 
-            $("#popup").toggle();
-            $(".dropdown-content").toggle();
-            $("#shopping-list").toggle();
-            $("#overLay").toggle();
-            
+            $("#popup").hide();
+            $(".dropdown-content").hide();
+
+            $("#shopping-list").hide();
+            $("#overLay").hide();
+
             $("#slider").slider({max: 50});
             $("#slider").slider({change: handleSliderValue});
 
@@ -52,6 +56,13 @@
                 if(event.keyCode == 13){
                     //TODO: Enable search from database
                     let searchValue = $("#search-bar").val();
+
+                    if(!searchValue){
+                        // shake it
+                        $("#search-bar").effect("shake", {times: 4, distance: 10}, 1000);
+                        return;
+                    }
+
                     requestProduct(searchValue, appendToProductStream);
                     //clear search bar value
                     $("#search-bar").val("");
@@ -63,19 +74,27 @@
             $("#shopping-list").resizable({
                 handles: 'n, e, s, w'
             });
-            $("#shopping-list").droppable({ accept: '#a-list' });
-            $("#shopping-list").bind("drop", dragObject);
+            $("#shopping-list").droppable(
+                {
+                    accept: '.product',
+                    over: dragObject
+
+                }
+            );
+
         }
         function initList() {
-            $("#a-list").draggable({ revert: 'invalid' });
-            $("#a-list").css("zIndex", 100);
+            $(".product").draggable({ revert: 'invalid' });
+            $(".product").css("zIndex", 100);
         }
         /**
          * Handles what happens when user decides to add product to list.
          * Wish List/Shopping List UI is a list view. Is link to product.
          */
         function dragObject(event, ui){
-            $("#a-list").remove();
+            //$("#product").remove();
+
+            ui.draggable.remove();
             var item = "<li>The Product</li>";
             document.getElementById("list").innerHTML += item;
         }
@@ -157,6 +176,17 @@
             }
         }
 
+        function dropdownAnimateDown() {
+            if(dropdownShowing){
+                $('.dropdown-content').slideUp("medium");
+
+            }else{
+                $('.dropdown-content').slideDown("medium");
+            }
+
+            dropdownShowing = !dropdownShowing;
+        }
+
         /**
          * Add a child to pop up
          */
@@ -173,7 +203,7 @@
     <div id="nav">
         <div id="nav-wrapper">
             <ul>
-                <button onclick="$('.dropdown-content').toggle();" class="nag-button">&#9776;</button>
+                <button onclick="dropdownAnimateDown();" class="nag-button">&#9776;</button>
 
                 <li><a href="index.html">Home</a>
                 </li>
@@ -229,6 +259,7 @@
     <div id="products">
         <ul id="products-list">
             <li>
+                <!-- All streams of products must be under class product-->
                 <div class="product" onclick="fetchPopupInfo()">
                     <p>Product name</p>
                     <p>Product description</p>
