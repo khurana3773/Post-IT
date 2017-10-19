@@ -1,13 +1,19 @@
 // Handles database operations
+const querystring = require('querystring');
 const mongoose = require('mongoose');
-const mongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 // The database name
 const database = "PostIt";
+
+const USER = "masterroot";
+const PASSWORD = "masterroot";
+
+const remoteURL = "mongodb://"+USER+":"+PASSWORD+"@ds125335.mlab.com:25335/post_it";
 // Url to database
-const url = "mongodb://localhost:27017/"+database;
+const url = remoteURL;
 
 function initCollections() {
-    mongoClient.connect(url, function (err, db){
+    MongoClient.connect(url, function (err, db){
         if(err) throw err;
 
         db.createCollection("Post", function (err, res){
@@ -30,7 +36,7 @@ function initCollections() {
  */
 
 function insertToDB(obj, collectionName) {
-    mongoClient.connect(url, function (err, db) {
+    MongoClient.connect(url, function (err, db) {
        if(err) throw err;
        db.collection(collectionName).insertOne(obj, function (err, res){
           if(err) throw err;
@@ -52,9 +58,53 @@ function deletePost(theTitle, theUserName){
   }); 
 }
 
-function fetchUserId(username, password) {
-    return "12321312";
+function findUser(obj, callback) {
+    MongoClient.connect(url, function(err, db) {
+        db.collection("users").findOne(obj, function(err, result) {
+            if (err){
+
+            }else{
+                let userId = result['_id'];
+                callback(userId);
+            }
+        });
+
+    });
 }
 
+function tryInsertUser(userJSON, res, errorRedirectUrl, successRedirectUrl, callback){
+
+    MongoClient.connect(url, function(err, db) {
+
+        let searchUser = {
+            "userName": userJSON.userName,
+            "emailAddress": userJSON.emailAddress,
+            "studentId": userJSON.studentId
+        };
+        db.collection("users").findOne(searchUser, function(err, result) {
+            if (err){
+              //
+                db.close();
+            }else{
+
+                if(result){
+                    db.close();
+                    res.redirect(errorRedirectUrl);
+                }else{
+                    db.close();
+                    insertToDB(userJSON, "users");
+                    callback();
+
+                    res.redirect(successRedirectUrl);
+                }
+
+            }
+
+        });
+
+    });
+
+}
 module.exports.insertToDB = insertToDB;
-module.exports.fetchUserId = fetchUserId;
+module.exports.tryInsertUser = tryInsertUser;
+module.exports.findUser = findUser;

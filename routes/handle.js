@@ -19,12 +19,12 @@ function randomValueHex (len) {
         .slice(0,len).toUpperCase();   // return required number of characters
 }
 // Hardcode validation for now
-function sendEmail(email){
+function sendEmail(email, code){
     var mailOptions = {
         from: 'postit151@gmail.com',
         to: email,
         subject: 'Validation code',
-        text: '1111'//randomValueHex(4) + "-" + randomValueHex(4)
+        text: code
     };
 
     transporter.sendMail(mailOptions, function(error, info){
@@ -37,6 +37,9 @@ function sendEmail(email){
     });
 }
 
+function generateCode() {
+    return randomValueHex(4)+"-"+randomValueHex(4);
+}
 /**
  * This
  */
@@ -46,3 +49,5 @@ function setCookieId(id){
 }
 
 module.exports.sendEmail = sendEmail;
+module.exports.randomValueHex = randomValueHex;
+module.exports.generateCode = generateCode;

@@ -57,7 +57,7 @@
         }
 
         function onSignOut() {
-            if(!userLoggedIn){
+            if(userLoggedIn){
                 $("#sign-out").hide();
                 $("#login").show();
                 userLoggedIn = false;

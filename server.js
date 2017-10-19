@@ -8,6 +8,7 @@ const lineReader = require('line-reader');
 const db = require('./database/database');
 const multer = require('multer');
 const querystring = require('querystring');
+const handle = require('./routes/handle');
 
 // Create the app.
 var app = express();
@@ -24,6 +25,8 @@ var valid_user="xxxx";
 var User= " ";
 var alert= 0;
 var credential= 0;
+var userCode;
+
 
 // Use the bodyParser() middleware for all routes.
 app.use(bodyParser());
@@ -125,6 +128,7 @@ app.post('/'+'sign-out',
 		User= " ";//resetting variables, other than valid credentials to allow user to re-signin
 		alert= 0;
 		credential= 0;
+
 		res.redirect('/');
 	}
 );
@@ -135,28 +139,55 @@ app.post('/'+'validate-signup',
 		console.log("validate-signup");
 		var firstName = req.param("first_name");
 		var lastName = req.param("last_name");
-		var studentID = req.param("student_id");
+		var studentId = req.param("student_id");
 		var emailAddress = req.param('email');
 		var userName = req.param("username");
 		var password = req.param("password");
 
 		// add to database
 
-		User = userName ;
-		valid_password = password;
-		res.redirect("/validation.html");
+		let code = handle.generateCode();
+		userCode = code;
+		let userJSON = {
+			"firstName": firstName,
+			"lastName": lastName,
+			"studentId": studentId,
+			"emailAddress": emailAddress,
+			"userName": userName,
+			"password": password,
+			"validation-code": code
+		};
+
+		db.tryInsertUser(userJSON, res, "/sign-up.html", "/validation.html",
+			function () {
+				handle.sendEmail(emailAddress, code);
+
+            });
+
+		//User = userName ;
+		//valid_password = password;
+
     }
 );
 
 //Controller to handle validation of code
 app.post('/'+ 'validate-code',
 	function (req, res){
-		console.log("validate-code")
+		console.log("validate-code");
 		let code = req.param("code");
-		if(code === '1111'){// If code is valid, redirect to homepage and send welcome message
+		let userId = req.param("_id");
+
+		if(code === userCode){// If code is valid, redirect to homepage and send welcome message
+			db.findUser({"validation-code": code}, function (userId) {
+
+                let query = querystring.stringify({
+                    "userId": JSON.stringify(userId).toString()
+                });
+                res.redirect("/index.html?"+query);
+            });
+
 			valid_user = User;
 			credential=0;
-			res.redirect('/');
 
 		}else{ // If code is invalid, redirect to same page and send flag alert
             const query = querystring.stringify({
