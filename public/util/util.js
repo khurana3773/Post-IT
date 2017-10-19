@@ -10,8 +10,10 @@ function getParameterByName(name, url) {
 
 function setCookieUserId(userId) {
     //document.cookie = "userId="+userId;
+}
 
-
+function deleteCookieUserId() {
+    deleteCookie("userId");
 }
 
 
@@ -26,6 +28,10 @@ var createCookie = function(name, value, days) {
         expires = "";
     }
     document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function deleteCookie(name){
+    createCookie(name, value, null);
 }
 
 function getCookie(c_name) {

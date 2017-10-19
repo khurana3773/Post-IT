@@ -60,8 +60,8 @@
             if(!userLoggedIn){
                 $("#sign-out").hide();
                 $("#login").show();
-
                 userLoggedIn = false;
+                deleteCookieUserId();
             }
 
         }
