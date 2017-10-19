@@ -4,8 +4,32 @@
     <meta charset="UTF-8">
     <!--List everything that a user has post-->
     <title>Title</title>
+    <script src="../js/jquery.js"></script>
+    <script>
+        var postsJSON;
+        $(init);
+
+        function init() {
+            requestPost();
+        }
+
+        function requestPost() {
+            $.post("/get-posts", {userId: "123"}, function (result) {
+                postsJSON = JSON.parse(result);
+                // append to list
+                for(var i = 0; i < postsJSON.length; i++){
+
+                }
+            });
+        }
+    </script>
+
 </head>
 <body>
+
+<ul id="my-posts">
+
+</ul>
 
 </body>
 </html>

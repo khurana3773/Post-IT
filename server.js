@@ -5,10 +5,11 @@ const path = require('path');
 const ejs = require('ejs');
 const fs = require('fs');
 const lineReader = require('line-reader');
-const db = require('./database/database');
 const multer = require('multer');
 const querystring = require('querystring');
 const handle = require('./routes/handle');
+const monk = require('monk');
+var db = monk("mongodb://"+"masterroot"+":"+"masterroot"+"@ds125335.mlab.com:25335/post_it");
 
 // Create the app.
 var app = express();
@@ -273,6 +274,7 @@ app.post('/'+'auto-complete',
     }
 );
 
+
 app.post('/'+'slider',
 	function (req, res) {
 		let miles = req.param("miles");
@@ -280,6 +282,16 @@ app.post('/'+'slider',
 
     }
 );
+
+app.post('/'+'get-posts', function (req, res) {
+	var collections = db.get("posts");
+
+	var userId = req.param("userId");
+	collections.find({userId: userId}, {}, function (e, docs) {
+		console.log(JSON.stringify(docs));
+		res.send(JSON.stringify(docs));
+    });
+});
 
 //Controller to render selling-post page
 app.get('/'+'sell',
@@ -291,6 +303,33 @@ app.get('/'+'sell',
 
 app.post('/'+'append-selling',
 	function (req, res) {
+		console.log("append-selling");
+
+		// test for now
+		var userId = "123";
+		// end
+		var title = req.body.title;
+		var about = req.body.about;
+		var price = req.body.price;
+		var type = req.body.type;
+
+		var postJSON = {
+			"userId": userId,
+			"title": title,
+			"about":about,
+			"price":price,
+			"type": type
+		};
+
+		var collection = db.get("posts");
+
+		collection.insert(postJSON, function (err, doc) {
+			if(err){
+
+			}else{
+				res.redirect("index.html");
+			}
+		});
 
     }
 );

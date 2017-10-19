@@ -62,7 +62,7 @@
 
 <h1 class="ui-state-default"><a href="/">Post It</a></h1>
 <div>
-	<form id="upload" method= POST action="/post-it" enctype="multipart/form-data"  onsubmit=" return photosLessThanFive();">
+	<form id="upload" method="post" action="/append-selling">
 	    <label for="title">Product Name</label>
 	    <input type="text" id="title" name="title" required>
 	    <br/>
@@ -71,7 +71,7 @@
 		<br/>
 
 		<label for="category-selector">Category</label><br>
-		<select id="category-selector">
+		<select name="type" id="category-selector">
 			<option value="free-stuff">Free Stuff</option>
 			<option value="sports">Sports, Leisure and Games</option>
 			<option value="home-and-garden">Home and Garden</option>
@@ -81,6 +81,7 @@
 			<option value="other">Other</option>
 		</select> <br>
 
+		$<input name="price" type="text" maxlength="20" placeholder="input cost"><br>
 		<label>Product Images</label>
 		<br/>
 		<ul id="photo-holder">
@@ -90,7 +91,8 @@
 			</div>
 
 		</ul>
-		<input type="file" name="imgUploader" id="fileup" multiple required>
+
+		<!--<input type="file" name="imgUploader" id="fileup" multiple required>-->
 		<br/>
 
 
