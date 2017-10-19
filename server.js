@@ -83,8 +83,8 @@ app.post('/'+'validate-signin',
 		console.log("validate-signin");
 		let username = req.param('username');
 		let password = req.param('password');
-		
-		if( true ){// If credentials are valid, redirect to homepage and send welcome message
+
+		if( false ){// If credentials are valid, redirect to homepage and send welcome message
 			User = username;
 
 			let userId = db.fetchUserId(username, password);
@@ -94,9 +94,9 @@ app.post('/'+'validate-signin',
             });
 
 			res.redirect('/?'+query);
-        }else{ // If credentials are invalid, redirect to same login page and send flag- credential to alert
-			credential=1;
-			res.render('../public/login.ejs',{credential:credential});
+        }else{
+
+			res.redirect('/login.html')
 		}	
 			
 	}	
@@ -132,33 +132,41 @@ app.post('/'+'sign-out',
 //Controller to handle validation of sign-up page
 app.post('/'+'validate-signup',
 	function (req, res) {
+		console.log("validate-signup");
 		var firstName = req.param("first_name");
 		var lastName = req.param("last_name");
 		var studentID = req.param("student_id");
 		var emailAddress = req.param('email');
 		var userName = req.param("username");
 		var password = req.param("password");
-		
-		//Populate the variables for server to remember user credentials
-		//For mockup, we havent stored other details.
+
+		// add to database
+
 		User = userName ;
 		valid_password = password;
-		res.render('../public/validation.ejs',{alert:alert});
+		res.redirect("/validation.html");
     }
 );
 
 //Controller to handle validation of code
 app.post('/'+ 'validate-code',
 	function (req, res){
-		var code = req.param("code");
+		console.log("validate-code")
+		let code = req.param("code");
 		if(code === '1111'){// If code is valid, redirect to homepage and send welcome message
 			valid_user = User;
 			credential=0;
 			res.redirect('/');
 
 		}else{ // If code is invalid, redirect to same page and send flag alert
-			alert = 1;
-			res.render('../public/validation.ejs',{alert:alert});
+            const query = querystring.stringify({
+                "alert": -1
+            });
+
+            res.redirect('/validation.html?'+query);
+
+			//alert = 1;
+			//res.render('../public/validation.ejs',{alert:alert});
 		}
 
 	}
@@ -180,7 +188,6 @@ app.post('/'+'search',
 			tag: ["a", "b", "c"],
 			location: "2001 Pacific Ave, Alameda, CA",
 			timestamp: "time"
-
 		};
 
 		var responses = [];

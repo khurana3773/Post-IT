@@ -3,6 +3,19 @@
 <head>
 	<title>Validation</title>
 	<link rel="stylesheet" type="text/css" href="validation.css">
+	<script src="js/jquery.js"></script>
+	<script>
+		$(init);
+
+		function init() {
+            let searchParams = new URLSearchParams(window.location.search);
+            let value = searchParams.get("alert");
+
+            if(value === "-1"){
+                $("#code").attr("placeholder", "try again");
+			}
+        }
+	</script>
 </head>
 
 <body>
@@ -12,7 +25,7 @@
 	 	<form method="post" class="code-form" action="validate-code">
             <fieldset>
             <legend><label for="code">Unique code send to your email</label></legend>
-            <input type="text" placeholder="Enter 1111" id="code" name="code"/><br/><br/>
+            <input  type="text" placeholder="Enter 1111" id="code" name="code"/><br/><br/>
 	 		<button>Submit</button>
             </fieldset>
 	 	</form>
