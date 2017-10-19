@@ -55,3 +55,4 @@ function onPosition(position){
         "<br>Longitude: " + position.coords.longitude;
     alert(x);
 }
+

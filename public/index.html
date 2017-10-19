@@ -9,6 +9,7 @@
     <script src="js/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="home.css">
+    <script src="util/util.js"></script>
     <script src="util/request.js"></script>
     <script src="util/handler.js"></script>
     <script type="text/javascript">
@@ -35,6 +36,34 @@
 
 
             $(window).resize();
+
+            initLogin();
+        }
+
+        function initLogin(){
+            let searchParams = new URLSearchParams(window.location.search);
+            let userId = searchParams.get("userId");
+
+            if(userId){
+                userLoggedIn = true;
+                setCookieUserId(userId);
+                $("#login").hide();
+                $("#sign-out").show();
+            }else{
+                userLoggedIn = false;
+                $("#sign-out").hide();
+                $("#login").show();
+            }
+        }
+
+        function onSignOut() {
+            if(!userLoggedIn){
+                $("#sign-out").hide();
+                $("#login").show();
+
+                userLoggedIn = false;
+            }
+
         }
         /**
          * Set event for categories.
@@ -223,9 +252,9 @@
                 <button onclick="$('#shopping-list').toggle();" class="nag-button">Wish List</button>
                 <input id="search-bar" name="search" type="text" placeholder="What are you looking for?">
 
-                <li><a href="login.html">Login</a>
+                <li id="login"><a href="login.html">Login</a>
                 </li>
-                <li style="display: none;"><a href="#sign-out">Sign Out</a>
+                <li id="sign-out"><a onclick="onSignOut()">Sign Out</a>
                 </li>
 
             </ul>

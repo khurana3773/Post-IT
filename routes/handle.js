@@ -1,8 +1,8 @@
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 
-var email="ritu.ocs10@gmail.com";
-var pass = "*****";
+var email="postit151@gmail.com";
+var pass = "masterroot";
 
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -21,7 +21,7 @@ function randomValueHex (len) {
 // Hardcode validation for now
 function sendEmail(email){
     var mailOptions = {
-        from: '@gmail.com',
+        from: 'postit151@gmail.com',
         to: email,
         subject: 'Validation code',
         text: '1111'//randomValueHex(4) + "-" + randomValueHex(4)
@@ -35,6 +35,14 @@ function sendEmail(email){
 
         }
     });
+}
+
+/**
+ * This
+ */
+function setCookieId(id){
+
+
 }
 
 module.exports.sendEmail = sendEmail;

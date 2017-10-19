@@ -52,4 +52,9 @@ function deletePost(theTitle, theUserName){
   }); 
 }
 
+function fetchUserId(username, password) {
+    return "12321312";
+}
+
 module.exports.insertToDB = insertToDB;
+module.exports.fetchUserId = fetchUserId;

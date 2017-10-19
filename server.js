@@ -7,6 +7,7 @@ const fs = require('fs');
 const lineReader = require('line-reader');
 const db = require('./database/database');
 const multer = require('multer');
+const querystring = require('querystring');
 
 // Create the app.
 var app = express();
@@ -79,12 +80,20 @@ app.get('/' ,
 app.post('/'+'validate-signin',
 	function(req, res)
 	{
-		var username = req.param('username');
-		var password = req.param('password');
+		console.log("validate-signin");
+		let username = req.param('username');
+		let password = req.param('password');
 		
-		if( username === valid_user && password === valid_password){// If credentials are valid, redirect to homepage and send welcome message
+		if( true ){// If credentials are valid, redirect to homepage and send welcome message
 			User = username;
-			res.redirect('/');
+
+			let userId = db.fetchUserId(username, password);
+
+            const query = querystring.stringify({
+                "userId": userId
+            });
+
+			res.redirect('/?'+query);
         }else{ // If credentials are invalid, redirect to same login page and send flag- credential to alert
 			credential=1;
 			res.render('../public/login.ejs',{credential:credential});
