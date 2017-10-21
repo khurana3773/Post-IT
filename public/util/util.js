@@ -48,3 +48,7 @@ function getCookie(c_name) {
     }
     return "";
 }
+
+function getCookie_test() {
+    return "123";
+}

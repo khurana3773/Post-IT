@@ -203,7 +203,6 @@ app.post('/'+ 'validate-code',
 
 	}
 );
-
 /**
  * Handles input value from search box
  * Returns a json
@@ -283,12 +282,15 @@ app.post('/'+'slider',
     }
 );
 
+/**
+ * Return a list of post from _id
+ */
+
 app.post('/'+'get-posts', function (req, res) {
 	var collections = db.get("posts");
 
 	var userId = req.param("userId");
 	collections.find({userId: userId}, {}, function (e, docs) {
-		console.log(JSON.stringify(docs));
 		res.send(JSON.stringify(docs));
     });
 });
@@ -301,9 +303,8 @@ app.get('/'+'sell',
 	}
 );
 
-app.post('/'+'append-selling',
+app.post('/'+'add-post-selling',
 	function (req, res) {
-		console.log("append-selling");
 
 		// test for now
 		var userId = "123";
@@ -312,13 +313,22 @@ app.post('/'+'append-selling',
 		var about = req.body.about;
 		var price = req.body.price;
 		var type = req.body.type;
+		var timestamp = req.body.timestamp;
+		var location = {
+			"street": req.body.street,
+			"city": req.body.city,
+			"zip": req.body.zip,
+			"state": req.body.state
+		};
 
 		var postJSON = {
 			"userId": userId,
 			"title": title,
 			"about":about,
 			"price":price,
-			"type": type
+			"type": type,
+			"timestamp": timestamp,
+			"location":location
 		};
 
 		var collection = db.get("posts");
@@ -326,7 +336,9 @@ app.post('/'+'append-selling',
 		collection.insert(postJSON, function (err, doc) {
 			if(err){
 
+				//error
 			}else{
+				// success
 				res.redirect("index.html");
 			}
 		});
@@ -334,18 +346,42 @@ app.post('/'+'append-selling',
     }
 );
 
-app.post('/'+'append-job',
-    function (req, res) {
+app.post('/'+'add-post-job', function (req, res) {
 
     }
 );
 
-app.post('/'+'append-renting',
-    function (req, res) {
+app.post('/'+'add-post-renting', function (req, res) {
 
     }
 );
 
+
+app.post('/'+'delete-post', function (req, res) {
+	console.log("delete post");
+
+    var collection = db.get("posts");
+	var json = req.body.json;
+	console.log(json);
+	var userId = req.body.json.userId;
+	console.log(userId);
+
+	collection.remove(json, function (err, doc) {
+        if(err){
+        	res.send("ERROR");
+        }else{
+            res.send("OK");
+        }
+    });
+
+});
+
+app.post('/'+'on-edit-post', function (req, res) {
+	console.log("on edit post");
+	res.redirect("posts/edit-post.html");
+
+
+});
 
 
 /**

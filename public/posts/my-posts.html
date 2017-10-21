@@ -2,31 +2,167 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>My Posts</title>
     <!--List everything that a user has post-->
     <title>Title</title>
     <script src="../js/jquery.js"></script>
+    <script src="../util/util.js"></script>
+
+    <style>
+        ul#my-posts{
+            list-style: none;
+        }
+
+        body{
+            background-color: white;
+            font-family: Roboto, sans-serif;
+
+        }
+
+        .container{
+            margin: auto;
+            width: 50%;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+
+        .title{
+            color: #384047;
+            text-align: center;
+            font-size: 25px;
+            margin-top: 50px;
+            padding: 0;
+        }
+
+        .edit{
+            background: #5190af;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .delete{
+            float: right;
+            background: red;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+        .about{
+            color: #8a97a0;
+            background-color: #e8eeef;
+            font-size: 25px;
+            margin: 2px;
+            padding: 25px;
+        }
+
+
+
+    </style>
     <script>
+        var canDelete = false;
         var postsJSON;
+        var canEdit = false;
         $(init);
 
         function init() {
             requestPost();
         }
 
+
         function requestPost() {
-            $.post("/get-posts", {userId: "123"}, function (result) {
+            var userId = getCookie_test();
+
+            $.post("/get-posts", {userId: userId}, function (result) {
                 postsJSON = JSON.parse(result);
                 // append to list
                 for(var i = 0; i < postsJSON.length; i++){
+                    loadPost(postsJSON[i]);
+
 
                 }
             });
+        }
+
+        function deletePost(postJSON) {
+            if(canDelete) {
+                $.post("/delete-post", {json: postJSON}, function (result) {
+                    if(result === "OK"){
+                        var ul = document.getElementById("my-posts");
+                        while (ul.firstChild){
+                            ul.removeChild(ul.firstChild);
+                        }
+                        requestPost();
+                    }
+                });
+            }
+        }
+
+        function editPost(postJSON) {
+            if(canEdit){
+                $.post("/on-edit-post", postJSON, function (result) {
+
+
+                });
+            }
+        }
+
+
+        function loadPost(postJSON) {
+            var li = document.createElement("li");
+            var div = document.createElement("div");
+            div.setAttribute("class", "container");
+
+            var headline = document.createElement("h");
+            headline.setAttribute("class", "title");
+
+            var title = document.createTextNode(postJSON.title);
+            headline.appendChild(title);
+
+            var paragraph = document.createElement("p");
+            var about = document.createTextNode(postJSON.about);
+            paragraph.appendChild(about);
+            paragraph.setAttribute("class", "about");
+
+
+
+            var deleteButton = document.createElement("button");
+            deleteButton.setAttribute("class", "delete");
+            deleteButton.onclick = function () {
+                canDelete = true;
+                deletePost(postJSON);
+            };
+
+            deleteButton.appendChild(document.createTextNode("delete me"));
+
+            var editButton = document.createElement("button");
+            editButton.setAttribute("class", "edit");
+            editButton.appendChild(document.createTextNode("edit me"));
+            editButton.onclick = function() {
+                canEdit = true;
+                editPost(postJSON);
+            };
+
+            div.appendChild(headline);
+            div.appendChild(paragraph);
+            div.appendChild(deleteButton);
+            div.appendChild(editButton);
+            li.appendChild(div);
+            var ul = document.getElementById("my-posts");
+            ul.appendChild(li);
         }
     </script>
 
 </head>
 <body>
-
+<h1>My Posts</h1>
 <ul id="my-posts">
 
 </ul>
