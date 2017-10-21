@@ -2,8 +2,6 @@
 const querystring = require('querystring');
 const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
-// The database name
-const database = "PostIt";
 
 const USER = "masterroot";
 const PASSWORD = "masterroot";
@@ -12,28 +10,6 @@ const remoteURL = "mongodb://"+USER+":"+PASSWORD+"@ds125335.mlab.com:25335/post_
 // Url to database
 const url = remoteURL;
 
-function initCollections() {
-    MongoClient.connect(url, function (err, db){
-        if(err) throw err;
-
-        db.createCollection("Post", function (err, res){
-            if(err) throw err;
-
-        });
-
-        db.createCollection("User", function (err, res) {
-            if(err) throw err;
-
-        });
-
-        db.close();
-    });
-}
-
-/**
- * @param obj: The object to be put into database
- * @param collectionName: The name of table
- */
 
 function insertToDB(obj, collectionName) {
     MongoClient.connect(url, function (err, db) {

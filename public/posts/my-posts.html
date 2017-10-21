@@ -64,30 +64,109 @@
         }
 
 
+        #overLay {
+            display: block;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: #707070;
+            opacity: 0.7;
+            z-index: 9;
+            left: 0;
+            top: 0;
+        }
 
+        #timestamp{
+
+        }
+
+        #about{
+            max-width: 300px;
+            padding: 10px 20px;
+            background: #f4f7f8;
+            border-radius: 8px;
+            resize: none;
+        }
+
+        #price{
+
+        }
+
+        #street{
+
+        }
+
+        #city{
+
+        }
+
+        #zip{
+
+        }
+
+        #state{
+
+        }
+
+        #edit-button{
+
+            text-transform: uppercase;
+            outline: 0;
+            background: #5190af;
+            width: 100%;
+            border: 0;
+            padding: 15px;
+            color: #FFFFFF;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        #edit-form{
+            z-index: 10;
+            background: #FFFFFF;
+            max-width: 360px;
+            margin: 0 auto 100px;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
     <script>
         var canDelete = false;
         var postsJSON;
         var canEdit = false;
+        var postToBeEdit;
         $(init);
 
         function init() {
-            requestPost();
+            $("#edit-form").hide();
+            $("#overLay").hide();
+
+            requestPosts();
         }
 
 
-        function requestPost() {
+        function requestPosts() {
             var userId = getCookie_test();
 
-            $.post("/get-posts", {userId: userId}, function (result) {
+            $.get("/get-posts", {userId: userId}, function (result) {
                 postsJSON = JSON.parse(result);
                 // append to list
                 for(var i = 0; i < postsJSON.length; i++){
-                    loadPost(postsJSON[i]);
-
+                    loadPostToList(postsJSON[i]);
 
                 }
+            });
+        }
+
+        function requestPost(id) {
+            $.get("/get-post", {_id: id}, function (result) {
+                let post = JSON.parse(result);
+                loadPostToList(post);
             });
         }
 
@@ -95,33 +174,118 @@
             if(canDelete) {
                 $.post("/delete-post", {json: postJSON}, function (result) {
                     if(result === "OK"){
-                        var ul = document.getElementById("my-posts");
-                        while (ul.firstChild){
-                            ul.removeChild(ul.firstChild);
-                        }
-                        requestPost();
+                        removePostFromList(postJSON._id);
                     }
                 });
             }
         }
 
-        function editPost(postJSON) {
+        function enableEditPost(postJSON) {
             if(canEdit){
-                $.post("/on-edit-post", postJSON, function (result) {
+                let title = postJSON.title;
+                let about = postJSON.about;
 
+                let location = postJSON.location;
 
-                });
+                let street = location.street;
+                let city = location.city;
+                let zip = location.zip;
+                let state= location.state;
+
+                let price = postJSON.price;
+                let type = postJSON.type;
+
+                $("#title").val(title);
+                $("#about").val(about);
+
+                $("#street").val(street);
+                $("#city").val(city);
+                $("#zip").val(zip);
+                $("#state").val(state);
+
+                $("#price").val(price);
+
+                $("#type").val(type);
+                postToBeEdit = postJSON;
+                enablePopUp();
+                enableRemovePopUp();
             }
         }
 
+        function editPost() {
+            $("#edit-form").hide();
+            $("#overLay").hide();
 
-        function loadPost(postJSON) {
+
+            let userId = getCookie_test();
+
+            let title = $("#title").val();
+            let about = $("#about").val();
+
+            let street = $("#street").val();
+            let city = $("#city").val();
+            let zip = $("#zip").val();
+            let state = $("#state").val();
+            let price = $("#price").val();
+
+            let type = $("#type").val();
+
+            var location = {
+                "street": street,
+                "city": city,
+                "zip": zip,
+                "state": state
+            };
+
+            var newPost = {
+                "_id": postToBeEdit._id,
+                "userId": userId,
+                "title": title,
+                "about":about,
+                "price":price,
+                "type": type,
+                "timestamp": new Date().getTime(),
+                "location":location
+            };
+
+            let oldPost = postToBeEdit;
+
+            let postJSON = {
+                oldPost,
+                newPost
+            };
+
+            updatePostFromList(newPost);
+
+            $.post("/edit-post", postJSON, function (result) {
+                if(result==="OK"){
+                    // reload posts after edit
+                    //requestPost();
+                }
+            });
+        }
+
+        function removePostFromList(id) {
+            $("#"+id).remove();
+        }
+
+        function updatePostFromList(postJSON) {
+            let id = postJSON._id;
+
+            $("#"+id+"title").text(postJSON.title);
+            $("#"+id+"about").text(postJSON.about);
+        }
+
+        function loadPostToList(postJSON) {
             var li = document.createElement("li");
+            li.setAttribute("id", postJSON._id);
+
             var div = document.createElement("div");
             div.setAttribute("class", "container");
 
             var headline = document.createElement("h");
             headline.setAttribute("class", "title");
+            headline.setAttribute("id", postJSON._id+"title");
 
             var title = document.createTextNode(postJSON.title);
             headline.appendChild(title);
@@ -130,8 +294,7 @@
             var about = document.createTextNode(postJSON.about);
             paragraph.appendChild(about);
             paragraph.setAttribute("class", "about");
-
-
+            paragraph.setAttribute("id", postJSON._id+"about");
 
             var deleteButton = document.createElement("button");
             deleteButton.setAttribute("class", "delete");
@@ -147,7 +310,7 @@
             editButton.appendChild(document.createTextNode("edit me"));
             editButton.onclick = function() {
                 canEdit = true;
-                editPost(postJSON);
+                enableEditPost(postJSON);
             };
 
             div.appendChild(headline);
@@ -158,6 +321,30 @@
             var ul = document.getElementById("my-posts");
             ul.appendChild(li);
         }
+
+        /**
+         * Enable to hide pop up
+         */
+        function enablePopUp() {
+
+            $("#edit-form").show();
+            $("#overLay").show();
+
+        }
+
+        /**
+         * Enable to hide pop up
+         */
+        function enableRemovePopUp() {
+            let overlay = document.getElementById("overLay");
+            /**
+             * Disable pop up on background
+             */
+            overlay.onclick = function () {
+                $("#edit-form").hide();
+                $("#overLay").hide();
+            }
+        }
     </script>
 
 </head>
@@ -166,6 +353,49 @@
 <ul id="my-posts">
 
 </ul>
+
+
+<!--Enable a user to leave popup box when user clicks bg-->
+<div id="overLay"></div>
+
+
+
+<!--Dynamically hide -->
+<div id = "edit-form">
+    <label for="title">Product Name</label>
+    <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">
+    <input placeholder="title" type="text" id="title" name="title" required>
+    <br/>
+    <label for="about">Product Description</label><br>
+    <textarea id="about" name="about" placeholder="Enter your description" required></textarea>
+    <br/>
+
+    <label for="category-selector">Category</label><br>
+    <select id="type" name="type" id="category-selector">
+        <option value="free-stuff">Free Stuff</option>
+        <option value="sports">Sports, Leisure and Games</option>
+        <option value="home-and-garden">Home and Garden</option>
+        <option value="entertainment">Movies, Books and Music</option>
+        <option value="electronics">Electronics</option>
+        <option value="fashion">Fashion</option>
+        <option value="other">Other</option>
+    </select> <br>
+
+    $<input id="price" name="price" type="text" maxlength="20" placeholder="input cost"><br>
+    Location<br>
+    Street:<input id="street" name="street" type="text" maxlength="20">
+    City:<input id="city" name="city" type="text" maxlength="20">
+    ZipCode<input id="zip" name="zip" type="text" size="5">
+    State: <input id="state" name="state" type="text" size="2">
+
+
+    <!--<input type="file" name="imgUploader" id="fileup" multiple required>-->
+    <br/>
+
+
+    <button onclick="editPost()" id="edit-button" type="submit" >Edit</button>
+</div>
+
 
 </body>
 </html>

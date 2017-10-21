@@ -88,21 +88,29 @@ app.post('/'+'validate-signin',
 		let username = req.param('username');
 		let password = req.param('password');
 
-		if( false ){// If credentials are valid, redirect to homepage and send welcome message
-			User = username;
+		let collection = db.get("users");
 
-			let userId = db.fetchUserId(username, password);
+		collection.findOne({"username": username}, function (e, docs) {
+			console.log(docs["password"]);
 
-            const query = querystring.stringify({
-                "userId": userId
-            });
+			let valid = "OK"; // docs["validation-code"];
 
-			res.redirect('/?'+query);
-        }else{
+			// user has validated the address through email
+			if(valid === "OK" && password === docs["password"]){
+                User = username;
 
-			res.redirect('/login.html')
-		}	
-			
+                const query = querystring.stringify({
+                    "userId": docs["_id"].toString()
+                });
+
+                res.redirect('/?'+query);
+			}else{
+				// error
+				// send back error
+                res.redirect('/login.html');
+			}
+
+		});
 	}	
 );
 
@@ -154,16 +162,45 @@ app.post('/'+'validate-signup',
 			"lastName": lastName,
 			"studentId": studentId,
 			"emailAddress": emailAddress,
-			"userName": userName,
+			"username": userName,
 			"password": password,
 			"validation-code": code
 		};
 
-		db.tryInsertUser(userJSON, res, "/sign-up.html", "/validation.html",
-			function () {
-				handle.sendEmail(emailAddress, code);
+		let collection = db.get("users");
 
-            });
+		let searchUser = {
+            "userName": userName,
+            "emailAddress": emailAddress,
+            "studentId": studentId
+		};
+
+
+		collection.find(searchUser, function (e, docs) {
+
+			if(docs.length === 0){
+                collection.insert(userJSON, function(e, docs){
+                    if(e){
+
+                    }else{
+
+                        handle.sendEmail(emailAddress, code);
+                        res.redirect("/validation.html");
+
+                    }
+
+                });
+
+
+			}else{
+                // already is database
+                // can mean user just tried to sign up
+                // or something is taken
+
+                //TODO: Tell users what is wrong
+                res.redirect("/sign-up.html");
+			}
+        });
 
 		//User = userName ;
 		//valid_password = password;
@@ -178,27 +215,24 @@ app.post('/'+ 'validate-code',
 		let code = req.param("code");
 		let userId = req.param("_id");
 
-		if(code === userCode){// If code is valid, redirect to homepage and send welcome message
-			db.findUser({"validation-code": code}, function (userId) {
+		let collection = db.get("users");
 
-                let query = querystring.stringify({
-                    "userId": JSON.stringify(userId).toString()
-                });
-                res.redirect("/index.html?"+query);
+		if(code === userCode){
+			collection.findOne({"validation-code": code}, function (e, docs) {
+
+				if(docs.length === 1){
+                    let query = querystring.stringify({
+                        "userId": JSON.stringify(userId).toString()
+                    });
+                    res.redirect("/index.html?"+query);
+				}
             });
-
-			valid_user = User;
-			credential=0;
-
-		}else{ // If code is invalid, redirect to same page and send flag alert
+		}else{
             const query = querystring.stringify({
                 "alert": -1
             });
 
             res.redirect('/validation.html?'+query);
-
-			//alert = 1;
-			//res.render('../public/validation.ejs',{alert:alert});
 		}
 
 	}
@@ -286,12 +320,21 @@ app.post('/'+'slider',
  * Return a list of post from _id
  */
 
-app.post('/'+'get-posts', function (req, res) {
+app.get('/'+'get-posts', function (req, res) {
 	var collections = db.get("posts");
 
 	var userId = req.param("userId");
 	collections.find({userId: userId}, {}, function (e, docs) {
 		res.send(JSON.stringify(docs));
+    });
+});
+
+app.get('/'+'get-post', function (req, res) {
+    var collections = db.get("posts");
+
+    var postId = req.param("_id");
+    collections.find({_id: postId}, {}, function (e, docs) {
+        res.send(JSON.stringify(docs));
     });
 });
 
@@ -314,6 +357,7 @@ app.post('/'+'add-post-selling',
 		var price = req.body.price;
 		var type = req.body.type;
 		var timestamp = req.body.timestamp;
+
 		var location = {
 			"street": req.body.street,
 			"city": req.body.city,
@@ -376,9 +420,24 @@ app.post('/'+'delete-post', function (req, res) {
 
 });
 
-app.post('/'+'on-edit-post', function (req, res) {
-	console.log("on edit post");
-	res.redirect("posts/edit-post.html");
+app.post('/'+'edit-post', function (req, res) {
+	console.log("edit post");
+
+	let newPost = req.param("newPost");
+
+	let oldPost = req.param("oldPost");
+
+	console.log(newPost);
+	console.log(oldPost);
+
+	let collection = db.get("posts");
+
+	collection.update(oldPost, newPost, function (err, doc) {
+		res.send("OK");
+    });
+
+
+
 
 
 });

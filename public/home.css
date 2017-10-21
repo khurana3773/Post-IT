@@ -142,8 +142,9 @@ main{
 .product{
     float: left;
     display: inline-block;
-    width: 60%;
+
     margin-bottom: 2em;
+    z-index: 2;
 }
 
 #shopping-list{
@@ -162,19 +163,20 @@ main{
 .close{
 	width: 30px;
 	float: right;
-	
 }
 
 #popup {
     display: block;
-    position: fixed;
     width: 400px;
     height: 500px;
-    margin-left: 16.5%;
-    margin-top: 4.5%;
     background-color: white;
     border-radius: 10px;
     z-index: 10;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #overLay {
