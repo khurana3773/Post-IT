@@ -1,12 +1,12 @@
 function validateForm() {
     var fname = document.getElementById("first_name").value;
-    if (fname.match(/^([^0-9])$/)) {
+    if (!fname.match(/^([^0-9])$/)) {
         alert("Please enter a name");
         return false;
     }
 
     var lname = document.getElementById("last_name").value;
-    if (lname.match(/^([^0-9])$/)) {
+    if (!lname.match(/^([^0-9])$/)) {
         alert("Please enter a name.");
         return false;
     }
