@@ -18,11 +18,6 @@ function validateForm() {
     	return false;
 	}
 
-    if (sjsuid.length !== 9) {
-        alert("SJSUID must be 9 characters long.");
-        return false;
-    }
-
     var email= document.getElementById("mail").value;
 
     if (!email.match(/^.+@.+\..{2,4}$/)) {
