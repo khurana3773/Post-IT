@@ -1,13 +1,13 @@
 function validateForm() {
     var fname = document.getElementById("first_name").value;
-    if (!fname.match(/^([^0-9])$/)) {
-        alert("Please enter a name");
+    if (fname.match(/^[0-9]*$/)){
+        alert("Names can only contain numbers.");
         return false;
     }
 
     var lname = document.getElementById("last_name").value;
-    if (!lname.match(/^([^0-9])$/)) {
-        alert("Please enter a name.");
+    if (lname.match(/^[0-9]*$/)) {
+        alert("Names can only contain numbers.");
         return false;
     }
 
