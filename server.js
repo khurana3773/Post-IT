@@ -436,10 +436,15 @@ app.post('/'+'edit-post', function (req, res) {
 		res.send("OK");
     });
 
+});
 
+app.get("/create-post", function (req, res) {
+	console.log("create-post.html");
+	res.redirect("create-post.html");
+});
 
-
-
+app.get("/login", function (req, res) {
+    res.redirect("login.html");
 });
 
 

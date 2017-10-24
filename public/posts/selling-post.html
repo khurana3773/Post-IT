@@ -10,9 +10,18 @@
     <script src="../util/post.js"></script>
 	<link rel="stylesheet" type="text/css" href="selling-post.css">
 	<script>
-        $(document).ready(function () {
 
-            timestamp();
+		$(init);
+
+		function init() { 
+
+		    timestamp();
+		    initImageUpLoad();
+
+        }
+
+        function initImageUpLoad() {
+
             var options = {
                 beforeSubmit: showRequest,  // pre-submit callback
                 success: showResponse  // post-submit callback
@@ -70,6 +79,8 @@
     </script>
 </head>
 <body>
+
+<div id="nag-container"></div>
 
 <h1 class="ui-state-default"><a href="/">Post It</a></h1>
 <div>

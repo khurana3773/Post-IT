@@ -9,11 +9,17 @@
 	<link rel="stylesheet" type="text/css" href="create-post.css">
     <script>
 
-        $(window).on('load', function () {
+
+
+        $(init);
+
+        function init() {
+
+            $("#nag-container").load("/nag-bar.html");
+
             $('#for-job').addClass('disabled');
             $('#for-renting').addClass('disabled');
-
-        });
+        }
 
     </script>
 
@@ -22,6 +28,8 @@
     </style>
 </head>
 <body>
+
+<div id="nag-container"></div>
 
 <div id="purpose">
 

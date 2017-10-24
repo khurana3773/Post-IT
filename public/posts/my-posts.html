@@ -147,6 +147,7 @@
             $("#overLay").hide();
 
             requestPosts();
+            initNagBar();
         }
 
 
@@ -345,11 +346,19 @@
                 $("#overLay").hide();
             }
         }
+
+        function initNagBar() {
+            $("#nag-container").load("/nag-bar.html");
+        }
     </script>
 
 </head>
 <body>
-<h1>My Posts</h1>
+
+<div id="nag-container">
+
+</div>
+
 <ul id="my-posts">
 
 </ul>
