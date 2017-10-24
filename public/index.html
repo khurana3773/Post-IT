@@ -31,6 +31,7 @@
             $("#shopping-list").hide();
             $("#overLay").hide();
 
+
             $("#slider").slider({max: 50});
             $("#slider").slider({change: handleSliderValue});
 
@@ -99,6 +100,7 @@
             });
         }
         function initShoppingList(){
+
             $("#shopping-list").draggable();
             $("#shopping-list").resizable({
                 handles: 'n, e, s, w'
@@ -109,6 +111,10 @@
                     over: dragObject
                 }
             );
+
+            $("#deleteProductBtn").bind("click", function () {
+                $(".yellow").remove();
+            });
 
         }
         function initList() {
@@ -129,18 +135,31 @@
             alert(id);
 
             ui.draggable.remove();
-            //ui.draggable.remove();
-            var item = "<li>The Product</li>";
-            document.getElementById("list").innerHTML += item;
+
+            createListView(null);
         }
 
-        function appendProduct() {
+        function createListView(productJSON) {
+            let title = $("<p>Example</p>");
+
+            let anItem = $("<li></li>");
+            anItem.bind("click", function(){
+                $(this).toggleClass('yellow');
+            });
+
+            anItem.append(title);
+            $("#list").append(anItem);
+
+        }
+        /**
+         * Add product id into user's shopping list
+         * MongoDB
+         */
+        function appendProduct(productId) {
 
         }
         /**
          * Filters products currently on stream by miles
-         *
-         *
          */
         function handleSliderValue(event, ui) {
             var miles = ui.value;
@@ -226,12 +245,28 @@
             dropdownShowing = !dropdownShowing;
         }
 
-        /**
-         * Add a child to pop up
-         */
-        function addChildToPopup(aChild) {
-            let popup = document.getElementById("popup");
-            popup.appendChild(aChild);
+
+        function appendToStream(productJSON) {
+            let title = productJSON.title;
+            let about = productJSON.about;
+            let productId = productJSON._id;
+            let location = productJSON.location;
+
+            let li = $("<li></li>");
+            let div = $("<div class='product' id=' \"div\"+productId'></div>");
+
+            div.bind("click", loadToPopUp(productJSON));
+
+            let pTitle = $("<p></p>").text(title);
+
+            div.append(pTitle);
+            li.append(div);
+
+            $("#products").append(li);
+        }
+        
+        function loadToPopUp(productJSON) {
+            
         }
     </script>
 
@@ -315,9 +350,11 @@
     <!-- Contains references to shopping list-->
     <div id="shopping-list">
         <p>Shopping List</p>
-        <ul style="padding: 0px;" id="list">
+        <ul style="padding: 0px;" id="list"data-role="listview">
 
         </ul>
+
+        <button id='deleteProductBtn'>Delete</button>
     </div>
 
     <!--Enable a user to leave popup box when user clicks bg-->
