@@ -32,7 +32,6 @@ function sendEmail(email, code){
             console.log(error);
         } else {
             console.log('Email sent: ' + info.response);
-
         }
     });
 }

@@ -406,9 +406,7 @@ app.post('/'+'delete-post', function (req, res) {
 
     var collection = db.get("posts");
 	var json = req.body.json;
-	console.log(json);
 	var userId = req.body.json.userId;
-	console.log(userId);
 
 	collection.remove(json, function (err, doc) {
         if(err){
@@ -422,14 +420,8 @@ app.post('/'+'delete-post', function (req, res) {
 
 app.post('/'+'edit-post', function (req, res) {
 	console.log("edit post");
-
 	let newPost = req.param("newPost");
-
 	let oldPost = req.param("oldPost");
-
-	console.log(newPost);
-	console.log(oldPost);
-
 	let collection = db.get("posts");
 
 	collection.update(oldPost, newPost, function (err, doc) {
