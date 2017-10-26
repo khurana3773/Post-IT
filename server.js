@@ -11,6 +11,14 @@ const handle = require('./routes/handle');
 const monk = require('monk');
 var db = monk("mongodb://"+"masterroot"+":"+"masterroot"+"@ds125335.mlab.com:25335/post_it");
 
+const Uploadaws = require('./routes/imageupload');
+const multipart = require('connect-multiparty');
+const multipartMiddleware = multipart();
+console.log(Uploadaws.upload);
+
+console.log("insode module export");
+
+
 // Create the app.
 var app = express();
 var port = 8081;
@@ -33,6 +41,8 @@ var userCode;
 app.use(bodyParser());
 app.use(express.static("public"));
 app.use(bodyParser.json());
+
+/*
 var file_name=[];
 var counter=0;
 
@@ -41,14 +51,14 @@ var Storage = multer.diskStorage({
         callback(null, "./public/images");
     },
     filename: function (req, file, callback) {
-    	file_name[counter]=file.fieldname + "_" + Date.now() + "_" + file.originalname;
+    	file_name[counter]=file.fieldname . + "_" + file.originalname;
     	callback(null, file_name[counter]);
         counter++;
     }
 });
 
 const upload = multer({ storage: Storage}).array("imgUploader", 3);
-
+*/
 //Controller to render application home page
 app.get('/' ,
    function(req, res)
@@ -346,6 +356,8 @@ app.get('/'+'sell',
 	}
 );
 
+app.post('/'+'add-post-selling',multipartMiddleware, Uploadaws.upload);
+/*
 app.post('/'+'add-post-selling',
 	function (req, res) {
 
@@ -357,6 +369,7 @@ app.post('/'+'add-post-selling',
 		var price = req.body.price;
 		var type = req.body.type;
 		var timestamp = req.body.timestamp;
+		var imagenull =null;
 
 		var location = {
 			"street": req.body.street,
@@ -372,7 +385,10 @@ app.post('/'+'add-post-selling',
 			"price":price,
 			"type": type,
 			"timestamp": timestamp,
-			"location":location
+			"location":location,
+			"image1":imagenull,
+			"image2":imagenull,
+			"image3":imagenull
 		};
 
 		var collection = db.get("posts");
@@ -389,7 +405,7 @@ app.post('/'+'add-post-selling',
 
     }
 );
-
+*/
 app.post('/'+'add-post-job', function (req, res) {
 
     }
@@ -407,8 +423,9 @@ app.post('/'+'delete-post', function (req, res) {
     var collection = db.get("posts");
 	var json = req.body.json;
 	var userId = req.body.json.userId;
-
-	collection.remove(json, function (err, doc) {
+	console.log(json);
+	console.log(json._id);
+	collection.remove({ _id: json._id }, function (err, doc) {
         if(err){
         	res.send("ERROR");
         }else{
@@ -484,3 +501,5 @@ app.post('/'+'post-it',
 
     }
 );
+
+

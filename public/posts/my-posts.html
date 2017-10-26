@@ -107,6 +107,20 @@
         #state{
 
         }
+        
+        .imgclass{
+			border: 1px solid #ddd; /* Gray border */
+		    border-radius: 4px;  /* Rounded border */
+		    padding: 5px; /* Some padding */
+		    width: 100px; /* Set a small width */
+		    height: 100px; /* Set a small width */
+		    display: inline-block;
+        }
+        
+        .divclass{
+        	text-align:center;
+        	clear:both;
+        }
 
         #edit-button{
 
@@ -183,6 +197,7 @@
 
         function enableEditPost(postJSON) {
             if(canEdit){
+            	console.log(postJSON);
                 let title = postJSON.title;
                 let about = postJSON.about;
 
@@ -195,7 +210,9 @@
 
                 let price = postJSON.price;
                 let type = postJSON.type;
-
+                let image1 =postJSON.image1;
+                let image2 =postJSON.image2;
+                let image3=postJSON.image3;
                 $("#title").val(title);
                 $("#about").val(about);
 
@@ -207,9 +224,32 @@
                 $("#price").val(price);
 
                 $("#type").val(type);
+           		var temp= !document.getElementsByClassName("imgclass").length;
+               	if(temp){
+	                if(image1!=null){ 
+	                	var elem1 = document.createElement("img");
+	                	elem1.setAttribute("src", image1);
+	                	elem1.setAttribute("class", "imgclass");
+	                	document.getElementById("divclass").appendChild(elem1);
+	                }	
+	                if(image2!=null){ 
+	                	var elem2 = document.createElement("img");
+	                	elem2.setAttribute("src", image2);
+	                	elem2.setAttribute("class", "imgclass");
+	                	document.getElementById("divclass").appendChild(elem2);
+	
+	                }	
+	                if(image3!=null){ 
+	                	var elem3 = document.createElement("img");
+	                	elem3.setAttribute("src", image3);
+	                	elem3.setAttribute("class", "imgclass");
+	                	document.getElementById("divclass").appendChild(elem3);
+	                }	
+               	}
                 postToBeEdit = postJSON;
                 enablePopUp();
                 enableRemovePopUp();
+               
             }
         }
 
@@ -396,7 +436,7 @@
     City:<input id="city" name="city" type="text" maxlength="20">
     ZipCode<input id="zip" name="zip" type="text" size="5">
     State: <input id="state" name="state" type="text" size="2">
-
+    Images:<div id="divclass"></div>
 
     <!--<input type="file" name="imgUploader" id="fileup" multiple required>-->
     <br/>
