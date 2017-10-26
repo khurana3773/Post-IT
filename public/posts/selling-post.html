@@ -13,17 +13,15 @@
 	<link rel="stylesheet" type="text/css" href="selling-post.css">
 	<script>
 
-		$(init);
+		/*$(init);
 
 		function init() {
 
 		    timestamp();
-		    initImageUpLoad();
+        }*/
 
-        }
-
-        function initImageUpLoad() {
-
+        //function initImageUpLoad() {
+		$(document).ready(function (){
             var options = {
                 beforeSubmit: showRequest,  // pre-submit callback
                 success: showResponse  // post-submit callback
@@ -35,7 +33,7 @@
 
       		holder.ondrop = function(evt) {
       		  // pretty simple -- but not for IE :(
-      		  fileup.files = evt.dataTransfer.files;
+      		  file.files = evt.dataTransfer.files;
       		  //evt.preventDefault();
       		};
       		
@@ -45,7 +43,7 @@
                 // always return false to prevent standard browser submit and page navigation
                 return false;
             });
-        };
+        });
         
         // pre-submit callback
         function showRequest(formData, jqForm, options) {
@@ -63,11 +61,10 @@
                 alert("Max " + num+" three images allowed!");
                 return false;
             }
-
+            timestamp();
             return true;
 		}
         function timestamp() {
-			checkSize
 		    var time = new Date().getTime();
 
 		    $("#timestamp").val(time);
@@ -118,7 +115,7 @@
         <br>
 		<label>Product Images</label>
 		<br/>
-		<ul id="photo-holder">
+		<ul>
 			<div id="holder">
 				<p>Drag Here</p>
 			</div>
