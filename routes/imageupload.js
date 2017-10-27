@@ -8,10 +8,13 @@ const multer = require('multer');
 const monk = require('monk');
 var multerS3 = require('multer-s3');
 
-var db = monk("mongodb://"+"masterroot"+":"+"masterroot"+"@ds125335.mlab.com:25335/post_it");
+const USER = "PostIt";
+const PASSWORD = "postit1";
+
+var db = monk("mongodb://"+"PostIt"+":"+"postit1"+"@ds235065.mlab.com:35065/post_it");
 var file_name=[];
 var counter=0;
-	
+
 let pathParams, image, imageName;
 
 /** Load Config File */
@@ -23,7 +26,7 @@ const s3 = new AWS.S3({region: 'us-west-1'});
 /*const createItemObject = (callback) => {
 		try {
 			var upload = multer({
-				
+
 				  storage: multerS3({
 				    s3: s3,
 				    bucket: bucketName,
@@ -35,7 +38,7 @@ const s3 = new AWS.S3({region: 'us-west-1'});
 				    key: function (req, file, cb) {
 				    	console.log( file.originalname+"_"+Date.now().toString());
 				    	file_name[counter] = req.files.file.originalname+"_"+Date.now().toString();
-				    	
+
 				      cb(null, file_name[counter]);
 				      counter++;
 				    }
@@ -48,9 +51,9 @@ const s3 = new AWS.S3({region: 'us-west-1'});
 */
 
 function createItemObject(){
-	  const params = { 
-	        Bucket: bucketName, 
-	        Key: `${imageName}`, 
+	  const params = {
+	        Bucket: bucketName,
+	        Key: `${imageName}`,
 	        ACL: 'public-read',
 	        Body:image
 	    };
@@ -62,7 +65,7 @@ function createItemObject(){
 		    	console.log("Successfully uploaded image on S3", data);
 		    	return(data);
 		    }
-		})  
+		})
 	}
 exports.upload = (req, res) => {
 
@@ -103,16 +106,16 @@ exports.upload = (req, res) => {
 
         	collection.insert(postJSON, function (err, doc)
         	{
-        		
+
         		if(err){
 
         			return res.end("<h1 style=\"text-align:center\">Something went wrong in form data!<h1>"
 
 	        		+"<p style=\"text-align:center\"> Please <a href=\"/posts/selling-post.html\">click here</a> to go back and try again!</p>");
         		}else{
-        			
-        			
-		        	req.files.file.forEach(function(file){	
+
+
+		        	req.files.file.forEach(function(file){
 		        		var tmp_path = file.path;
 		        		image = fs.createReadStream(tmp_path);
 		        	    imageName = Date.now().toString()+"_"+file.originalFilename;
@@ -122,10 +125,10 @@ exports.upload = (req, res) => {
 			        			        	console.log(err);
 			        			        	collection.remove( postJSON);
 			        			        	return res.end("<h1 style=\"text-align:center\">Something went wrong in saving images!<h1>"
-			
+
 			        			        		+"<p style=\"text-align:center\"> Please <a href=\"/posts/selling-post.html\">click here</a> to go back and try again!</p>");
 			        			        }
-			        			                			        	
+
 		        			        });
 		        		counter++;
 
@@ -137,20 +140,20 @@ exports.upload = (req, res) => {
 			        {
 			        	param["image1"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[0];
 			        	param["image2"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[1];
-			        }	
+			        }
 			        if(counter ==3)
 			        {
-			        	
+
 			        	param["image1"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[0];
 			        	param["image2"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[1];
 			        	param["image3"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[2];
 			        }
 
 			        collection.update( postJSON,{$set: param});
-			        		        	
+
 		        	res.redirect("index.html");
 			    }
 
         	});
-	
+
 };

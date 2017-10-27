@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const Uploadaws = require('./routes/imageupload');
+const Uploadaws = require('./imageupload');
 const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
 console.log(Uploadaws.upload);
