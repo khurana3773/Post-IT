@@ -3,10 +3,12 @@ const querystring = require('querystring');
 const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
 
-const USER = "masterroot";
-const PASSWORD = "masterroot";
+const USER = "PostIt";
+const PASSWORD = "postit1";
 
-const remoteURL = "mongodb://"+USER+":"+PASSWORD+"@ds125335.mlab.com:25335/post_it";
+//const remoteURL = "mongodb://"+USER+":"+PASSWORD+"@ds125335.mlab.com:25335/post_it";
+
+const remoteURL = "mongodb://"+USER+":"+PASSWORD+"@ds235065.mlab.com:35065/post_it";
 // Url to database
 const url = remoteURL;
 
