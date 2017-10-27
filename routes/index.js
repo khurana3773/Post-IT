@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var html_file_name ='./public/index.html';
+var valid_user="xxxx";
 
 //Controller to render application home page
 router.get('/' ,

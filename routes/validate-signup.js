@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var handle = require('./handle');
+var userCode;
 //var session;
 
 //Controller to handle validation of sign-up page

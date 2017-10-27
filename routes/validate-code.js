@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const querystring = require('querystring');
+var alert= 0;
+var userCode;
 //var sess;
 
 
@@ -16,10 +18,7 @@ router.post('/',
 		//var studentId = process.env.studentId;
 		var studentId = sess.studentId;
 
-
 		console.log('student id on validate code page is ' + studentId);
-
-		var userCode;
 
 		let collection = db.get("users");
 

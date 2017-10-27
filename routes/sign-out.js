@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var alert= 0;
+var credential= 0;
 
 //Controller to render sign-out page
 router.post('/',

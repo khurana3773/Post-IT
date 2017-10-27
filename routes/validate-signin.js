@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var User= " ";
 
 router.post('/'+'validate-signin',
 	function(req, res)
