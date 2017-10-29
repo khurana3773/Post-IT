@@ -3,7 +3,7 @@ var router = express.Router();
 const querystring = require('querystring');
 var User= " ";
 
-router.post('/'+'validate-signin',
+router.post('/',
 	function(req, res)
 	{
 		console.log("validate-signin");
