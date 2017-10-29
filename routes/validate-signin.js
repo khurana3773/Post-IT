@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const querystring = require('querystring');
 var User= " ";
 
 router.post('/'+'validate-signin',
@@ -9,7 +10,7 @@ router.post('/'+'validate-signin',
 		let username = req.param('username');
 		let password = req.param('password');
 		var db = req.db;
-		var querystring = req.querystring;
+		//var querystring = req.querystring;
 
 		let collection = db.get("users");
 
