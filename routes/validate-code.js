@@ -52,7 +52,7 @@ router.post('/',
                        "userId": JSON.stringify(userId).toString()
                     });
 										console.log(query);
-                    res.redirect("../public/index.html?"+query);
+                    res.redirect("/index.html?"+query);
 				}
 
 		 else{
