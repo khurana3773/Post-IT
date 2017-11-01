@@ -6,6 +6,8 @@
     <!--List everything that a user has post-->
     <title>Title</title>
     <script src="../js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css">
+    <script src="../js/jquery-ui.min.js"></script>
     <script src="../util/util.js"></script>
 
     <style>
@@ -14,22 +16,22 @@
         }
 
         body{
-            background-color: white;
+            background-color: #ffffff;
             font-family: Roboto, sans-serif;
 
         }
 
         .container{
-            margin: auto;
-            width: 50%;
-            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            height: auto;
+            width: auto;
+            overflow: hidden;
+            background-color: #dedede;
         }
 
         .title{
             color: #384047;
             text-align: center;
             font-size: 25px;
-            margin-top: 50px;
             padding: 0;
         }
 
@@ -148,6 +150,23 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
+        #my-posts-container {
+            display: grid;
+            grid-gap: 10px;
+            background-color: #ffffff;
+            color: #444;
+        }
+
+        #title-page{
+            text-align: center;
+            font-size: 2em;
+        }
+
+        #title-page:hover{
+            color: #52809f;
+        }
+
     </style>
     <script>
         var canDelete = false;
@@ -157,6 +176,14 @@
         $(init);
 
         function init() {
+            $("#title-dialog").dialog({
+                autoOpen : false, modal : true, show : "blind", hide : "blind"
+            });
+
+            $("#title-page").click(function () {
+                $("#title-dialog").dialog("open");
+            });
+
             $("#edit-form").hide();
             $("#overLay").hide();
 
@@ -189,7 +216,7 @@
             if(canDelete) {
                 $.post("/delete-post", {json: postJSON}, function (result) {
                     if(result === "OK"){
-                        removePostFromList(postJSON._id);
+                        removePostFromView(postJSON._id);
                     }
                 });
             }
@@ -226,24 +253,18 @@
                 $("#type").val(type);
            		var temp= !document.getElementsByClassName("imgclass").length;
                	if(temp){
-	                if(image1!=null){ 
-	                	var elem1 = document.createElement("img");
-	                	elem1.setAttribute("src", image1);
-	                	elem1.setAttribute("class", "imgclass");
-	                	document.getElementById("divclass").appendChild(elem1);
+	                if(image1!==null){
+	                	var elem1 = createImage(image1);
+	                	$("#divclass").append(elem1);
 	                }	
-	                if(image2!=null){ 
-	                	var elem2 = document.createElement("img");
-	                	elem2.setAttribute("src", image2);
-	                	elem2.setAttribute("class", "imgclass");
-	                	document.getElementById("divclass").appendChild(elem2);
+	                if(image2!==null){
+	                	var elem2 = createImage(image2);
+	                	$("#divclass").append(elem2);
 	
 	                }	
-	                if(image3!=null){ 
-	                	var elem3 = document.createElement("img");
-	                	elem3.setAttribute("src", image3);
-	                	elem3.setAttribute("class", "imgclass");
-	                	document.getElementById("divclass").appendChild(elem3);
+	                if(image3!==null){
+	                	var elem3 = createImage(image3);
+	                	$("#divclass").append(elem3);
 	                }	
                	}
                 postToBeEdit = postJSON;
@@ -251,6 +272,13 @@
                 enableRemovePopUp();
                
             }
+        }
+
+        function createImage(src) {
+            var anImage = $("<img>");
+            anImage.attr("class", "imgclass");
+            anImage.attr("src", src);
+            return anImage;
         }
 
         function editPost() {
@@ -306,8 +334,8 @@
             });
         }
 
-        function removePostFromList(id) {
-            $("#"+id).remove();
+        function removePostFromView(id) {
+            $("#"+id+"div").remove();
         }
 
         function updatePostFromList(postJSON) {
@@ -318,49 +346,45 @@
         }
 
         function loadPostToList(postJSON) {
-            var li = document.createElement("li");
-            li.setAttribute("id", postJSON._id);
 
-            var div = document.createElement("div");
-            div.setAttribute("class", "container");
+            var div = $("<div></div>");
+            div.attr("class", "container");
+            div.attr("id", postJSON._id+"div");
 
-            var headline = document.createElement("h");
-            headline.setAttribute("class", "title");
-            headline.setAttribute("id", postJSON._id+"title");
+            var headline = $("<h></h>");
+            headline.attr("class", "title");
+            headline.attr("id", postJSON._id+"title");
+            headline.text(postJSON.title);
 
-            var title = document.createTextNode(postJSON.title);
-            headline.appendChild(title);
+            var paragraph = $("<p></p>");
+            paragraph.attr("class", "about");
+            paragraph.attr("id", postJSON._id+"about");
+            paragraph.text(postJSON.about);
 
-            var paragraph = document.createElement("p");
-            var about = document.createTextNode(postJSON.about);
-            paragraph.appendChild(about);
-            paragraph.setAttribute("class", "about");
-            paragraph.setAttribute("id", postJSON._id+"about");
-
-            var deleteButton = document.createElement("button");
-            deleteButton.setAttribute("class", "delete");
-            deleteButton.onclick = function () {
+            var deleteButton = $("<button></button>");
+            deleteButton.attr("class", "delete");
+            deleteButton.on("click", function () {
                 canDelete = true;
                 deletePost(postJSON);
-            };
+            });
+            deleteButton.text("delete me");
 
-            deleteButton.appendChild(document.createTextNode("delete me"));
+            var editButton = $("<button></button>");
 
-            var editButton = document.createElement("button");
-            editButton.setAttribute("class", "edit");
-            editButton.appendChild(document.createTextNode("edit me"));
-            editButton.onclick = function() {
+            editButton.attr("class", "edit");
+            editButton.text("edit me");
+            editButton.on("click", function() {
                 canEdit = true;
                 enableEditPost(postJSON);
-            };
+            });
 
-            div.appendChild(headline);
-            div.appendChild(paragraph);
-            div.appendChild(deleteButton);
-            div.appendChild(editButton);
-            li.appendChild(div);
-            var ul = document.getElementById("my-posts");
-            ul.appendChild(li);
+            div.append(headline);
+            div.append(paragraph);
+            div.append(deleteButton);
+            div.append(editButton);
+
+            $("#my-posts-container").append(div);
+
         }
 
         /**
@@ -395,13 +419,19 @@
 </head>
 <body>
 
-<div id="nag-container">
+<div style="margin-bottom: 50px;" id="nag-container">
 
 </div>
 
-<ul id="my-posts">
+<h5 id="title-page">My Posts</h5>
+<div id="title-dialog" title="More Info">
+    <p> Here, you can edit or delete your posts. Its an area to manage what you upload to the site</p>
+</div>
 
-</ul>
+<div id="my-posts-container">
+
+</div>
+
 
 
 <!--Enable a user to leave popup box when user clicks bg-->
