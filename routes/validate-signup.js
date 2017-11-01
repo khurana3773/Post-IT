@@ -60,23 +60,18 @@ router.post('/',
 		collection.find(searchUser, function (e, docs) {
 
 			if(docs.length === 0){
-				       console.log('inside 1');
+
+				console.log('inside 1');
                 collection.insert(userJSON, function(e, docs){
                     if(e){
-
-											console.log('inside 2');
-											console.log(e);
-
-                    }else{  console.log('inside 3');
-
+                        console.log('inside 2');
+                        console.log(e);
+                    }else{
+                        console.log('inside 3');
                         handle.sendEmail(emailAddress, code);
                         res.redirect("/validation.html");
-
                     }
-
                 });
-
-
 			}else{
                 // already is database
                 // can mean user just tried to sign up

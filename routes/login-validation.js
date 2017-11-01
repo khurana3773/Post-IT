@@ -8,7 +8,7 @@ router.post('/',
 		console.log("validate-signin");
 		let username = req.param('username');
 		let password = req.param('password');
-    var db = req.db;
+		var db = req.db;
 		let collection = db.get("users");
 
 		collection.findOne({"username": username}, function (e, docs) {

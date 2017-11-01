@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 var session = require('express-session');
 var cookieSession = require('cookie-session');
+var cookieParser = require('cookie-parser');
 const path = require('path');
 const ejs = require('ejs');
 const fs = require('fs');
@@ -43,14 +44,14 @@ const multipartMiddleware = multipart();
 
 // Create the app.
 var app = express();
-//app.use(session({secret: 'session for the user'}));
 
 app.use(cookieSession({
-  name: 'session',
-  keys: [randomstring.generate()],
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}))
+    secret: 'post-it',
+    name: 'session',
+    keys: [randomstring.generate()],
+    // Cookie Options
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
 
 
 
@@ -97,7 +98,7 @@ var valid_user="xxxx";
 app.use(bodyParser());
 app.use(express.static("public"));
 app.use(bodyParser.json());
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 
 app.use('/', index);
 app.use('/add-post-job', add_post_job);
@@ -137,5 +138,7 @@ var Storage = multer.diskStorage({
         counter++;
     }
 });
+
+
 
 const upload = multer({ storage: Storage}).array("imgUploader", 3);
