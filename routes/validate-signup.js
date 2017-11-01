@@ -40,7 +40,8 @@ router.post('/',
 			"emailAddress": emailAddress,
 			"username": userName,
 			"password": password,
-			"validation-code": code
+			"validation_code": code,
+            "validated": false
 		};
 
 		var db = req.db;

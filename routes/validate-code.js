@@ -13,7 +13,7 @@ router.post('/',
 		let code = req.param("code");
 		let userId = req.param("_id");
 		sess = req.session;
-    var db = req.db;
+		var db = req.db;
 
 		//var studentId = process.env.studentId;
 		var studentId = sess.studentId;
@@ -23,53 +23,31 @@ router.post('/',
 		let collection = db.get("users");
 
 		collection.findOne({"studentId": studentId}, function (e, docs){
+			// should only return one!
+			let user = docs;
+			console.log(user);
 
-			console.log(docs["validation-code"]);
+			userCode = user.validation_code;
+			var userId =  user._id.toString();
 
-			userCode=docs["validation-code"];
-			var userId =  docs["_id"].toString();
+			if(code === userCode){
+				collection.update({_id: user._id}, {$set: {validated: true}}, function (err,docs) {
 
-			console.log('userCode inside validate-code: ' + userCode);
-			console.log("code inside validate-code is: "+ code);
-			console.log(userId);
+					if(err){
 
+					}else{
+						res.redirect("/index.html");
+					}
+                });
+			}
 
-		if(code === userCode){
-
-			console.log("true");
-
-			//collection.findOne({"validation-code": code}, function (e, docs) {
-
-				//console.log('docs length is ' + docs.length);
-
-				//if(docs.length === 1){
-
-
-										console.log('inside 1');
-
-
-                    let query = querystring.stringify({
-                       "userId": JSON.stringify(userId).toString()
-                    });
-										console.log(query);
-                    res.redirect("/index.html?"+query);
-				}
-
-		 else{
-
-			      console.log("inside 2false");
-            const query = querystring.stringify({
-                "alert": -1
-
-            });
-
-            res.redirect('/validation.html?'+query);
-		}
-
-
- } );
-
-
- } );
+			 else{
+				const query = querystring.stringify({
+					"alert": -1
+				});
+				res.redirect('/validation.html?'+query);
+			}
+ 	});
+});
 
 module.exports = router;

@@ -39,13 +39,6 @@ function sendEmail(email, code){
 function generateCode() {
     return randomValueHex(4)+"-"+randomValueHex(4);
 }
-/**
- * This
- */
-function setCookieId(id){
-
-
-}
 
 module.exports.sendEmail = sendEmail;
 module.exports.randomValueHex = randomValueHex;

@@ -5,8 +5,6 @@ const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
 console.log(Uploadaws.upload);
 
-console.log("insode module export");
-
 router.post('/',
 	function (req, res) {
 

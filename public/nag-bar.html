@@ -63,12 +63,13 @@
         top: 50px;
     }
 </style>
-
+<script src="util/util.js"></script>
 <script>
 
     $(init);
 
     var dropdownShowing = false;
+    var userLoggedIn = false;
 
     function init() {
         $('.dropdown-content').hide();
@@ -99,12 +100,12 @@
     }
 
     function initLogin(){
-        let searchParams = new URLSearchParams(window.location.search);
-        let userId = searchParams.get("userId");
 
+        let userId = getCookie("userId");
+
+        alert(userId);
         if(userId){
             userLoggedIn = true;
-            setCookieUserId(userId);
             $("#login").hide();
             $("#sign-out").show();
         }else{
@@ -112,6 +113,16 @@
             $("#sign-out").hide();
             $("#login").show();
         }
+    }
+
+    function onSignOut() {
+        if(userLoggedIn){
+            $("#sign-out").hide();
+            $("#login").show();
+            userLoggedIn = false;
+            deleteCookie("userId");
+        }
+
     }
 
 </script>

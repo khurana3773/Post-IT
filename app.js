@@ -11,7 +11,7 @@ const lineReader = require('line-reader');
 const multer = require('multer');
 const querystring = require('querystring');
 const monk = require('monk');
-var db = monk("mongodb://"+"PostIt"+":"+"postit1"+"@ds235065.mlab.com:35065/post_it");
+var db = monk("mongodb://"+"masterroot"+":"+"masterroot"+"@ds125335.mlab.com:25335/post_it");
 var randomstring = require("randomstring");
 
 var index = require('./routes/index');
@@ -76,11 +76,13 @@ var userCode;
 
 
 app.use(function(req, res, next)
-        {
-            req.db = db;
-            next();
-        }
+    {
+        req.db = db;
+        next();
+    }
 );
+
+
 
 var html_file_name ='./public/index.html';
 
@@ -138,7 +140,6 @@ var Storage = multer.diskStorage({
         counter++;
     }
 });
-
 
 
 const upload = multer({ storage: Storage}).array("imgUploader", 3);

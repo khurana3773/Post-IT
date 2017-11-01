@@ -5,26 +5,25 @@ var router = express.Router();
 router.post('/',
 	function(req, res)
 	{
-		console.log("validate-signin");
+		console.log("validate-sign-in");
 		let username = req.param('username');
 		let password = req.param('password');
-		var db = req.db;
+		let db = req.db;
 		let collection = db.get("users");
 
-		collection.findOne({"username": username}, function (e, docs) {
-			console.log(docs["password"]);
+		collection.findOne({"userName": username}, function (e, docs) {
 
-			let valid = "OK"; // docs["validation-code"];
+			let user = docs;
+			let validated = user.validated;
 
 			// user has validated the address through email
-			if(valid === "OK" && password === docs["password"]){
+			if(validated && password === user.password){
                 User = username;
 
-                const query = querystring.stringify({
-                    "userId": docs["_id"].toString()
-                });
-
-                res.redirect('/?'+query);
+                let userId = user._id.toString();
+                res.cookie("id", "123");
+                //res.send("OK!");
+                res.redirect('/');
 			}else{
 				// error
 				// send back error
