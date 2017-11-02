@@ -22,7 +22,7 @@ router.post('/',
 
                 let userId = user._id.toString();
                 res.cookie("id", "123");
-                //res.send("OK!");
+
                 res.redirect('/');
 			}else{
 				// error

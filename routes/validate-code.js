@@ -25,13 +25,11 @@ router.post('/',
 		collection.findOne({"studentId": studentId}, function (e, docs){
 			// should only return one!
 			let user = docs;
-			console.log(user);
-
 			userCode = user.validation_code;
-			var userId =  user._id.toString();
+			let userId =  user._id.toString();
 
 			if(code === userCode){
-				collection.update({_id: user._id}, {$set: {validated: true}}, function (err,docs) {
+				collection.update({_id: userId}, {$set: {validated: true}}, function (err,docs) {
 
 					if(err){
 

@@ -18,8 +18,9 @@ function randomValueHex (len) {
         .toString('hex') // convert to hexadecimal format
         .slice(0,len).toUpperCase();   // return required number of characters
 }
-// Hardcode validation for now
-function sendEmail(email, code){
+
+function sendCodeToEmail(email){
+    let code = generateCode();
     var mailOptions = {
         from: 'postit151@gmail.com',
         to: email,
@@ -40,6 +41,5 @@ function generateCode() {
     return randomValueHex(4)+"-"+randomValueHex(4);
 }
 
-module.exports.sendEmail = sendEmail;
+module.exports.sendCodeToEmail = sendCodeToEmail;
 module.exports.randomValueHex = randomValueHex;
-module.exports.generateCode = generateCode;

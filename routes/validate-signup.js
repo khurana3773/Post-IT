@@ -18,19 +18,14 @@ router.post('/',
 		var userName = req.param("username");
 		var password = req.param("password");
 
-    session=req.session;
-		session.firstName=firstName;
-		session.lastName=lastName;
-		session.studentId=studentId;
-		session.emailAddress=emailAddress;
-		session.userName=userName;
+        session = req.session;
+		session.firstName = firstName;
+		session.lastName = lastName;
+		session.studentId = studentId;
+		session.emailAddress = emailAddress;
+		session.userName = userName;
 
 		console.log('sess.studentId on signup page is ' + session.studentId);
-
-
-		// add to database
-
-		let code = handle.generateCode();
 
 		userCode = code;
 		let userJSON = {
@@ -69,7 +64,7 @@ router.post('/',
                         console.log(e);
                     }else{
                         console.log('inside 3');
-                        handle.sendEmail(emailAddress, code);
+                        handle.sendCodeToEmail(emailAddress);
                         res.redirect("/validation.html");
                     }
                 });

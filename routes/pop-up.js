@@ -7,7 +7,7 @@ var router = express.Router();
  */
 router.post('/',
 	function (req, res){
-		// tester
+		// test
 		var productPopupJSON = {
 			title: "The title",
 			description: "a description",
