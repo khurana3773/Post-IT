@@ -21,7 +21,7 @@ router.post('/',
                 User = username;
 
                 let userId = user._id.toString();
-                res.cookie("id", "123");
+                res.cookie("id", userId);
 
                 res.redirect('/');
 			}else{

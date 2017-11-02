@@ -12,13 +12,13 @@ const USER = "PostIt";
 const PASSWORD = "postit1";
 
 var db = monk("mongodb://"+"PostIt"+":"+"postit1"+"@ds235065.mlab.com:35065/post_it");
-var file_name=[];
-var counter=0;
+var file_name = [];
+var counter = 0;
 
 let pathParams, image, imageName;
 
 /** Load Config File */
-AWS.config.loadFromPath('config.json')
+AWS.config.loadFromPath('config.json');
 
 /** After config file load, create object for s3*/
 const s3 = new AWS.S3({region: 'us-west-1'});
@@ -69,91 +69,90 @@ function createItemObject(){
 	}
 exports.upload = (req, res) => {
 
-	var counter=0;
-	var img=[];
+	var counter = 0;
+	var img = [];
 
 	console.log(req.files);
 
-           	// test for now
-        	var userId = "123";
-        	// end
-        	var title = req.body.title;
-    		var about = req.body.about;
-    		var price = req.body.price;
-    		var type = req.body.type;
-    		var timestamp = req.body.timestamp;
+	// test for now
+	var userId = req.cookies.userId; //"123";
+	// end
+	var title = req.body.title;
+	var about = req.body.about;
+	var price = req.body.price;
+	var type = req.body.type;
+	var timestamp = req.body.timestamp;
 
-    		var location = {
-    			"street": req.body.street,
-    			"city": req.body.city,
-    			"zip": req.body.zip,
-    			"state": req.body.state
-    		};
+	var location = {
+		"street": req.body.street,
+		"city": req.body.city,
+		"zip": req.body.zip,
+		"state": req.body.state
+	};
 
-    		var postJSON = {
-    			"userId": userId,
-    			"title": title,
-    			"about":about,
-    			"price":price,
-    			"type": type,
-    			"timestamp": timestamp,
-    			"location":location,
-    			"image1": null,
-    			"image2": null,
-    			"image3": null
-    		};
-        	var collection = db.get("posts");
+	var postJSON = {
+		"userId": userId,
+		"title": title,
+		"about":about,
+		"price":price,
+		"type": type,
+		"timestamp": timestamp,
+		"location":location,
+		"image1": null,
+		"image2": null,
+		"image3": null
+	};
+	var collection = db.get("posts");
 
-        	collection.insert(postJSON, function (err, doc)
-        	{
+	collection.insert(postJSON, function (err, doc)
+	{
 
-        		if(err){
+		if(err){
 
-        			return res.end("<h1 style=\"text-align:center\">Something went wrong in form data!<h1>"
+			return res.end("<h1 style=\"text-align:center\">Something went wrong in form data!<h1>"
 
-	        		+"<p style=\"text-align:center\"> Please <a href=\"/posts/selling-post.html\">click here</a> to go back and try again!</p>");
-        		}else{
+			+"<p style=\"text-align:center\"> Please <a href=\"/posts/selling-post.html\">click here</a> to go back and try again!</p>");
+		}else{
 
+			req.files.file.forEach(function(file){
+				var tmp_path = file.path;
+				image = fs.createReadStream(tmp_path);
+				imageName = Date.now().toString()+"_"+file.originalFilename;
+				img[counter]=imageName;
+				createItemObject(function (err, result){
+								if(err){
+									console.log(err);
+									collection.remove( postJSON);
+									return res.end("<h1 style=\"text-align:center\">Something went wrong in saving images!<h1>"
 
-		        	req.files.file.forEach(function(file){
-		        		var tmp_path = file.path;
-		        		image = fs.createReadStream(tmp_path);
-		        	    imageName = Date.now().toString()+"_"+file.originalFilename;
-		        	    img[counter]=imageName;
-		        		createItemObject(function (err, result){
-			        			        if(err){
-			        			        	console.log(err);
-			        			        	collection.remove( postJSON);
-			        			        	return res.end("<h1 style=\"text-align:center\">Something went wrong in saving images!<h1>"
+										+"<p style=\"text-align:center\"> Please <a href=\"/posts/selling-post.html\">click here</a> to go back and try again!</p>");
+								}
 
-			        			        		+"<p style=\"text-align:center\"> Please <a href=\"/posts/selling-post.html\">click here</a> to go back and try again!</p>");
-			        			        }
+							});
+				counter++;
 
-		        			        });
-		        		counter++;
+			});
+			var param={};
+			if(counter === 1)
+				param["image1"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[0];
+			if(counter === 2)
+			{
+				param["image1"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[0];
+				param["image2"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[1];
+			}
+			if(counter === 3)
+			{
 
-		        	});
-		        	var param={};
-			        if(counter ==1)
-			        	param["image1"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[0];
-			        if(counter ==2)
-			        {
-			        	param["image1"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[0];
-			        	param["image2"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[1];
-			        }
-			        if(counter ==3)
-			        {
+				param["image1"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[0];
+				param["image2"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[1];
+				param["image3"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[2];
+			}
 
-			        	param["image1"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[0];
-			        	param["image2"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[1];
-			        	param["image3"]="https://s3-us-west-1.amazonaws.com/sjsucmpe280postit/"+img[2];
-			        }
+			collection.update( postJSON,{$set: param});
 
-			        collection.update( postJSON,{$set: param});
+			res.redirect("index.html");
+		}
 
-		        	res.redirect("index.html");
-			    }
-
-        	});
+	});
 
 };

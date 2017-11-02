@@ -7,3 +7,5 @@ const remoteURL = "mongodb://"+USER+":"+PASSWORD+"@ds235065.mlab.com:35065/post_
 
 const huy_remoteURL = "mongodb://"+"masterroot"+":"+"masterroot"+"@ds125335.mlab.com:25335/post_it";
 
+module.exports.remoteURL = remoteURL;
+module.exports.huy_remoteURL = huy_remoteURL;

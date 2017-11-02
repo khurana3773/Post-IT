@@ -18,10 +18,16 @@
 		function init() {
 
 		    timestamp();
-        }*/
+        } */
 
         //function initImageUpLoad() {
 		$(document).ready(function (){
+            var userId = getCookie("userId");
+
+            if(!userId){
+                window.location.href = '/index.html';
+            }
+
             var options = {
                 beforeSubmit: showRequest,  // pre-submit callback
                 success: showResponse  // post-submit callback
@@ -84,7 +90,7 @@
 
 <h1 class="ui-state-default"><a href="/">Post It</a></h1>
 <div>
-	<form id="upload" method="post" action="/add-post-selling" onsubmit="return checkSize(3);" enctype="multipart/form-data">
+	<form id="upload" method="post" action="/add-post-selling">
 	    <label for="title">Product Name</label>
         <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">
 	    <input placeholder="title" type="text" id="title" name="title" required>
@@ -121,7 +127,7 @@
 			</div>
 		</ul>
 
-		<input type="file" name="file" id="file" multiple required>
+		<input type="file" name="file" id="file" multiple>
 		<br/>
 
 

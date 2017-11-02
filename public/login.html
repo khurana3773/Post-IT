@@ -4,8 +4,19 @@
 <head>
     <title>Login Page</title>
     <link rel="stylesheet" type="text/css" href="login.css">
-
+    <script src="js/jquery.js"></script>
     <script>
+        $(init);
+
+        function init() {
+            let searchParams = new URLSearchParams(window.location.search);
+            let value = searchParams.get("v");
+
+            if(value === "1"){
+                alert("invalid credentials");
+            }
+        }
+
 
     </script>
 </head>

@@ -105,7 +105,7 @@ app.use(cookieParser());
 app.use('/', index);
 app.use('/add-post-job', add_post_job);
 app.use('/add-post-renting', add_post_renting);
-app.use('/add-post-selling',multipartMiddleware, Uploadaws.upload);
+app.use('/add-post-selling', add_post_selling);//multipartMiddleware, Uploadaws.upload);
 app.use('/auto-complete', auto_complete);
 app.use('/create-post', create_post);
 app.use('/delete-post', delete_post);

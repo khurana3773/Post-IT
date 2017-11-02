@@ -13,24 +13,42 @@ router.post('/',
         let db = req.db;
         let collection = db.get("users");
 
-        collection.findOne({"username": username}, function (e, docs) {
-
-            let user = docs;
-
-            let validated = user.validated;
-
-            // user has validated the address through email
-            if(validated && password === user.password){
-                User = username;
-
-                let userId = user._id.toString();
-                res.cookie("userId", userId);
-                res.redirect('/');
+        collection.findOne({"username": username}, function (err, docs) {
+            if(err){
+                let query = querystring.stringify({
+                    "v": 1
+                });
+                res.redirect('/login.html?'+query);
             }else{
-                // error
-                // send back error
-                res.redirect('/login.html');
+
+                let user = docs;
+                console.log(user===null);
+                if(user === null){
+                    let query = querystring.stringify({
+                        "v": 1
+                    });
+                    res.redirect('/login.html?'+query);
+                }else{
+                    let validated = user.validated;
+
+                    // user has validated the address through email
+                    if(validated && password === user.password){
+                        User = username;
+
+                        let userId = user._id.toString();
+                        res.cookie("userId", userId);
+                        res.redirect('/');
+                    }else{
+                        // error
+                        // send back error
+                        let query = querystring.stringify({
+                            "v": 1
+                        });
+                        res.redirect('/login.html?'+query);
+                    }
+                }
             }
+
 
         });
     }

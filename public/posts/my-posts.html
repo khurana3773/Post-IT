@@ -168,6 +168,7 @@
         }
 
     </style>
+
     <script>
         var canDelete = false;
         var postsJSON;
@@ -176,6 +177,13 @@
         $(init);
 
         function init() {
+
+            var userId = getCookie("userId");
+
+            if(!userId){
+                window.location.href = '/index.html';
+            }
+
             $("#title-dialog").dialog({
                 autoOpen : false, modal : true, show : "blind", hide : "blind"
             });
@@ -188,19 +196,18 @@
             $("#overLay").hide();
 
             requestPosts();
-            initNagBar();
+
         }
 
 
         function requestPosts() {
-            var userId = getCookie_test();
+            var userId = getCookie("userId");
 
             $.get("/get-posts", {userId: userId}, function (result) {
                 postsJSON = JSON.parse(result);
                 // append to list
-                for(var i = 0; i < postsJSON.length; i++){
+                for(let i = 0; i < postsJSON.length; i++){
                     loadPostToList(postsJSON[i]);
-
                 }
             });
         }
@@ -237,9 +244,9 @@
 
                 let price = postJSON.price;
                 let type = postJSON.type;
-                let image1 =postJSON.image1;
-                let image2 =postJSON.image2;
-                let image3=postJSON.image3;
+                let image1 = postJSON.image1;
+                let image2 = postJSON.image2;
+                let image3 = postJSON.image3;
                 $("#title").val(title);
                 $("#about").val(about);
 
@@ -286,7 +293,7 @@
             $("#overLay").hide();
 
 
-            let userId = getCookie_test();
+            let userId = getCookie("userId");
 
             let title = $("#title").val();
             let about = $("#about").val();
@@ -411,9 +418,6 @@
             }
         }
 
-        function initNagBar() {
-            $("#nag-container").load("/nag-bar.html");
-        }
     </script>
 
 </head>
