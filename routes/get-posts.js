@@ -12,7 +12,6 @@ router.get('/', function (req, res) {
 	var userId = req.param("userId");
 	collections.find({userId: userId}, {}, function (e, docs) {
 		console.log(docs);
-		console.log(JSON.stringify(docs));
 		res.send(JSON.stringify(docs));
     });
 });
