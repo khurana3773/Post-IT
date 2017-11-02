@@ -163,9 +163,7 @@
          */
         function handleSliderValue(event, ui) {
             var miles = ui.value;
-            $.get('/slider', {miles: miles}, function (result) {
-
-            });
+            alert(miles);
         }
         // Will dynamically generate search bar population with ajax from our database
         function initCompleteSearchBox(){

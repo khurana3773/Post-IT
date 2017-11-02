@@ -8,10 +8,10 @@ router.get("/", function (req, res) {
     let userId = req.cookies.userId;
 
     if (userId) {
-    	console.log(userId);
+
     	res.redirect("create-post.html");
 	}else{
-    	res.redirect("/");
+    	res.redirect("index.html");
 	}
 });
 

@@ -14,7 +14,7 @@
  * $(selector).post("url", data, callback)
  */
 function requestAutoComplete(val, setCompleteSearchBox){
-    $.get('/auto-complete', {suggested: val}, function (result) {
+    $.post('/auto-complete', {suggested: val}, function (result) {
         let source = JSON.parse(result);
         setCompleteSearchBox(source);
     });
@@ -35,7 +35,7 @@ function requestAutoComplete(val, setCompleteSearchBox){
  *
  */
 function requestProduct(searchValue, appendToProductStream) {
-    $.get('/search', {searchKey: searchValue}, function (result) {
+    $.post('/search', {searchKey: searchValue}, function (result) {
         // the result will be a string array
         // as a search could return more than one item
         let productList = JSON.parse(result);

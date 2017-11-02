@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="sign-up.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" />
+  <script src="js/jquery.js"></script>
+</head>
+<body>
+
+<form onsubmit="return validateForm();"  method="post" action="/validate-signup" >
+    <div class="container">
+        <h1>Sign Up</h1>
+
+        <fieldset>
+            <legend>Your basic info</legend>
+            <label for="first_name">First Name:</label>
+            <input maxlength="20" type="text" id="first_name" name="first_name" required>
+
+            <label for="last_name">Last Name:</label>
+            <input maxlength="20" type="text" id="last_name" name="last_name" required>
+
+            <label for="student_id">Student ID:</label>
+            <input maxlength="9" type="tel" id="student_id" name="student_id" required>
+
+            <label for="mail">Email:</label>
+            <input type="email" placeholder= "Ex.: name@something.com" id="mail" name="email" required>
+
+            <label for="username">Username:</label>
+            <input maxlength="20" type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input maxlength="20" type="password" id="password" name="password" required>
+            <button type="submit">Sign Up</button>
+        </fieldset>
+    </div>
+</form>
+<script type="text/javascript" src="sign-up.js"></script>
+</body>
+</html>

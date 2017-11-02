@@ -113,6 +113,17 @@
         }
     }
 
+    function onSignOut() {
+        if(userLoggedIn){
+            $("#sign-out").hide();
+            $("#login").show();
+            userLoggedIn = false;
+            deleteCookie("userId");
+            alert("Delete");
+        }
+
+    }
+
 </script>
 
 <div id="nav">

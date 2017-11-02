@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // handles auto-complete data request from request.js
-router.post('/',
+router.get('/',
 	function (req, res) {
 		console.log('auto-complete');
 

@@ -16,13 +16,8 @@
 
         function init() {
 
-            var userId = getCookie("userId");
-
-            if(!userId){
-                window.location.href = '/index.html';
-			}
-
             $("#nag-container").load("/nag-bar.html");
+
             $('#for-job').addClass('disabled');
             $('#for-renting').addClass('disabled');
         }
