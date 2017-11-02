@@ -268,7 +268,8 @@
                	if(temp){
 	                if(image1!==null){
 	                	var elem1 = createImage(image1, 'img1');
-	                	$("#image-container").append(elem1);
+	                	$("#image-container").append("<div id='imageContainer1' class='imageButtonOverlay'></div>>");
+	                	$("#imageContainer1").append(elem1);
 	                }	
 	                if(image2!==null){
 	                	var elem2 = createImage(image2, 'img2');
@@ -494,6 +495,8 @@
 
     <!--<input type="file" name="imgUploader" id="fileup" multiple required>-->
     <br/>
+
+
 
 
     <button onclick="editPost()" id="edit-button" type="submit" >Edit</button>
