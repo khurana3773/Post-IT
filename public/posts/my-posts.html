@@ -346,9 +346,10 @@
             $.post("/edit-post", postJSON, function (result) {
                 if(result === "OK"){
                     // reload posts after edit
+                    //clearAllPosts();
+                    //requestPosts();
 
-                    clearAllPosts();
-                    requestPosts();
+                    updatePostFromList(newPost);
                 }
             });
         }
@@ -359,9 +360,13 @@
 
         function updatePostFromList(postJSON) {
             let id = postJSON._id;
+            removePostFromView(id);
+            loadPostToList(postJSON);
+            /**
+            let id = postJSON._id;
 
             $("#"+id+"title").text(postJSON.title);
-            $("#"+id+"about").text(postJSON.about);
+            $("#"+id+"about").text(postJSON.about);*/
         }
 
         function loadPostToList(postJSON) {
