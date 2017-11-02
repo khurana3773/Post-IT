@@ -19,8 +19,8 @@ function randomValueHex (len) {
         .slice(0,len).toUpperCase();   // return required number of characters
 }
 
-function sendCodeToEmail(email){
-    let code = generateCode();
+function sendCodeToEmail(email, code){
+
     var mailOptions = {
         from: 'postit151@gmail.com',
         to: email,
@@ -43,3 +43,4 @@ function generateCode() {
 
 module.exports.sendCodeToEmail = sendCodeToEmail;
 module.exports.randomValueHex = randomValueHex;
+module.exports.generateCode = generateCode;

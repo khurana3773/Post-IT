@@ -72,8 +72,6 @@ exports.upload = (req, res) => {
 	var counter = 0;
 	var img = [];
 
-	console.log(req.files);
-
 	// test for now
 	var userId = req.cookies.userId; //"123";
 	// end

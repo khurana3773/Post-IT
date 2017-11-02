@@ -5,82 +5,56 @@
     <script src="../js/jquery.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css">
     <script src="../js/jquery-ui.min.js"></script>
-    <script src="../js/drag-photos.js"></script>
+
     <script src="../util/response.js"></script>
     <script src="../util/post.js"></script>
-    <script src="Scripts/jquery-3.1.1.min.js"></script>
- 	<script src="Scripts/jquery.form.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="selling-post.css">
 	<script>
 
-		/*$(init);
+		var count = 1;
 
-		function init() {
-
-		    timestamp();
-        } */
-
-        //function initImageUpLoad() {
-		$(document).ready(function (){
-            var userId = getCookie("userId");
-
-            if(!userId){
-                window.location.href = '/index.html';
-            }
-
-            var options = {
-                beforeSubmit: showRequest,  // pre-submit callback
-                success: showResponse  // post-submit callback
+        $(document).ready(function () {
+            var ignoreDrag = function(e) {
+                var event = typeof e.originalEvent != 'undefined' ? e.originalEvent : e;
+                if (event.stopPropagation) {
+                    event.stopPropagation();
+                }
+                if (event.preventDefault) {
+                    event.preventDefault();
+                }
             };
-			
-            holder.ondragover = holder.ondragenter = function(evt) {
-      		  //evt.preventDefault();
-      		};
+            $("#holder").bind('dragover', ignoreDrag).bind('dragenter', ignoreDrag).bind('drop', function(e){
+                var holder = this;
+                e = (e&&e.originalEvent?e.originalEvent:window.event) || e;
+                ignoreDrag(e);
+                var files = (e.files||e.dataTransfer.files);
+                var s = "";
+                for (var i = 0; i < files.length; i++) {
+                    (function(i){
+                        var reader = new FileReader();
 
-      		holder.ondrop = function(evt) {
-      		  // pretty simple -- but not for IE :(
-      		  file.files = evt.dataTransfer.files;
-      		  //evt.preventDefault();
-      		};
-      		
-            // bind to the form's submit event
-            $('#upload').submit(function () {
-                $(this).ajaxSubmit(options);
-                // always return false to prevent standard browser submit and page navigation
+                        reader.onload = function (event) {
+                            if(count === 4){
+                                alert("Images limit is 3!");
+                                return;
+							}
+
+                            let img = $("<img/>");
+                            img.attr('id', 'img'+count);
+                            img.attr("src", event.target.result);
+                            $("#photo-holder").append(img);
+
+							$("#img-"+count).val(event.target.result);
+							count += 1;
+
+                        };
+                        reader.readAsDataURL(files[i]);
+                    })(i);
+                }
+
                 return false;
             });
         });
-        
-        // pre-submit callback
-        function showRequest(formData, jqForm, options) {
-            alert('Uploading is starting.');
-            return true;
-        }
-
-        // post-submit callback
-        function showResponse(responseText, statusText, xhr, $form) {
-            alert('status: ' + statusText + '\n\nresponseText: \n' + responseText );
-        }
-
-        function checkSize(num){
-            if(file.files.length > num ){
-                alert("Max " + num+" three images allowed!");
-                return false;
-            }
-            timestamp();
-            return true;
-		}
-        function timestamp() {
-		    var time = new Date().getTime();
-
-		    $("#timestamp").val(time);
-
-        }
-		/*function photosLessThanFive(){
-            return checkSize(5);
-		}
-
-		*/
 
     </script>
 </head>
@@ -90,7 +64,7 @@
 
 <h1 class="ui-state-default"><a href="/">Post It</a></h1>
 <div>
-	<form id="upload" method="post" action="/add-post-selling">
+	<form id="upload" method="post" action= "/add-post-selling">
 	    <label for="title">Product Name</label>
         <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">
 	    <input placeholder="title" type="text" id="title" name="title" required>
@@ -121,16 +95,18 @@
         <br>
 		<label>Product Images</label>
 		<br/>
-		<ul>
+		<ul id="photo-holder">
 			<div id="holder">
 				<p>Drag Here</p>
 			</div>
 		</ul>
 
-		<input type="file" name="file" id="file" multiple>
-		<br/>
 
+		<input name="img-1" id="img-1" style="display: none;">
+		<input name="img-2" id="img-2" style="display: none;">
+		<input name="img-3" id="img-3" style="display: none;">
 
+		<input type="file" name="file" id="file" multiple><br/>
 		<button type="submit">Post</button>
 	</form>
 </div> 

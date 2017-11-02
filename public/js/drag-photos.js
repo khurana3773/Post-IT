@@ -52,7 +52,7 @@ function init(){
 }
 
 function appendImage(imageChild){
-    var parent = document.getElementById("photo-holder");
+    var parent = document.getElementById("holder");
     parent.appendChild(imageChild);
 
 }

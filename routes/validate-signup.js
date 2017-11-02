@@ -27,6 +27,7 @@ router.post('/',
 
 		console.log('sess.studentId on signup page is ' + session.studentId);
 
+		var code = handle.generateCode();
 		userCode = code;
 		let userJSON = {
 			"firstName": firstName,
@@ -64,7 +65,7 @@ router.post('/',
                         console.log(e);
                     }else{
                         console.log('inside 3');
-                        handle.sendCodeToEmail(emailAddress);
+                        handle.sendCodeToEmail(emailAddress, code);
                         res.redirect("/validation.html");
                     }
                 });

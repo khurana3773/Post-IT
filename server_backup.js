@@ -9,14 +9,14 @@ const multer = require('multer');
 const querystring = require('querystring');
 const handle = require('./routes/handle');
 const monk = require('monk');
-var db = monk("mongodb://"+"masterroot"+":"+"masterroot"+"@ds125335.mlab.com:25335/post_it");
+var db = monk("mongodb://localhost:27017/post_it");
 
 const Uploadaws = require('./routes/imageupload');
 const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
 console.log(Uploadaws.upload);
 
-console.log("insode module export");
+console.log("inside module export");
 
 
 // Create the app.

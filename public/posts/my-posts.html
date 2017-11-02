@@ -206,8 +206,13 @@
             $.get("/get-posts", {userId: userId}, function (result) {
                 postsJSON = JSON.parse(result);
                 // append to list
+
                 for(let i = 0; i < postsJSON.length; i++){
-                    loadPostToList(postsJSON[i]);
+                    let postJSON = postsJSON[i];
+                    if(postJSON !== null){
+
+                        loadPostToList(postsJSON[i]);
+                    }
                 }
             });
         }
@@ -231,7 +236,7 @@
 
         function enableEditPost(postJSON) {
             if(canEdit){
-            	console.log(postJSON);
+
                 let title = postJSON.title;
                 let about = postJSON.about;
 
@@ -244,9 +249,10 @@
 
                 let price = postJSON.price;
                 let type = postJSON.type;
-                let image1 = postJSON.image1;
-                let image2 = postJSON.image2;
-                let image3 = postJSON.image3;
+                let image1 = postJSON.img1;
+                let image2 = postJSON.img2;
+                let image3 = postJSON.img3;
+
                 $("#title").val(title);
                 $("#about").val(about);
 
@@ -261,17 +267,17 @@
            		var temp= !document.getElementsByClassName("imgclass").length;
                	if(temp){
 	                if(image1!==null){
-	                	var elem1 = createImage(image1);
-	                	$("#divclass").append(elem1);
+	                	var elem1 = createImage(image1, 'img1');
+	                	$("#image-container").append(elem1);
 	                }	
 	                if(image2!==null){
-	                	var elem2 = createImage(image2);
-	                	$("#divclass").append(elem2);
+	                	var elem2 = createImage(image2, 'img2');
+	                	$("#image-container").append(elem2);
 	
 	                }	
 	                if(image3!==null){
-	                	var elem3 = createImage(image3);
-	                	$("#divclass").append(elem3);
+	                	var elem3 = createImage(image3, 'img3');
+	                	$("#image-container").append(elem3);
 	                }	
                	}
                 postToBeEdit = postJSON;
@@ -281,8 +287,10 @@
             }
         }
 
-        function createImage(src) {
+
+        function createImage(src, id) {
             var anImage = $("<img>");
+            anImage.attr('id', id);
             anImage.attr("class", "imgclass");
             anImage.attr("src", src);
             return anImage;
@@ -291,10 +299,7 @@
         function editPost() {
             $("#edit-form").hide();
             $("#overLay").hide();
-
-
             let userId = getCookie("userId");
-
             let title = $("#title").val();
             let about = $("#about").val();
 
@@ -313,6 +318,10 @@
                 "state": state
             };
 
+            let image1 = postToBeEdit.img1;
+            let image2 = postToBeEdit.img2;
+            let image3 = postToBeEdit.img3;
+
             var newPost = {
                 "_id": postToBeEdit._id,
                 "userId": userId,
@@ -321,7 +330,10 @@
                 "price":price,
                 "type": type,
                 "timestamp": new Date().getTime(),
-                "location":location
+                "location":location,
+                "img1": image1,
+                "img2": image2,
+                "img3": image3
             };
 
             let oldPost = postToBeEdit;
@@ -331,12 +343,12 @@
                 newPost
             };
 
-            updatePostFromList(newPost);
-
             $.post("/edit-post", postJSON, function (result) {
-                if(result==="OK"){
+                if(result === "OK"){
                     // reload posts after edit
-                    //requestPost();
+
+                    clearAllPosts();
+                    requestPosts();
                 }
             });
         }
@@ -418,6 +430,9 @@
             }
         }
 
+        function clearAllPosts() {
+            $("#my-posts-container").empty();
+        }
     </script>
 
 </head>
@@ -470,7 +485,7 @@
     City:<input id="city" name="city" type="text" maxlength="20">
     ZipCode<input id="zip" name="zip" type="text" size="5">
     State: <input id="state" name="state" type="text" size="2">
-    Images:<div id="divclass"></div>
+    Images:<div id="image-container"></div>
 
     <!--<input type="file" name="imgUploader" id="fileup" multiple required>-->
     <br/>

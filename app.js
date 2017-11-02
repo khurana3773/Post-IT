@@ -97,10 +97,10 @@ var valid_user="xxxx";
 //app.set('view engine', 'jade');
 
 // Use the bodyParser() middleware for all routes.
-app.use(bodyParser());
 app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(bodyParser({limit: '50mb'}));
 
 app.use('/', index);
 app.use('/add-post-job', add_post_job);

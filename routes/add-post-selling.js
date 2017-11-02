@@ -10,9 +10,13 @@ router.post('/',
 
         console.log("add-post-selling");
 
+
 		var userId = req.cookies.userId;
 		// end
 		var title = req.param("title");
+		var img1 = req.param("img-1");
+		var img2 = req.param("img-2");
+		var img3 = req.param("img-3");
 
 		var about = req.param("about");
 		var price = req.param("price");
@@ -33,7 +37,10 @@ router.post('/',
 			"price":price,
 			"type": type,
 			"timestamp": timestamp,
-			"location":location
+			"location":location,
+			"img1": img1,
+			"img2": img2,
+			"img3": img3
 		};
 
 		var db = req.db;
