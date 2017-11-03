@@ -18,7 +18,7 @@ router.post('/',
 		var userName = req.param("username");
 		var password = req.param("password");
 
-        session = req.session;
+    session = req.session;
 		session.firstName = firstName;
 		session.lastName = lastName;
 		session.studentId = studentId;

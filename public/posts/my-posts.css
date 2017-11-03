@@ -9,14 +9,6 @@ body{
 
 }
 
-/*#labeltag{*/
-    /*text-emphasis: triangle #D55;*/
-    /*font-weight: bold;*/
-    /*!*font-style: oblique;*!*/
-    /*!*padding: 5px;*!*/
-/*}*/
-
-
 .container{
     height: auto;
     width: auto;
@@ -24,51 +16,58 @@ body{
     background-color: #dedede;
 }
 
-/*#title{*/
-    /*color: #8a97a0;*/
-    /*text-align: center;*/
-    /*font-size: 15px;*/
-    /*padding: 5px 5px;*/
-    /*background: #f4f7f8;*/
-    /*border-radius: 8px;*/
-    /*margin: 2px;*/
-    /*max-width: 250px;*/
-    /*resize: none;*/
-
-/*}*/
+.title{
+    color: #384047;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 400;
+    padding: 10px;
+}
 
 .edit{
     background: #5190af;
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 10px 18px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
+    cursor:pointer;
+    margin: auto;
+}
+
+.edit:hover{
+  background: #284857;
 }
 
 .delete{
     float: right;
-    background: red;
+    background: #ff6666;
     border: none;
     color: white;
-    padding: 15px 32px;
+    /*padding: 15px 32px; */
+    padding: 10px 15px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
+    cursor:pointer;
+    margin: auto;
 }
+
+.delete:hover
+{
+  background:red;
+}
+
 .about{
-    color: #8a97a0;
-    font-size: 15px;
+    color: #73818c;  /*8a97a0 */
+    background-color: #e8eeef;
+    font-size: 16px;
+    font-weight: 400;
     margin: 2px;
-    max-width: 250px;
-    padding: 5px 5px;
-    background: #f4f7f8;
-    border-radius: 8px;
-    resize: none;
-    text-align: center;
+    padding: 15px;
 }
 
 
@@ -215,12 +214,11 @@ body{
 }
 
 #edit-form{
-    border-radius:10px;
     z-index: 10;
     background: #FFFFFF;
-    max-width: 550px;
+    max-width: 360px;
     margin: 0 auto 100px;
-    padding: 15px;
+    padding: 45px;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     position: absolute;
@@ -231,9 +229,15 @@ body{
 
 #my-posts-container {
     display: grid;
+    width: 800px;
+    border-style:solid;
+    border-style: outset;
+    border-radius: 8px;
     grid-gap: 10px;
     background-color: #ffffff;
     color: #444;
+    margin:auto;
+
 }
 
 #title-page{

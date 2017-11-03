@@ -7,10 +7,10 @@
     <title>Title</title>
     <script src="../js/jquery.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="my-posts.css">
     <script src="../js/jquery-ui.min.js"></script>
     <script src="../util/util.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="my-posts.css" > </link>
 
     <script>
         var canDelete = false;
@@ -123,21 +123,21 @@
                         $("#imageContainer1").append("<div class='buttonDelete'><a href='#'> Delete </a></div>");
 
                         $("buttonDelete").css("","")
-	                }	
+	                }
 	                if(image2!==null){
 	                	var elem2 = createImage(image2, 'img2');
 	                	$("#image-container").append(elem2);
-	
-	                }	
+
+	                }
 	                if(image3!==null){
 	                	var elem3 = createImage(image3, 'img3');
 	                	$("#image-container").append(elem3);
-	                }	
+	                }
                	}
                 postToBeEdit = postJSON;
                 enablePopUp();
                 enableRemovePopUp();
-               
+
             }
         }
 
