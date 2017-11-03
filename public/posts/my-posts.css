@@ -160,6 +160,7 @@ display: inline-block;
     width: 800px;
     border-style:solid;
     border-style: outset;
+    border-radius: 8px;
     grid-gap: 10px;
     background-color: #ffffff;
     color: #444;
