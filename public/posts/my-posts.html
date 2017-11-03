@@ -13,285 +13,365 @@
 
 
     <script>
-        var canDelete = false;
-        var postsJSON;
-        var canEdit = false;
-        var postToBeEdit;
-        $(init);
 
-        function init() {
+        $(document).ready(function () {
 
-            var userId = getCookie("userId");
+            var deleteImg1=false;
+            var deleteImg2=false;
+            var deleteImg3=false;
 
-            if(!userId){
-                window.location.href = '/index.html';
+            var canDelete = false;
+            var postsJSON;
+            var canEdit = false;
+            var postToBeEdit;
+            $(init);
+
+            function init() {
+
+                var userId = getCookie("userId");
+
+                if (!userId) {
+                    window.location.href = '/index.html';
+                }
+
+                $("#title-dialog").dialog({
+                    autoOpen: false, modal: true, show: "blind", hide: "blind"
+                });
+
+                $("#title-page").click(function () {
+                    $("#title-dialog").dialog("open");
+                });
+
+                $("#edit-form").hide();
+                $("#overLay").hide();
+
+                requestPosts();
+
             }
 
-            $("#title-dialog").dialog({
-                autoOpen : false, modal : true, show : "blind", hide : "blind"
-            });
 
-            $("#title-page").click(function () {
-                $("#title-dialog").dialog("open");
-            });
+            function requestPosts() {
+                var userId = getCookie("userId");
 
-            $("#edit-form").hide();
-            $("#overLay").hide();
+                $.get("/get-posts", {userId: userId}, function (result) {
+                    postsJSON = JSON.parse(result);
+                    // append to list
 
-            requestPosts();
+                    for (let i = 0; i < postsJSON.length; i++) {
+                        let postJSON = postsJSON[i];
+                        if (postJSON !== null) {
 
-        }
-
-
-        function requestPosts() {
-            var userId = getCookie("userId");
-
-            $.get("/get-posts", {userId: userId}, function (result) {
-                postsJSON = JSON.parse(result);
-                // append to list
-
-                for(let i = 0; i < postsJSON.length; i++){
-                    let postJSON = postsJSON[i];
-                    if(postJSON !== null){
-
-                        loadPostToList(postsJSON[i]);
-                    }
-                }
-            });
-        }
-
-        function requestPost(id) {
-            $.get("/get-post", {_id: id}, function (result) {
-                let post = JSON.parse(result);
-                loadPostToList(post);
-            });
-        }
-
-        function deletePost(postJSON) {
-            if(canDelete) {
-                $.post("/delete-post", {json: postJSON}, function (result) {
-                    if(result === "OK"){
-                        removePostFromView(postJSON._id);
+                            loadPostToList(postsJSON[i]);
+                        }
                     }
                 });
             }
-        }
 
-        function enableEditPost(postJSON) {
-            if(canEdit){
-
-                let title = postJSON.title;
-                let about = postJSON.about;
-
-                let location = postJSON.location;
-
-                let street = location.street;
-                let city = location.city;
-                let zip = location.zip;
-                let state= location.state;
-
-                let price = postJSON.price;
-                let type = postJSON.type;
-                let image1 = postJSON.img1;
-                let image2 = postJSON.img2;
-                let image3 = postJSON.img3;
-
-                $("#title").val(title);
-                $("#about").val(about);
-
-                $("#street").val(street);
-                $("#city").val(city);
-                $("#zip").val(zip);
-                $("#state").val(state);
-
-                $("#price").val(price);
-
-                $("#type").val(type);
-           		var temp= !document.getElementsByClassName("imgclass").length;
-               	if(temp){
-	                if(image1!==null){
-	                	var elem1 = createImage(image1, 'img1');
-	                	$("#image-container").append("<div id='imageContainer1' class='imageOverlayContainer'></div>");
-
-	                	$("#imageContainer1").css("float","left");
-                        $("#imageContainer1").css("width","111px");
-
-
-
-	                	$("#imageContainer1").append(elem1);
-                        $("#imageContainer1").append("<div class='overlay'></div>");
-                        $("#imageContainer1").append("<div class='buttonDelete'><a href='#'> Delete </a></div>");
-
-                        $("buttonDelete").css("","")
-	                }
-	                if(image2!==null){
-	                	var elem2 = createImage(image2, 'img2');
-	                	$("#image-container").append(elem2);
-
-	                }
-	                if(image3!==null){
-	                	var elem3 = createImage(image3, 'img3');
-	                	$("#image-container").append(elem3);
-	                }
-               	}
-                postToBeEdit = postJSON;
-                enablePopUp();
-                enableRemovePopUp();
-
+            function requestPost(id) {
+                $.get("/get-post", {_id: id}, function (result) {
+                    let post = JSON.parse(result);
+                    loadPostToList(post);
+                });
             }
-        }
 
-
-        function createImage(src, id) {
-            var anImage = $("<img>");
-            anImage.attr('id', id);
-            anImage.attr("class", "imgclass");
-            anImage.attr("src", src);
-            return anImage;
-        }
-
-        function editPost() {
-            $("#edit-form").hide();
-            $("#overLay").hide();
-            let userId = getCookie("userId");
-            let title = $("#title").val();
-            let about = $("#about").val();
-
-            let street = $("#street").val();
-            let city = $("#city").val();
-            let zip = $("#zip").val();
-            let state = $("#state").val();
-            let price = $("#price").val();
-
-            let type = $("#type").val();
-
-            var location = {
-                "street": street,
-                "city": city,
-                "zip": zip,
-                "state": state
-            };
-
-            let image1 = postToBeEdit.img1;
-            let image2 = postToBeEdit.img2;
-            let image3 = postToBeEdit.img3;
-
-            var newPost = {
-                "_id": postToBeEdit._id,
-                "userId": userId,
-                "title": title,
-                "about":about,
-                "price":price,
-                "type": type,
-                "timestamp": new Date().getTime(),
-                "location":location,
-                "img1": image1,
-                "img2": image2,
-                "img3": image3
-            };
-
-            let oldPost = postToBeEdit;
-
-            let postJSON = {
-                oldPost,
-                newPost
-            };
-
-            $.post("/edit-post", postJSON, function (result) {
-                if(result === "OK"){
-                    // reload posts after edit
-                    //clearAllPosts();
-                    //requestPosts();
-
-                    updatePostFromList(newPost);
+            function deletePost(postJSON) {
+                if (canDelete) {
+                    $.post("/delete-post", {json: postJSON}, function (result) {
+                        if (result === "OK") {
+                            removePostFromView(postJSON._id);
+                        }
+                    });
                 }
-            });
-        }
+            }
 
-        function removePostFromView(id) {
-            $("#"+id+"div").remove();
-        }
+            function enableEditPost(postJSON) {
+                if (canEdit) {
+                    $("#image-container").empty();
+                    deleteImg1 = false;
+                    deleteImg2 = false;
+                    deleteImg3 = false;
 
-        function updatePostFromList(postJSON) {
-            let id = postJSON._id;
-            removePostFromView(id);
-            loadPostToList(postJSON);
-            /**
-            let id = postJSON._id;
 
-            $("#"+id+"title").text(postJSON.title);
-            $("#"+id+"about").text(postJSON.about);*/
-        }
+                    let title = postJSON.title;
+                    let about = postJSON.about;
 
-        function loadPostToList(postJSON) {
+                    let location = postJSON.location;
 
-            var div = $("<div></div>");
-            div.attr("class", "container");
-            div.attr("id", postJSON._id+"div");
+                    let street = location.street;
+                    let city = location.city;
+                    let zip = location.zip;
+                    let state = location.state;
 
-            var headline = $("<h></h>");
-            headline.attr("class", "title");
-            headline.attr("id", postJSON._id+"title");
-            headline.text(postJSON.title);
+                    let price = postJSON.price;
+                    let type = postJSON.type;
+                    let image1 = postJSON.img1;
+                    let image2 = postJSON.img2;
+                    let image3 = postJSON.img3;
 
-            var paragraph = $("<p></p>");
-            paragraph.attr("class", "about");
-            paragraph.attr("id", postJSON._id+"about");
-            paragraph.text(postJSON.about);
+                    $("#title").val(title);
+                    $("#about").val(about);
 
-            var deleteButton = $("<button></button>");
-            deleteButton.attr("class", "delete");
-            deleteButton.on("click", function () {
-                canDelete = true;
-                deletePost(postJSON);
-            });
-            deleteButton.text("delete me");
+                    $("#street").val(street);
+                    $("#city").val(city);
+                    $("#zip").val(zip);
+                    $("#state").val(state);
 
-            var editButton = $("<button></button>");
+                    $("#price").val(price);
 
-            editButton.attr("class", "edit");
-            editButton.text("edit me");
-            editButton.on("click", function() {
-                canEdit = true;
-                enableEditPost(postJSON);
-            });
+                    $("#type").val(type);
+                    var temp = !document.getElementsByClassName("imgclass").length;
+                    if (temp) {
+                        if (image1 != '') {
 
-            div.append(headline);
-            div.append(paragraph);
-            div.append(deleteButton);
-            div.append(editButton);
+                            var elem1 = createImage(image1, 'img1');
 
-            $("#my-posts-container").append(div);
+                            $("#image-container").append("<div id='imageContainer1' class='imageOverlayContainer'></div>");
+                            $("#imageContainer1").append(elem1);
+                            $("#imageContainer1").css("float", "left");
+                            $("#imageContainer1").css("width", "33%");
 
-        }
 
-        /**
-         * Enable to hide pop up
-         */
-        function enablePopUp() {
+                            $("#imageContainer1").append("<div class='overlay'></div>");
+                            $("#imageContainer1").append("<div class='buttonDelete'><a id='hideLink1' href='#'> Delete </a></div>");
 
-            $("#edit-form").show();
-            $("#overLay").show();
 
-        }
+                        }
+                        if (image2 != '') {
 
-        /**
-         * Enable to hide pop up
-         */
-        function enableRemovePopUp() {
-            let overlay = document.getElementById("overLay");
-            /**
-             * Disable pop up on background
-             */
-            overlay.onclick = function () {
+                            var elem2 = createImage(image2, 'img2');
+                            $("#image-container").append("<div id='imageContainer2' class='imageOverlayContainer'></div>");
+                            $("#imageContainer2").append(elem2);
+                            $("#imageContainer2").css("float", "left");
+                            $("#imageContainer2").css("width", "33%");
+
+
+                            $("#imageContainer2").append("<div class='overlay'></div>");
+                            $("#imageContainer2").append("<div class='buttonDelete'><a id='hideLink2' href='#'> Delete </a></div>");
+
+
+                        }
+                        if (image3 != '') {
+                            var elem3 = createImage(image3, 'img3');
+
+                            $("#image-container").append("<div id='image-container3' class='imageOverlayContainer'></div>");
+                            $("#image-container3").append(elem3);
+
+                            $("#image-container3").css("float", "left");
+                            $("#image-container3").css("width", "33%");
+
+
+                            $("#image-container3").append("<div class='overlay'></div>");
+                            $("#image-container3").append("<div class='buttonDelete'><a id='hideLink3' href='#'> Delete </a></div>");
+
+
+                        }
+                    }
+                    postToBeEdit = postJSON;
+                    enablePopUp();
+                    enableRemovePopUp();
+
+                }
+            }
+
+
+            function createImage(src, id) {
+                var anImage = $("<img>");
+                anImage.attr('id', id);
+                anImage.attr("class", "imgclass");
+                anImage.attr("src", src);
+                return anImage;
+            }
+
+            function editPost() {
                 $("#edit-form").hide();
                 $("#overLay").hide();
-            }
-        }
+                let userId = getCookie("userId");
+                let title = $("#title").val();
+                let about = $("#about").val();
 
-        function clearAllPosts() {
-            $("#my-posts-container").empty();
-        }
+                let street = $("#street").val();
+                let city = $("#city").val();
+                let zip = $("#zip").val();
+                let state = $("#state").val();
+                let price = $("#price").val();
+
+                let type = $("#type").val();
+
+                var location = {
+                    "street": street,
+                    "city": city,
+                    "zip": zip,
+                    "state": state
+                };
+                let image1 = postToBeEdit.img1;
+                let image2 = postToBeEdit.img2;
+                let image3 = postToBeEdit.img3;
+                if(deleteImg1)
+                {
+                    image1='';
+                }
+                if(deleteImg2)
+                {
+                    image2='';
+                }
+                if(deleteImg3)
+                {
+                    image3='';
+                }
+
+
+                var newPost = {
+                    "_id": postToBeEdit._id,
+                    "userId": userId,
+                    "title": title,
+                    "about": about,
+                    "price": price,
+                    "type": type,
+                    "timestamp": new Date().getTime(),
+                    "location": location,
+                    "img1": image1,
+                    "img2": image2,
+                    "img3": image3
+                };
+
+                let oldPost = postToBeEdit;
+
+                let postJSON = {
+                    oldPost,
+                    newPost
+                };
+
+                $.post("/edit-post", postJSON, function (result) {
+                    if (result === "OK") {
+                        // reload posts after edit
+                        //clearAllPosts();
+                        //requestPosts();
+
+                        updatePostFromList(newPost);
+                    }
+                });
+            }
+
+            function removePostFromView(id) {
+                $("#" + id + "div").remove();
+            }
+
+            function updatePostFromList(postJSON) {
+                let id = postJSON._id;
+                removePostFromView(id);
+                loadPostToList(postJSON);
+                /**
+                 let id = postJSON._id;
+
+                 $("#"+id+"title").text(postJSON.title);
+                 $("#"+id+"about").text(postJSON.about);*/
+            }
+
+            function loadPostToList(postJSON) {
+
+                var div = $("<div></div>");
+                div.attr("class", "container");
+                div.attr("id", postJSON._id + "div");
+
+                var headline = $("<h></h>");
+                headline.attr("class", "title");
+                headline.attr("id", postJSON._id + "title");
+                headline.text(postJSON.title);
+
+                var paragraph = $("<p></p>");
+                paragraph.attr("class", "about");
+                paragraph.attr("id", postJSON._id + "about");
+                paragraph.text(postJSON.about);
+
+                var deleteButton = $("<button></button>");
+                deleteButton.attr("class", "delete");
+                deleteButton.on("click", function () {
+                    canDelete = true;
+                    deletePost(postJSON);
+                });
+                deleteButton.text("delete me");
+
+                var editButton = $("<button></button>");
+
+                editButton.attr("class", "edit");
+                editButton.text("edit me");
+                editButton.on("click", function () {
+                    canEdit = true;
+                    enableEditPost(postJSON);
+                });
+
+                div.append(headline);
+                div.append(paragraph);
+                div.append(deleteButton);
+                div.append(editButton);
+
+                $("#my-posts-container").append(div);
+
+            }
+
+            /**
+             * Enable to hide pop up
+             */
+            function enablePopUp() {
+
+                $("#edit-form").show();
+                $("#overLay").show();
+
+            }
+
+            /**
+             * Enable to hide pop up
+             */
+            function enableRemovePopUp() {
+                let overlay = document.getElementById("overLay");
+                /**
+                 * Disable pop up on background
+                 */
+                overlay.onclick = function () {
+                    $("#edit-form").hide();
+                    $("#overLay").hide();
+                }
+            }
+
+            function clearAllPosts() {
+                $("#my-posts-container").empty();
+            }
+
+            /*$("hideLink").click(function () {
+                console.log("called button");
+                $(this).closest(".imgclass").hide();
+
+            });*/
+
+
+
+            $(document).on("click", "#hideLink1", function() {
+                $(this).closest(".imageOverlayContainer").hide();
+                //postToBeEdit.img1 = '';
+                deleteImg1=true;
+
+            });
+
+            $(document).on("click", "#hideLink2", function() {
+                $(this).closest(".imageOverlayContainer").hide();
+                //postToBeEdit.img2 = '';
+                deleteImg2=true;
+
+            });
+
+            $(document).on("click", "#hideLink3", function() {
+                $(this).closest(".imageOverlayContainer").hide();
+                //postToBeEdit.img3 = '';
+                deleteImg3=true;
+            });
+
+            $(document).on("click", "#edit-button", function() {
+               editPost();
+            });
+
+
+
+        });
     </script>
 
 </head>
@@ -323,18 +403,18 @@
 
     <div class="wrapperEdit">
 
-        <label class ="labeltag" >Product Name</label>
+        <label class ="labeltag" >Product Name :</label>
        <!-- <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">-->
 
-        <input placeholder="title" type="text" class="EditInput" name="title" required>
+        <input id="title" placeholder="title" type="text" class="EditInput" name="title" required>
 
-        <label class ="labeltag">Price(USD):</label>
+        <label class ="labeltag">Price(USD) :</label>
         <input class="EditInput" name="price" type="text" maxlength="20" placeholder="input cost">
 
 
 
-        <label class ="labeltag" for="category-selector">Category:</label>
-        <select name="type" class="SelectInput" id="category-selector">
+        <label class ="labeltag" for="type">Category:</label>
+        <select name="type" class="SelectInput" id="type">
             <option value="free-stuff">Free Stuff</option>
             <option value="sports">Sports, Leisure and Games</option>
             <option value="home-and-garden">Home and Garden</option>
@@ -343,23 +423,18 @@
             <option value="fashion">Fashion</option>
             <option value="other">Other</option>
         </select>
-        <div>
-
-        </div>
-        <div>
-
-        </div>
 
 
 
-        <label class ="labeltag" >Location</label><div></div> <div></div> <div></div>
-        <label class ="labeltag"> Street:</label><input class="EditInput" id="street" name="street" type="text" maxlength="20">
-        <label class ="labeltag">  City:</label><input class="EditInput" id="city" name="city" type="text" maxlength="20">
-        <label class="labeltag">  ZipCode:</label><input class="EditInput" id="zip" name="zip" type="text" size="5">
-        <label class ="labeltag"> State:</label> <input class="EditInput" id="state" name="state" type="text" size="2">
+
+        <label class ="labeltag"  >Location :-</label><div></div> <div></div> <div></div>
+        <label class ="labeltag"> Street :</label><input class="EditInput" id="street" name="street" type="text" maxlength="20">
+        <label class ="labeltag" >  City :</label><input class="EditInput" id="city" name="city" type="text" maxlength="20">
+        <label class="labeltag" >  ZipCode :</label><input class="EditInput" id="zip" name="zip" type="text" size="5">
+        <label class ="labeltag" > State :</label> <input class="EditInput" id="state" name="state" type="text" size="2">
 
         <label class ="labeltag" id="ProductDescription" >Product Description</label>
-        <textarea  id="ProductDescriptionInput" name="about" placeholder="Enter your description" required></textarea>
+        <textarea  id="about" name="about" placeholder="Enter your description" required></textarea>
 
 
 
@@ -374,7 +449,7 @@
 
 
 
-    <button onclick="editPost()" id="edit-button" type="submit" >Edit</button>
+    <button  id="edit-button" type="submit" >Edit</button>
 </div>
 
 
