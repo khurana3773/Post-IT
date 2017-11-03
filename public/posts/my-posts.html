@@ -10,308 +10,7 @@
     <script src="../js/jquery-ui.min.js"></script>
     <script src="../util/util.js"></script>
 
-    <style>
-        ul#my-posts{
-            list-style: none;
-        }
-
-        body{
-            background-color: #ffffff;
-            font-family: Roboto, sans-serif;
-
-        }
-        
-        #labeltag{
-               text-emphasis: triangle #D55;
-               font-weight: bold;
-               font-style: oblique;
-               padding: 5px;
-        }
-        
-        #alignleft{
-               float:left;
-               padding-left: 5px;
-               margin-top: 5px;
-        }
-        .container{
-            height: auto;
-            width: auto;
-            overflow: hidden;
-            background-color: #dedede;
-        }
-
-        #title{
-            color: #8a97a0;
-            text-align: center;
-            font-size: 15px;
-            padding: 5px 5px;
-            background: #f4f7f8;
-                                border-radius: 8px;
-            margin: 2px;
-            max-width: 250px;            
-            resize: none;
-
-        }
-
-        .edit{
-            background: #5190af;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-        }
-
-        .delete{
-            float: right;
-            background: red;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-        }
-        .about{
-            color: #8a97a0;
-            font-size: 15px;
-            margin: 2px;
-            max-width: 250px;
-            padding: 5px 5px;
-            background: #f4f7f8;
-            border-radius: 8px;
-            resize: none;
-            text-align: center;
-        }
-
-
-        #overLay {
-            display: block;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background-color: #707070;
-            opacity: 0.7;
-            z-index: 9;
-            left: 0;
-            top: 0;
-        }
-
-        #timestamp{
-
-        }
-
-        #about{
-            max-width: 300px;
-            padding: 5px 5px;
-            background: #f4f7f8;
-            border-radius: 8px;
-            resize: none;
-            background: #f4f7f8;
-                                border-radius: 8px;
-                                color: #8a97a0;
-                                font-size: 15px;
-                                text-align: center;
-        }
-
-        #price{
-               text-align: left;
-               max-width: 30px;
-            padding: 5px 5px;
-            background: #f4f7f8;
-            border-radius: 8px;
-            resize: none;
-            background: #f4f7f8;
-                                border-radius: 8px;
-                                color: #8a97a0;
-                                font-size: 15px;
-
-        }
-                                
-                                #type{
-                                                text-align: center;
-               max-width: 200px;
-            padding: 5px 5px;
-            background: #f4f7f8;
-            border-radius: 8px;
-            resize: none;
-            background: #f4f7f8;
-                                border-radius: 8px;
-                                color: #8a97a0;
-                                font-size: 15px;
-                                                
-                                }
-        #street{
-               text-align: left;
-               max-width: 200px;
-            padding: 5px 5px;
-            background: #f4f7f8;
-            border-radius: 8px;
-            resize: none;
-            background: #f4f7f8;
-                                border-radius: 8px;
-                                color: #8a97a0;
-                                font-size: 15px;
-
-        }
-
-        #city{
-               text-align: left;
-               float:left;
-               max-width: 70px;
-            padding: 5px 5px;
-            background: #f4f7f8;
-            border-radius: 8px;
-            resize: none;
-            background: #f4f7f8;
-                                border-radius: 8px;
-                                color: #8a97a0;
-                                font-size: 15px;
-
-        }
-
-        #zip{
-            max-width: 50px;
-            float:left;
-            padding: 5px 5px;
-            background: #f4f7f8;
-            border-radius: 8px;
-            resize: none;
-            background: #f4f7f8;
-                                border-radius: 8px;
-                                color: #8a97a0;
-                                font-size: 15px;
-                               text-align: left;
-
-        }
-
-        #state{
-               text-align: left;
-               max-width: 70px;
-               float:left;
-            padding: 5px 5px;
-            background: #f4f7f8;
-            border-radius: 8px;
-            resize: none;
-            background: #f4f7f8;
-                                border-radius: 8px;
-                                color: #8a97a0;
-                                font-size: 15px;
-
-        }
-        
-        .imgclass{
-			border: 1px solid #ddd; /* Gray border */
-		    border-radius: 4px;  /* Rounded border */
-		    padding: 5px; /* Some padding */
-		    width: 100px; /* Set a small width */
-		    height: 100px; /* Set a small width */
-		    display: inline-block;
-        }
-        
-        .divclass{
-        	text-align:center;
-        	clear:both;
-        }
-
-        #edit-button{
-
-            text-transform: uppercase;
-            outline: 0;
-            background: #5190af;
-            width: 100%;
-            border: 0;
-            padding: 15px;
-            color: #FFFFFF;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        #edit-form{
-               border-radius:10px;
-            z-index: 10;
-            background: #FFFFFF;
-            max-width: 550px;
-            margin: 0 auto 100px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #my-posts-container {
-            display: grid;
-            grid-gap: 10px;
-            background-color: #ffffff;
-            color: #444;
-        }
-
-        #title-page{
-            text-align: center;
-            font-size: 2em;
-        }
-
-        #title-page:hover{
-            color: #52809f;
-        }
-
-        .imageOverlayContainer {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0);
-            transition: background 0.5s ease;
-        }
-
-        img {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            left: 0;
-        }
-
-        .imageOverlayContainer:hover .overlay {
-            display: block;
-            background: rgba(0, 0, 0, .3);
-        }
-
-        .buttonDelete {
-            position: relative;
-            text-align: center;
-            opacity: 0;
-            transition: opacity .35s ease;
-        }
-
-        .buttonDelete a {
-            position: relative;
-            text-align: center;
-            color: white;
-            border: solid 2px white;
-            z-index: 1;
-        }
-
-        .imageOverlayContainer:hover .buttonDelete {
-            opacity: 1;
-        }
-
-
-
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="my-posts.css" > </link>
 
     <script>
         var canDelete = false;
@@ -412,7 +111,7 @@
                	if(temp){
 	                if(image1!==null){
 	                	var elem1 = createImage(image1, 'img1');
-	                	$("#image-container").append("<div id='imageContainer1' class='imageOverlayContainer'></div>>");
+	                	$("#image-container").append("<div id='imageContainer1' class='imageOverlayContainer'></div>");
 
 	                	$("#imageContainer1").css("float","left");
                         $("#imageContainer1").css("width","111px");
@@ -620,32 +319,54 @@
 
 <!--Dynamically hide -->
 <div id = "edit-form">
-    <label id ="labeltag" for="title">Product Name</label><br>
-    <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">
-    <input placeholder="title" type="text" id="title" name="title" required>
-   <br><br>
-    <label id ="labeltag" for="about">Product Description</label><br>
-    <textarea id="about" name="about" placeholder="Enter your description" required></textarea>
-    <br><br>
-    <label id ="labeltag" for="category-selector">Category:</label>
-    <select id="type" name="type" id="category-selector">
-        <option value="free-stuff">Free Stuff</option>
-        <option value="sports">Sports, Leisure and Games</option>
-        <option value="home-and-garden">Home and Garden</option>
-        <option value="entertainment">Movies, Books and Music</option>
-        <option value="electronics">Electronics</option>
-        <option value="fashion">Fashion</option>
-        <option value="other">Other</option>
-    </select>
-                <label id ="labeltag" for="price">Price:</label>
-    $<input id="price" name="price" type="text" maxlength="20" placeholder="input cost"><br><br>
-    <label id ="labeltag" >Location</label><br>
-    <label> Street:</label><input id="street" name="street" type="text" maxlength="20"><br>
-   <label id ="alignleft">  City:</label><input id="city" name="city" type="text" maxlength="20">
-   <label id ="alignleft">  ZipCode:</label><input id="zip" name="zip" type="text" size="5">
-    <label id ="alignleft"> State:</label> <input id="state" name="state" type="text" size="2"><br><br>
-    <label id ="labeltag">Images</label><br>
-    <div id="image-container"></div><br>
+
+
+    <div class="wrapperEdit">
+
+        <label class ="labeltag" >Product Name</label>
+       <!-- <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">-->
+
+        <input placeholder="title" type="text" class="EditInput" name="title" required>
+
+        <label class ="labeltag">Price(USD):</label>
+        <input class="EditInput" name="price" type="text" maxlength="20" placeholder="input cost">
+
+
+
+        <label class ="labeltag" for="category-selector">Category:</label>
+        <select name="type" class="SelectInput" id="category-selector">
+            <option value="free-stuff">Free Stuff</option>
+            <option value="sports">Sports, Leisure and Games</option>
+            <option value="home-and-garden">Home and Garden</option>
+            <option value="entertainment">Movies, Books and Music</option>
+            <option value="electronics">Electronics</option>
+            <option value="fashion">Fashion</option>
+            <option value="other">Other</option>
+        </select>
+        <div>
+
+        </div>
+        <div>
+
+        </div>
+
+
+
+        <label class ="labeltag" >Location</label><div></div> <div></div> <div></div>
+        <label class ="labeltag"> Street:</label><input class="EditInput" id="street" name="street" type="text" maxlength="20">
+        <label class ="labeltag">  City:</label><input class="EditInput" id="city" name="city" type="text" maxlength="20">
+        <label class="labeltag">  ZipCode:</label><input class="EditInput" id="zip" name="zip" type="text" size="5">
+        <label class ="labeltag"> State:</label> <input class="EditInput" id="state" name="state" type="text" size="2">
+
+        <label class ="labeltag" id="ProductDescription" >Product Description</label>
+        <textarea  id="ProductDescriptionInput" name="about" placeholder="Enter your description" required></textarea>
+
+
+
+        <label class ="labeltag">Images</label>
+        <div id="image-container"></div>
+
+    </div>
 
     <!--<input type="file" name="imgUploader" id="fileup" multiple required>-->
     <br/>
