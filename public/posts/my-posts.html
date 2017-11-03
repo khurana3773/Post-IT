@@ -167,6 +167,56 @@
             color: #52809f;
         }
 
+        .imageOverlayContainer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.5s ease;
+        }
+
+        img {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            left: 0;
+        }
+
+        .imageOverlayContainer:hover .overlay {
+            display: block;
+            background: rgba(0, 0, 0, .3);
+        }
+
+        .buttonDelete {
+            position: relative;
+            text-align: center;
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+
+        .buttonDelete a {
+            position: relative;
+            text-align: center;
+            color: white;
+            border: solid 2px white;
+            z-index: 1;
+        }
+
+        .imageOverlayContainer:hover .buttonDelete {
+            opacity: 1;
+        }
+
+
+
+
     </style>
 
     <script>
@@ -268,8 +318,18 @@
                	if(temp){
 	                if(image1!==null){
 	                	var elem1 = createImage(image1, 'img1');
-	                	$("#image-container").append("<div id='imageContainer1' class='imageButtonOverlay'></div>>");
+	                	$("#image-container").append("<div id='imageContainer1' class='imageOverlayContainer'></div>>");
+
+	                	$("#imageContainer1").css("float","left");
+                        $("#imageContainer1").css("width","111px");
+
+
+
 	                	$("#imageContainer1").append(elem1);
+                        $("#imageContainer1").append("<div class='overlay'></div>");
+                        $("#imageContainer1").append("<div class='buttonDelete'><a href='#'> Delete </a></div>");
+
+                        $("buttonDelete").css("","")
 	                }	
 	                if(image2!==null){
 	                	var elem2 = createImage(image2, 'img2');
