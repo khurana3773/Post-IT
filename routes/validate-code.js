@@ -34,6 +34,7 @@ router.post('/',
 					if(err){
 
 					}else{
+						res.cookie("userId", userId);
 						res.redirect("/index.html");
 					}
                 });
