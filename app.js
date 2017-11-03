@@ -11,7 +11,9 @@ const lineReader = require('line-reader');
 const multer = require('multer');
 const querystring = require('querystring');
 const monk = require('monk');
-var db = monk("mongodb://"+"masterroot"+":"+"masterroot"+"@ds125335.mlab.com:25335/post_it");
+//var db = monk("mongodb://"+"masterroot"+":"+"masterroot"+"@ds125335.mlab.com:25335/post_it");
+var db = monk("mongodb://"+"PostIt"+":"+"postit1"+"@ds235065.mlab.com:35065/post_it");
+
 var randomstring = require("randomstring");
 
 var index = require('./routes/index');
