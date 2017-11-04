@@ -48,7 +48,7 @@ router.post('/',
 
 		collection.insert(postJSON, function (err, docs) {
 			if(err){
-				//error
+				res.redirect("selling-post.html");
 			}else{
 				// success
 				res.redirect("index.html");
