@@ -1,13 +1,22 @@
- body{
+ /*body{
 	background-color: #FFF;
     font-family: "Roboto", sans-serif;
+}*/
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+body{
+	 background-color: #e0e0dd;
+    font-family: "Roboto", sans-serif;
+    font-weight: normal !important;
 }
-
 h3{ color: #5190af; }
 
 #about {
-    height: 25em;
+    height: 15em;
     width:100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin: 8px 0;
 }
 #holder{
     width:100px;
@@ -18,18 +27,53 @@ h3{ color: #5190af; }
     text-align:center;
 }
 
-div{
-    border-radius: 5px;
+#formdiv {
+    border-radius: 15px;
     background-color: #f2f2f2;
     padding: 20px;
+	margin: 10% 20%;
 }
 
 img{
-    width: 150px;
-    height: 150px;
+    width: 110px;
+    height: 110px;
     line-height:100px;
-    margin-left: 2px;
+    margin-left: 10px;
 }
+
+#nav {
+    background: #52809f;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+
+    margin: 0px;
+    padding: 0px;
+}
+#nav-wrapper {
+    width: 90%;
+    margin: 0px auto;
+    text-align: left;
+}
+#nav ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+#nav ul li {
+    display: inline-block;
+}
+#nav ul li:hover {
+    background: #52a5c3;
+}
+
+#nav ul li a, visited {
+    display: block;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+}
+
 
 li{
     float:left;
@@ -62,10 +106,82 @@ button {
 }
 input#title{
 	width: 100%;
-    padding: 12px 20px;
+    padding: 12px 2px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+#category-selector{
+	
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 1px;
+    margin-left: 1%;
+    margin-right: 5%;
+    margin-top: 8px;
+    width: -webkit-fill-available;
+}
+
+#price{
+	border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 2px;
+    margin-top: 8px;
+    width: -webkit-fill-available;
+}
+#street{
+	border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 2px;
+    max-width:100%;
+}
+#city{
+	border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 2px;
+    max-width:100%;
+	
+}
+#zip{
+	border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 2px;
+    max-width:100%;
+}
+#state{
+	border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 2px;
+    max-width:100%;
+}
+
+.inline{
+	display: flex;
+	margin-top: 8px;
+}
+.inline > .add {
+    display: inline-block;
+    *display: inline; /* For IE7 */
+    width: 25%;
+    text-align: center;
+}
+.inline > .col {
+    display: inline-block;
+    *display: inline; /* For IE7 */
+    width: 50%;
+    text-align: center;
+}
+
+label{
+	float:left;
+	font-weight: bold;
 }

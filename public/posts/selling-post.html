@@ -34,7 +34,7 @@
                         var reader = new FileReader();
 
                         reader.onload = function (event) {
-                            if(count === 4){
+                            if(count > 3){
                                 alert("Images limit is 3!");
                                 return;
 							}
@@ -54,43 +54,83 @@
 
                 return false;
             });
-        });
+            
 
+        });
+        function validateForm() {
+        	
+
+            var price = $("#price").val();
+            if (!price.match(/^\d+$/)){
+                alert("Price should only contain numbers.");
+                return false;
+            }
+            var city = $("#city").val();
+            if (city.match(/\d/)) {
+                alert("City cannot contain numbers.");
+                return false;
+            }
+            var zip = $("#zip").val();
+            if (!zip.match(/^\d+$/)){
+                alert("Zip should only contain numbers.");
+                return false;
+            }
+            var state = $("#state").val();
+            if (state.match(/\d/)) {
+                alert("State cannot contain numbers.");
+                return false;
+            }
+            
+            return true;
+        }
     </script>
 </head>
 <body>
 
-<div id="nag-container"></div>
+<div id="nav">
+        <div id="nav-wrapper">
+            <ul>
+                <li><a href="/">Home</a></li>                
+            </ul>
+        </div>
+</div>
 
-<h1 class="ui-state-default"><a href="/">Post It</a></h1>
-<div>
-	<form id="upload" method="post" action= "/add-post-selling">
+
+<div id = "formdiv">
+	<form id="upload" method="post" action= "/add-post-selling" onsubmit="return validateForm();">
 	    <label for="title">Product Name</label>
         <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">
-	    <input placeholder="title" type="text" id="title" name="title" required>
+	    <input placeholder="Title" type="text" id="title" name="title" required>
 	    <br/>
 		<label for="about">Product Description</label>
 		<textarea id="about" name="about" placeholder="Enter your description" required></textarea>
 		<br/>
-
-		<label for="category-selector">Category</label><br>
-		<select name="type" id="category-selector">
-			<option value="free-stuff">Free Stuff</option>
-			<option value="sports">Sports, Leisure and Games</option>
-			<option value="home-and-garden">Home and Garden</option>
-			<option value="entertainment">Movies, Books and Music</option>
-			<option value="electronics">Electronics</option>
-			<option value="fashion">Fashion</option>
-			<option value="other">Other</option>
-		</select> <br>
-
-		$<input name="price" type="text" maxlength="20" placeholder="input cost"><br>
-        Location<br>
-        <input name="street" type="text" maxlength="20" placeholder="address">
-        <input name="city" type="text" maxlength="20" placeholder="city">
-        <input name="zip" type="text" maxlength="20" placeholder="zipcode">
-        <input name="state" type="text" maxlength="20" placeholder="state">
-
+		<div class="inline">
+			<div class="col">
+				<label for="category-selector">Category</label>
+				<select name="type" id="category-selector">
+					<option value="free-stuff">Free Stuff</option>
+					<option value="sports">Sports, Leisure and Games</option>
+					<option value="home-and-garden">Home and Garden</option>
+					<option value="entertainment">Movies, Books and Music</option>
+					<option value="electronics">Electronics</option>
+					<option value="fashion">Fashion</option>
+					<option value="other">Other</option>
+				</select>
+			</div>
+			<div class="col">
+				<label for="price">Price in $</label>
+				<input id="price" name="price" type="text" maxlength="20"  value=0>
+			</div>
+		</div>
+		<br>
+        <label >Location</label><br>
+        <div class="inline">
+	        <div class="add">Street<input id="street" name="street" type="text" maxlength="20" placeholder="Address" required></div>
+	        <div class="add">City<input id="city" name="city" type="text" maxlength="20" placeholder="City" required></div>
+	        <div class="add">Zip<input id="zip" name="zip" type="text" maxlength="20" placeholder="Zipcode" required></div>
+	        <div class="add">State<input id="state" name="state" type="text" maxlength="20" placeholder="State" required></div>
+		</div>
 
         <br>
 		<label>Product Images</label>
@@ -106,7 +146,7 @@
 		<input name="img-2" id="img-2" style="display: none;">
 		<input name="img-3" id="img-3" style="display: none;">
 
-		<input type="file" name="file" id="file" multiple><br/>
+		<!--input type="file" name="file" id="file" multiple--><br/>
 		<button type="submit">Post</button>
 	</form>
 </div> 
