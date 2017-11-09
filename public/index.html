@@ -38,6 +38,11 @@
 
 
             $(window).resize();
+            
+            $('.product').hover( function() {
+                    $('#detail').toggle();
+             });
+
 
             initLogin();
         }
@@ -338,13 +343,16 @@
 
                 <!-- This is not for UI. It is to hold reference-->
                 <div id="4j34j43ijo34i5oj543io" class="product" onclick="fetchPopupInfo()">
-                    <p>Product name</p>
-                    <p>Product description</p>
-
-                    <img src="test_images/couch.jpg" height="225" width="300">
-                    <p>Location: the location</p>
+                	<p>Product name</p>
+	                <img src="test_images/couch.jpg" height="225" width="300">
+                    <div id="detail">
+	                    <p>Product description</p> 
+	                    Something Something Something               
+	                    <p>Location: the location</p>
+                    </div>
                 </div>
             </li>
+            
         </ul>
     </div>
     <!-- Contains references to shopping list-->

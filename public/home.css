@@ -139,9 +139,11 @@ main{
     overflow: hidden;
 }
 .product{
-    float: left;
+    text-align:center;
     display: inline-block;
-
+	border-radius: 25px;
+    margin: 12px;
+    padding: 5px;
     margin-bottom: 2em;
     z-index: 2;
 }
@@ -218,4 +220,19 @@ main{
 
 #side-bar{
     float: left;
+}
+
+
+.product:hover {
+    cursor: pointer;
+    font-weight: bold;
+
+}
+.product>img{
+	border-radius: 25px;
+    margin: 5px;
+}
+
+#detail {
+    display: none;
 }
