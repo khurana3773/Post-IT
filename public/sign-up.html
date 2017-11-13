@@ -5,37 +5,99 @@
     <title>Sign Up</title>
     <link rel="stylesheet" type="text/css" href="sign-up.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" />
-  <script src="js/jquery.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/angular.min.js"></script>
+
+    <script>
+        var app = angular.module('formApp', []);
+        app.controller('validateCtrl', function($scope) {
+
+        });
+
+    </script>
 </head>
 <body>
 
-<form onsubmit="return validateForm();"  method="post" action="/validate-signup" >
-    <div class="container">
+<!-- This for uses AngularJS for form validation-->
+<form name="formApp" ng-app="formApp" ng-controller="validateCtrl" method="post" action="/validate-signup" novalidate>
+    <div id="formApp-container">
         <h1>Sign Up</h1>
 
         <fieldset>
             <legend>Your basic info</legend>
-            <label for="first_name">First Name:</label>
-            <input maxlength="20" type="text" id="first_name" name="first_name" required>
+            <!-- First Name Validation -->
+            <p>
+                <label for="first_name">First Name:</label>
+                <input maxlength="20" type="text" id="first_name" name="first_name" ng-model="first_name" required>
+                <span style="color: red;" ng-show="formApp.first_name.$dirty && formApp.first_name.$invalid">
+                    <span ng-show="formApp.first_name.$error.required">First Name Required</span>
+                </span>
+            </p>
 
-            <label for="last_name">Last Name:</label>
-            <input maxlength="20" type="text" id="last_name" name="last_name" required>
+            <!-- Last Name Validation-->
+            <p>
+                <label for="last_name">Last Name:</label>
+                <input maxlength="20" type="text" id="last_name" name="last_name" ng-model="last_name" required>
 
-            <label for="student_id">Student ID:</label>
-            <input maxlength="9" type="tel" id="student_id" name="student_id" required>
+                <span style="color: red;" ng-show="formApp.last_name.$dirty && formApp.last_name.$invalid">
+                    <span ng-show="formApp.last_name.$error.required">Last Name Required</span>
+                </span>
+            </p>
 
-            <label for="mail">Email:</label>
-            <input type="email" placeholder= "Ex.: name@something.com" id="mail" name="email" required>
+            <!-- StudentID Validation-->
 
-            <label for="username">Username:</label>
-            <input maxlength="20" type="text" id="username" name="username" required>
+            <p>
+                <label for="student_id">Student ID:</label>
+                <input maxlength="9" type="tel" id="student_id" name="student_id" ng-model="student_id" required>
+                <span style="color: red;" ng-show="formApp.student_id.$dirty && formApp.student_id.$invalid">
+                    <span ng-show="formApp.student_id.$error.required">Student ID Required</span>
+                </span>
+            </p>
+            <!-- Email Validation -->
+            <p>
+                <label for="mail">Email:</label>
+                <input type="email" placeholder= "Ex.: JohnDoe@google.com" id="mail" name="email" ng-model="email" required>
+                <span style="color:red" ng-show="formApp.email.$dirty && formApp.email.$invalid">
+                <span ng-show="formApp.email.$error.required">Email is required.</span>
+                    <span ng-show="formApp.email.$error.email">Invalid email address.</span>
+                </span>
+            </p>
 
-            <label for="password">Password:</label>
-            <input maxlength="20" type="password" id="password" name="password" required>
-            <button type="submit">Sign Up</button>
+            <!-- Username Validation -->
+            <p>
+                <label for="username">Username:</label>
+                <input maxlength="20" type="text" id="username" name="username" ng-model="username" required>
+
+                <span style="color: red;" ng-show="formApp.username.$dirty && formApp.username.$invalid">
+                    <span ng-show="formApp.username.$error.required">First Name Required</span>
+                </span>
+            </p>
+
+            <!-- Password Validation -->
+            <p>
+                <label for="password">Password:</label>
+                <input maxlength="20" type="password" id="password" name="password" ng-model="password" required>
+                <span style="color: red;" ng-show="formApp.password.$dirty && formApp.password.$invalid">
+                    <span ng-show="formApp.password.$error.required">Password Required</span>
+                </span>
+            </p>
+            <!-- Submit button -->
+
+            <button type="submit"
+                    ng-disabled=
+                            "
+                                formApp.first_name.$dirty && formApp.first_name.$invalid ||
+                                formApp.last_name.$dirty && formApp.last_name.$invalid   ||
+                                formApp.email.$dirty && formApp.email.$invalid           ||
+                                formApp.student_id.$dirty && formApp.student_id.$invalid ||
+                                formApp.username.$dirty && formApp.username.$invalid     ||
+                                formApp.password.$dirty && formApp.password.$invalid
+                            ">
+                Sign Up
+            </button>
         </fieldset>
     </div>
 </form>
-<script type="text/javascript" src="sign-up.js"></script>
+
 </body>
 </html>
