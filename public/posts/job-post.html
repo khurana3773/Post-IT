@@ -10,32 +10,78 @@
     <script src="../util/post.js"></script>
 	<link rel="stylesheet" type="text/css" href="selling-post.css">
 	<script>
-        function validateForm() {
-        	
+	var count = 1;
 
-            var price = $("#price").val();
-            if (!price.match(/^\d+$/)){
-                alert("Price should only contain numbers.");
-                return false;
+    $(document).ready(function () {
+        var ignoreDrag = function(e) {
+            var event = typeof e.originalEvent != 'undefined' ? e.originalEvent : e;
+            if (event.stopPropagation) {
+                event.stopPropagation();
             }
-            var city = $("#city").val();
-            if (city.match(/\d/)) {
-                alert("City cannot contain numbers.");
-                return false;
+            if (event.preventDefault) {
+                event.preventDefault();
             }
-            var zip = $("#zip").val();
-            if (!zip.match(/^\d+$/)){
-                alert("Zip should only contain numbers.");
-                return false;
+        };
+        $("#holder").bind('dragover', ignoreDrag).bind('dragenter', ignoreDrag).bind('drop', function(e){
+            var holder = this;
+            e = (e&&e.originalEvent?e.originalEvent:window.event) || e;
+            ignoreDrag(e);
+            var files = (e.files||e.dataTransfer.files);
+            var s = "";
+            for (var i = 0; i < files.length; i++) {
+                (function(i){
+                    var reader = new FileReader();
+
+                    reader.onload = function (event) {
+                        if(count > 3){
+                            alert("Images limit is 3!");
+                            return;
+						}
+
+                        let img = $("<img/>");
+                        img.attr('id', 'img'+count);
+                        img.attr("src", event.target.result);
+                        $("#photo-holder").append(img);
+
+						$("#img-"+count).val(event.target.result);
+						count += 1;
+
+                    };
+                    reader.readAsDataURL(files[i]);
+                })(i);
             }
-            var state = $("#state").val();
-            if (state.match(/\d/)) {
-                alert("State cannot contain numbers.");
-                return false;
-            }
-            
-            return true;
+
+            return false;
+        });
+        
+
+    });
+    function validateForm() {
+    	
+
+        var price = $("#price").val();
+        if (!price.match(/^\d+$/)){
+            alert("Price should only contain numbers.");
+            return false;
         }
+        var city = $("#city").val();
+        if (city.match(/\d/)) {
+            alert("City cannot contain numbers.");
+            return false;
+        }
+        var zip = $("#zip").val();
+        if (!zip.match(/^\d+$/)){
+            alert("Zip should only contain numbers.");
+            return false;
+        }
+        var state = $("#state").val();
+        if (state.match(/\d/)) {
+            alert("State cannot contain numbers.");
+            return false;
+        }
+        
+        return true;
+    }
     </script>
 </head>
 <body>
@@ -58,21 +104,10 @@
 		<label for="about">Job Description</label>
 		<textarea id="about" name="about" placeholder="Enter your description" required></textarea>
 		<br/>
-		<div class="inline">
-			<div class="col">
-				<label for="category-selector">Category</label>
-				<select name="type" id="category-selector">
-					<option value="full-time">Full-Time</option>
-					<option value="intern">Internship</option>
-					<option value="contract">Contract</option>
-					<option value="other">Other</option>
-				</select>
-			</div>
-			<div class="col">
-				<label for="price">Rate per Hr in $</label>
-				<input id="price" name="price" type="text" maxlength="20"  value=0>
-			</div>
-		</div>
+		<input value="job" type="text" name="type" id="job" style="display: none;">
+		<br>
+		<label for="price">Price in $</label>
+		<input id="price" name="price" type="text" maxlength="20"  value=0>
 		<br>
         <label >Location</label><br>
         <div class="inline">
@@ -83,6 +118,18 @@
 		</div>
 
         <br>
+        <label>Job Related Document Images</label>
+		<br/>
+		<ul id="photo-holder">
+			<div id="holder">
+				<p>Drag Here</p>
+			</div>
+		</ul>
+
+
+		<input name="img-1" id="img-1" style="display: none;">
+		<input name="img-2" id="img-2" style="display: none;">
+		<input name="img-3" id="img-3" style="display: none;">
 		<button type="submit">Post</button>
 	</form>
 </div> 

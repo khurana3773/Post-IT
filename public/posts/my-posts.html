@@ -116,8 +116,11 @@
                     $("#state").val(state);
 
                     $("#price").val(price);
-
                     $("#type").val(type);
+					if(type==='job' || type==='rent'){
+                    	$("#type").hide();
+						$('label[for="type"]').hide();
+					}
                     var temp = !document.getElementsByClassName("imgclass").length;
                     if (temp) {
                         if (image1 != '') {
@@ -193,9 +196,14 @@
                 let zip = $("#zip").val();
                 let state = $("#state").val();
                 let price = $("#price").val();
-
-                let type = $("#type").val();
-
+                let type = "";
+				if(postToBeEdit.type ==='job')
+                	type = "job";
+				else if(postToBeEdit.type ==='rent')
+					type = "rent";
+				else{
+					type = $("#type").val();
+				}
                 var location = {
                     "street": street,
                     "city": city,
@@ -408,7 +416,7 @@
         <input id="title" placeholder="title" type="text" class="EditInput" name="title" required>
 
         <label class ="labeltag">Price(USD) :</label>
-        <input class="EditInput" name="price" type="text" maxlength="20" placeholder="input cost">
+        <input class="EditInput" name="price"  id ="price" type="text" maxlength="20" placeholder="input cost">
 
 
 

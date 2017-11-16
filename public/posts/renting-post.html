@@ -105,24 +105,10 @@
 		<label for="about">Product Description</label>
 		<textarea id="about" name="about" placeholder="Enter your description" required></textarea>
 		<br/>
-		<div class="inline">
-			<div class="col">
-				<label for="category-selector">Category</label>
-				<select name="type" id="category-selector">
-					<option value="free-stuff">Free Stuff</option>
-					<option value="sports">Sports, Leisure and Games</option>
-					<option value="home-and-garden">Home and Garden</option>
-					<option value="entertainment">Movies, Books and Music</option>
-					<option value="electronics">Electronics</option>
-					<option value="fashion">Fashion</option>
-					<option value="other">Other</option>
-				</select>
-			</div>
-			<div class="col">
-				<label for="price">Price per day in $</label>
-				<input id="price" name="price" type="text" maxlength="20"  value=0>
-			</div>
-		</div>
+		<input value="rent" type="text" name="type" id="category" style="display: none;">
+		<br>
+		<label for="price">Price in $</label>
+		<input id="price" name="price" type="text" maxlength="20"  value=0>
 		<br>
         <label >Location</label><br>
         <div class="inline">

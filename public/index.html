@@ -12,9 +12,12 @@
     <script src="util/util.js"></script>
     <script src="util/request.js"></script>
     <script src="util/handler.js"></script>
-    <script type="text/javascript">
+
+    <script>
         var dropdownShowing = false;
         var userLoggedIn = false;
+        var interval=null;
+        var orig_img1=null;
 
         $(init);
         function init() {
@@ -39,11 +42,6 @@
 
             $(window).resize();
             
-            $('.product').hover( function() {
-                    $('#detail').toggle();
-             });
-
-
             initLogin();
         }
 
@@ -83,8 +81,124 @@
          */
         function searchForCategory() {
             var id = $(this).attr('id');
-            alert(id);
+            $("#products-list").empty();
+            $.ajax({url: ("http://"+$(location).attr('host'))+"/category", data: "type="+id,type:'GET',contentType: 'application/json' 
+            	,success: function(result){
+            	postsJSON = JSON.parse(result);
+            	console.log("starting");
+            	console.log(postsJSON);
+            	 for (let i = 0; i < postsJSON.length; i++) {
+                     let postJSON = postsJSON[i];
+                     if (postJSON !== null) {
+                    	 console.log("inside loop "+i);
+
+                         loadPostToList(postsJSON[i]);
+                         console.log("after loop "+i);
+                     }
+                 }
+             	}
+            });
+            
+            //Creates elements and set their values and styling
+            function loadPostToList(postJSON) {
+
+            	var li = $("<li></li>");
+            	
+                var div1 = $("<div></div>");
+                div1.attr("id",postJSON._id +"detail");
+                div1.css("display","none");
+                var d = postJSON._id + "div";
+ 
+                var div0 = $("<div></div>");
+                div0.attr("id", postJSON._id + "div0");
+                div0.css("display","block");
+                                
+                var div = $("<div onmouseover=\"over(this)\" onmouseout=\"out(this)\"></div>");
+                div.attr("class", "product");
+                div.attr("id", postJSON._id + "div");        
+
+                
+                var title = $("<p></p>");
+                title.attr("id", postJSON._id + "title");
+                title.text(postJSON.title);
+                title.css("text-align","center");
+				
+                var img_1 = $("<img></img>");
+                img_1.attr("src",postJSON.img1);
+                img_1.attr("class","pic");
+                img_1.height("100").width("100");
+                img_1.attr("id","img1");
+                
+                img_1.on("error", function(){
+                	if(this.src !== './img/NoImage.png' || this.src !== 'null') this.src = './img/NoImage.png';
+                });               
+                
+                var img_2 = $("<img></img>");
+                img_2.attr("src",postJSON.img2);
+                img_2.height("100").width("100");
+                img_2.attr("class","pic");
+                img_2.css("display","none");
+                
+                var img_3 = $("<img></img>");
+                img_3.attr("src",postJSON.img3);
+                img_3.height("100").width("100");
+                img_3.attr("class","pic");
+                img_3.css("display","none");
+                
+                var desc = $("<p></p>");
+                desc.attr("id", postJSON._id + "desc");
+                desc.text(postJSON.about);
+                desc.css("text-align","center");
+                
+                var price = $("<p></p>");
+                price.attr("id", postJSON._id + "price");
+                price.text("$ " +postJSON.price);
+                price.css("text-align","center");
+                
+                var loc =$("<a></a>");
+                loc.text("Location");
+                loc.attr("id", postJSON._id + "loc");
+                loc.attr("href","");
+                loc.attr("target","_blank");
+                loc.css("text-align","center");
+                loc.css("display","block");
+                loc.css("font-weight","bold");
+				getLatitudeLongitude(postJSON.location,postJSON._id + "loc" );
+
+				li.append(div);
+                div.append(title);
+				div.append(img_1);
+				console.log($(img_2).src);
+				if ($(img_2).src!== "" ||$(img_2).src!== "null"||$(img_2).src!== null)
+               		div.append(img_2);
+				if ($(img_3).src!== "" ||$(img_3).src!== "null"||$(img_3).src!== null)
+               		div.append(img_3);
+                div.append(price);
+                div.append(div1);
+                div1.append(desc);
+                div1.append(loc);
+                div.append(div1);                
+                $("#products-list").append(li);
+            }
         }
+        function displayNextImage() {
+                x = (x === images.length - 1) ? 0 : x + 1;
+                document.getElementById("img").src = images[x];
+            }
+
+            function displayPreviousImage() {
+                x = (x <= 0) ? images.length - 1 : x - 1;
+                document.getElementById("img").src = images[x];
+            }
+
+            function startTimer() {
+                setInterval(displayNextImage, 3000);
+            }
+
+            var images = [], x = -1;
+            images[0] = "image1.jpg";
+            images[1] = "image2.jpg";
+            images[2] = "image3.jpg";    
 
         function initSearchBox() {
             $("#search-bar").keyup(function(event){
@@ -248,7 +362,7 @@
         }
 
 
-        function appendToStream(productJSON) {
+/*        function appendToStream(productJSON) {
             let title = productJSON.title;
             let about = productJSON.about;
             let productId = productJSON._id;
@@ -265,7 +379,7 @@
             li.append(div);
 
             $("#products").append(li);
-        }
+        }*/
         
         function loadToPopUp(productJSON) {
             
@@ -273,10 +387,57 @@
 
         function loadNagBar() {
 
-
-
         }
-    </script>
+
+        /**
+        * Allows drop down /expansion effect
+        * once user hovers on a product
+        */   
+        
+        function over(e) {
+        	  orig_img1	=null;
+        	  var d= document.getElementById(e.id).getElementsByTagName("div")[0];
+              d.style.display="block";
+              var images = [],
+              x = 0;
+              var image= document.getElementById(e.id).getElementsByClassName("pic");
+              $.each( image,function(index, value){
+            	  if( value.currentSrc!=="" && value.currentSrc!== null  && value.currentSrc!== "null"){ 
+            		  images[x]=value.src;
+            		  x++;
+            	  }
+              });
+
+              var $img = $("#"+e.id+' #img1'), i = 0, speed = 200;
+              orig_img1=images[0];
+              console.log();
+              // Only if there are more than 1 images, allow pics to keep changing in every 3secs. 
+			  if(images.length>1)
+	              interval=window.setInterval(function() {
+	                $img.fadeOut(speed, function() {
+	                  $img.attr("src", images[(++i % images.length)]);
+	                  $img.fadeIn(speed);
+	                });
+	              }, 3000);
+			  
+        	}
+        /**
+         * Allows unsettin of intervals if set for the product.
+         * and undo the expansion effect
+         */  
+        function out(e) {
+        	if (interval!==null){
+	        	clearInterval(interval);	
+	        	interval=null;
+        	}	
+      	  	var d= document.getElementById(e.id).getElementsByTagName("div")[0];
+      	  	d.style.display="none";
+      	    var $img = $("#"+e.id+' #img1');
+      	    $img.attr("src", orig_img1);
+      	    orig_img1=null;
+      	}
+        
+</script>
 
 </head>
 <body>
@@ -338,23 +499,10 @@
     <!--Dynamically stream products here by category-->
     <div id="products">
         <ul id="products-list">
-            <li>
-                <!-- All streams of products must be under class product-->
-
-                <!-- This is not for UI. It is to hold reference-->
-                <div id="4j34j43ijo34i5oj543io" class="product" onclick="fetchPopupInfo()">
-                	<p>Product name</p>
-	                <img src="test_images/couch.jpg" height="225" width="300">
-                    <div id="detail">
-	                    <p>Product description</p> 
-	                    Something Something Something               
-	                    <p>Location: the location</p>
-                    </div>
-                </div>
-            </li>
-            
+                        
         </ul>
     </div>
+    
     <!-- Contains references to shopping list-->
     <div id="shopping-list">
         <p>Shopping List</p>
@@ -364,34 +512,6 @@
 
         <button id='deleteProductBtn'>Delete</button>
     </div>
-
-    <!--Enable a user to leave popup box when user clicks bg-->
-    <div id="overLay"></div>
-    <!-- The pop up container -->
-    <div class="popupBox" id="popup">
-
-        <!--Add information about product/service here-->
-        <p id="title">Title of product</p>
-
-        <!-- Description of Product Here -->
-        <p id="description">
-            Description of Product
-        </p>
-
-        <!-- Contact Here -->
-        <p id="contact">
-            Contact seller: <a href="mailto:example@sjsu.edu">Email</a>
-        </p>
-
-
-        <!-- Google Maps of product -->
-        <div id="map" style="width: 200px;height:200px;background:none">
-            <p>Loading...</p>
-        </div>
-
-    </div>
-
-
 </div>
 
 </body>
