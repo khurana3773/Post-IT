@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Posts</title>
+
+    <script src="../js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="my-posts.css">
+    <script src="../js/jquery-ui.min.js"></script>
+    <script src="../util/util.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+    <script>
+        var app = angular.module('myApp', []);
+
+        app.controller('myCtrl', function ($scope, $http) {
+
+            var userId = getCookie("userId");
+
+            $scope.clearPosts = function () {
+
+                $scope.posts = null;
+            };
+
+            $http.get("/get-posts", {params: {userId: userId}}).then(function (response) {
+
+                $scope.posts = response.data;
+
+            });
+
+            $scope.onEditPost = function () {
+
+                if($scope.editPost){
+
+
+
+                    $("#edit-form").hide();
+                    $("#overLay").hide();
+
+                    $scope.editPost.timestamp = new Date().getTime();
+
+                    var post = $scope.editPost;
+
+                    $scope.editPost = null;
+                    $.post("/edit-post", {post: post}, function (result) {
+                        if (result === "OK") {
+
+                        }
+                    });
+
+                }
+            };
+            $scope.loadEdit = function ($index) {
+
+                $("#edit-form").show();
+                $("#overLay").show();
+
+                if($scope.posts){
+                    $scope.editPost = $scope.posts[$index];
+
+                    if(!$scope.editPost.img1){
+                        $("#imageContainer1").hide();
+                    }
+
+
+                    if(!$scope.editPost.img2){
+                        $("#imageContainer2").hide();
+                    }
+
+                    if(!$scope.editPost.img3 ) {
+                        $("#imageContainer3").hide();
+                    }
+
+                }
+
+
+            };
+
+            $scope.delete = function ($index) {
+                var post = $scope.posts[$index];
+                $scope.posts.splice($index, 1);
+
+                $http.delete("/delete-post", {params: {postId: post._id}}).then(function (response) {
+
+                })
+            }
+
+        });
+
+        $(init);
+        function init() {
+            /*
+            var userId = getCookie("userId");
+            if (!userId) {
+                window.location.href = '/index.html';
+            }*/
+            $("#title-dialog").dialog({
+                autoOpen: false, modal: true, show: "blind", hide: "blind"
+            });
+            $("#title-page").click(function () {
+                $("#title-dialog").dialog("open");
+            });
+            $("#edit-form").hide();
+            $("#overLay").hide();
+
+        }
+
+
+    </script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+<div style="margin-bottom: 50px;" id="nag-container">
+
+</div>
+
+<h5 id="title-page">My Posts</h5>
+<div id="title-dialog" title="More Info">
+    <p> Here, you can edit or delete your posts. Its an area to manage what you upload to the site</p>
+</div>
+
+<!-- Load posts using AngularJS -->
+<div id="my-posts-container"  >
+
+    <div ng-repeat="post in posts" class="container">
+
+        <h2 class="title"> {{post.title}}</h2>
+        <p class="about">{{post.about}}</p>
+        <button ng-click="delete($index);" class="delete">Delete Me</button>
+        <button ng-click="loadEdit($index);" class="edit">Edit Me</button>
+    </div>
+
+</div>
+
+<!--Enable a user to leave popup box when user clicks bg-->
+<div id="overLay"></div>
+
+
+
+<!--Dynamically hide -->
+<div id = "edit-form">
+
+
+    <div class="wrapperEdit">
+
+        <label class ="labeltag" >Product Name :</label>
+        <!-- <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">-->
+
+        <input id="title" placeholder="title" ng-model="editPost.title" type="text" class="EditInput" name="title" required>
+
+        <label class ="labeltag">Price(USD) :</label>
+        <input class="EditInput" name="price"  id ="price" type="text" maxlength="20" placeholder="input cost" ng-model="editPost.price">
+
+
+        <label class ="labeltag" for="type">Category:</label>
+        <select name="type" class="SelectInput" id="type">
+            <option value="free-stuff">Free Stuff</option>
+            <option value="sports">Sports, Leisure and Games</option>
+            <option value="home-and-garden">Home and Garden</option>
+            <option value="entertainment">Movies, Books and Music</option>
+            <option value="electronics">Electronics</option>
+            <option value="fashion">Fashion</option>
+            <option value="other">Other</option>
+        </select>
+
+        <label class ="labeltag"  >Location :-</label><div></div> <div></div> <div></div>
+        <label class ="labeltag"> Street :</label><input ng-model="editPost.location.street" class="EditInput" id="street" name="street" type="text" maxlength="20">
+        <label class ="labeltag" >  City :</label><input ng-model="editPost.location.city" class="EditInput" id="city" name="city" type="text" maxlength="20">
+        <label class="labeltag" >  ZipCode :</label><input ng-model="editPost.location.zip" class="EditInput" id="zip" name="zip" type="text" size="5">
+        <label class ="labeltag" > State :</label> <input ng-model="editPost.location.state" class="EditInput" id="state" name="state" type="text" size="2">
+
+        <label class ="labeltag" id="ProductDescription" >Product Description</label>
+        <textarea ng-model="editPost.about"  id="about" name="about" placeholder="Enter your description" required></textarea>
+
+
+
+        <label class ="labeltag">Images</label>
+
+        <div id="image-container">
+            <div id='imageContainer1' style="float: left; width: 33%"  class='imageOverlayContainer'>
+
+                <img class="imgclass" src="{{editPost.img1}}" ng-model="editPost.img1">
+
+                <div class='overlay'></div>
+                <div class='buttonDelete'><a id='hideLink1' href='#'> Delete </a></div>
+            </div>
+
+            <div id='imageContainer2' style="float: left; width: 33%" class='imageOverlayContainer'>
+                <img class="imgclass" src="{{editPost.img2}}" ng-model="editPost.img2">
+                <div class='overlay'></div>
+                <div class='buttonDelete'><a id='hideLink2' href='#'> Delete </a></div>
+            </div>
+
+            <div id='imageContainer3' style="float: left; width: 33%"  class='imageOverlayContainer'>
+                <img class="imgclass" src="{{editPost.img3}}" ng-model="editPost.img3">
+                <div class='overlay'></div>
+                <div class='buttonDelete'><a id='hideLink3' href='#'> Delete </a></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--<input type="file" name="imgUploader" id="fileup" multiple required>-->
+    <br/>
+
+
+
+
+    <button ng-click="onEditPost();"   id="edit-button" type="submit" >Edit</button>
+</div>
+
+
+</body>
+</html>

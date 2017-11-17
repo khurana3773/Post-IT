@@ -10,6 +10,8 @@ router.get('/', function (req, res) {
 	var collections = db.get("posts");
 
 	var userId = req.param("userId");
+
+
 	collections.find({userId: userId}, {}, function (e, docs) {
 		console.log(docs);
 		res.send(JSON.stringify(docs));
