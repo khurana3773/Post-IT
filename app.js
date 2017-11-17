@@ -11,8 +11,8 @@ const lineReader = require('line-reader');
 const multer = require('multer');
 const querystring = require('querystring');
 const monk = require('monk');
-//var db = monk("mongodb://"+"masterroot"+":"+"masterroot"+"@ds125335.mlab.com:25335/post_it");
-var db = monk("mongodb://"+"PostIt"+":"+"postit1"+"@ds235065.mlab.com:35065/post_it");
+var db = monk("mongodb://"+"masterroot"+":"+"masterroot"+"@ds125335.mlab.com:25335/post_it");
+//var db = monk("mongodb://"+"PostIt"+":"+"postit1"+"@ds235065.mlab.com:35065/post_it");
 
 var randomstring = require("randomstring");
 
@@ -106,7 +106,9 @@ var valid_user="xxxx";
 app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(bodyParser({limit: '50mb'}));
+
+app.use(bodyParser.urlencoded({limit: '150mb'}));
+app.use(bodyParser.json({limit: '150mb'}));
 
 app.use('/', index);
 app.use('/add-post-job', add_post_job);
@@ -151,4 +153,4 @@ var Storage = multer.diskStorage({
 });
 
 
-const upload = multer({ storage: Storage}).array("imgUploader", 3);
+const upload = multer({ storage: Storage, limits: { fileSize: "100mb"}}).array("imgUploader", 3);

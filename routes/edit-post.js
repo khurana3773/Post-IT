@@ -3,14 +3,31 @@ var router = express.Router();
 
 router.post('/', function (req, res) {
 	console.log("edit post");
-	let newPost = req.param("newPost");
-	let oldPost = req.param("oldPost");
+
 	var db = req.db;
 	let collection = db.get("posts");
 
-	collection.update(oldPost, newPost, function (err, doc) {
-		res.send("OK");
-    });
+	var post = req.param("post");
+
+	//collection.findOneAndUpdate({_id: post._id}, post);
+
+	console.log(post._id);
+
+
+
+    collection.update({_id: post._id}, {
+    	"userId": post.userId,
+		"title": post.title,
+		"about": post.about,
+		"price": post.price,
+		"type": post.type,
+		"timestamp": post.timestamp,
+		"location": post.location,
+
+		"img1": post.img1,
+		"img2": post.img2,
+		"img3": post.img3
+ 	});
 
 });
 

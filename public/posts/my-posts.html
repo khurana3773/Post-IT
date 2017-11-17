@@ -3,387 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <title>My Posts</title>
-    <!--List everything that a user has post-->
-    <title>Title</title>
+
     <script src="../js/jquery.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="my-posts.css">
     <script src="../js/jquery-ui.min.js"></script>
     <script src="../util/util.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 
     <script>
+        var app = angular.module('myApp', []);
 
-        $(document).ready(function () {
+        app.controller('myCtrl', function ($scope, $http) {
 
-            var deleteImg1=false;
-            var deleteImg2=false;
-            var deleteImg3=false;
+            var userId = getCookie("userId");
 
-            var canDelete = false;
-            var postsJSON;
-            var canEdit = false;
-            var postToBeEdit;
-            $(init);
+            $scope.clearPosts = function () {
+                $scope.posts = null;
+            };
 
-            function init() {
+            $scope.categories = {
+                "free-stuff": "Free Stuff",
+                "sports": "Sports, Leisure and Games",
+                "home-and-garden": "Home and Garden",
+                "entertainment": "Movies, Books and Music",
+                "electronics": "Electronics",
+                "fashion": "Fashion",
+                "other": "Other"
+            };
 
-                var userId = getCookie("userId");
+            $http.get("/get-posts", {params: {userId: userId}}).then(function (response) {
 
-                if (!userId) {
-                    window.location.href = '/index.html';
-                }
+                $scope.posts = response.data;
 
-                $("#title-dialog").dialog({
-                    autoOpen: false, modal: true, show: "blind", hide: "blind"
-                });
-
-                $("#title-page").click(function () {
-                    $("#title-dialog").dialog("open");
-                });
-
-                $("#edit-form").hide();
-                $("#overLay").hide();
-
-                requestPosts();
-
-            }
+            });
 
 
-            function requestPosts() {
-                var userId = getCookie("userId");
+            $scope.onEditPost = function () {
 
-                $.get("/get-posts", {userId: userId}, function (result) {
-                    postsJSON = JSON.parse(result);
-                    // append to list
+                if($scope.editPost){
 
-                    for (let i = 0; i < postsJSON.length; i++) {
-                        let postJSON = postsJSON[i];
-                        if (postJSON !== null) {
+                    $("#edit-form").hide();
+                    $("#overLay").hide();
 
-                            loadPostToList(postsJSON[i]);
-                        }
-                    }
-                });
-            }
+                    // set new values for edit post
+                    $scope.editPost.timestamp = new Date().getTime();
 
-            function requestPost(id) {
-                $.get("/get-post", {_id: id}, function (result) {
-                    let post = JSON.parse(result);
-                    loadPostToList(post);
-                });
-            }
+                    $scope.editPost.type = $scope.SelectInput;
 
-            function deletePost(postJSON) {
-                if (canDelete) {
-                    $.post("/delete-post", {json: postJSON}, function (result) {
+                    // the new post
+                    var post = $scope.editPost;
+
+                    // set edit post back to null
+                    $scope.editPost = null;
+                    $.post("/edit-post", {post: post}, function (result) {
                         if (result === "OK") {
-                            removePostFromView(postJSON._id);
+
                         }
                     });
-                }
-            }
-
-            function enableEditPost(postJSON) {
-                if (canEdit) {
-                    $("#image-container").empty();
-                    deleteImg1 = false;
-                    deleteImg2 = false;
-                    deleteImg3 = false;
-
-
-                    let title = postJSON.title;
-                    let about = postJSON.about;
-
-                    let location = postJSON.location;
-
-                    let street = location.street;
-                    let city = location.city;
-                    let zip = location.zip;
-                    let state = location.state;
-
-                    let price = postJSON.price;
-                    let type = postJSON.type;
-                    let image1 = postJSON.img1;
-                    let image2 = postJSON.img2;
-                    let image3 = postJSON.img3;
-
-                    $("#title").val(title);
-                    $("#about").val(about);
-
-                    $("#street").val(street);
-                    $("#city").val(city);
-                    $("#zip").val(zip);
-                    $("#state").val(state);
-
-                    $("#price").val(price);
-                    $("#type").val(type);
-					if(type==='job' || type==='rent'){
-                    	$("#type").hide();
-						$('label[for="type"]').hide();
-					}
-                    var temp = !document.getElementsByClassName("imgclass").length;
-                    if (temp) {
-                        if (image1 != '') {
-
-                            var elem1 = createImage(image1, 'img1');
-
-                            $("#image-container").append("<div id='imageContainer1' class='imageOverlayContainer'></div>");
-                            $("#imageContainer1").append(elem1);
-                            $("#imageContainer1").css("float", "left");
-                            $("#imageContainer1").css("width", "33%");
-
-
-                            $("#imageContainer1").append("<div class='overlay'></div>");
-                            $("#imageContainer1").append("<div class='buttonDelete'><a id='hideLink1' href='#'> Delete </a></div>");
-
-
-	                }	
-                        if (image2 != '') {
-
-                            var elem2 = createImage(image2, 'img2');
-                            $("#image-container").append("<div id='imageContainer2' class='imageOverlayContainer'></div>");
-                            $("#imageContainer2").append(elem2);
-                            $("#imageContainer2").css("float", "left");
-                            $("#imageContainer2").css("width", "33%");
-
-
-                            $("#imageContainer2").append("<div class='overlay'></div>");
-                            $("#imageContainer2").append("<div class='buttonDelete'><a id='hideLink2' href='#'> Delete </a></div>");
-
-
-	                }	
-                        if (image3 != '') {
-                            var elem3 = createImage(image3, 'img3');
-
-                            $("#image-container").append("<div id='image-container3' class='imageOverlayContainer'></div>");
-                            $("#image-container3").append(elem3);
-
-                            $("#image-container3").css("float", "left");
-                            $("#image-container3").css("width", "33%");
-
-
-                            $("#image-container3").append("<div class='overlay'></div>");
-                            $("#image-container3").append("<div class='buttonDelete'><a id='hideLink3' href='#'> Delete </a></div>");
-
-
-	                }	
-                    }
-                    postToBeEdit = postJSON;
-                    enablePopUp();
-                    enableRemovePopUp();
 
                 }
-            }
-
-
-            function createImage(src, id) {
-                var anImage = $("<img>");
-                anImage.attr('id', id);
-                anImage.attr("class", "imgclass");
-                anImage.attr("src", src);
-                return anImage;
-            }
-
-            function editPost() {
-                $("#edit-form").hide();
-                $("#overLay").hide();
-                let userId = getCookie("userId");
-                let title = $("#title").val();
-                let about = $("#about").val();
-
-                let street = $("#street").val();
-                let city = $("#city").val();
-                let zip = $("#zip").val();
-                let state = $("#state").val();
-                let price = $("#price").val();
-                let type = "";
-				if(postToBeEdit.type ==='job')
-                	type = "job";
-				else if(postToBeEdit.type ==='rent')
-					type = "rent";
-				else{
-					type = $("#type").val();
-				}
-                var location = {
-                    "street": street,
-                    "city": city,
-                    "zip": zip,
-                    "state": state
-                };
-                let image1 = postToBeEdit.img1;
-                let image2 = postToBeEdit.img2;
-                let image3 = postToBeEdit.img3;
-                if(deleteImg1)
-                {
-                    image1='';
-                }
-                if(deleteImg2)
-                {
-                    image2='';
-                }
-                if(deleteImg3)
-                {
-                    image3='';
-                }
-
-
-                var newPost = {
-                    "_id": postToBeEdit._id,
-                    "userId": userId,
-                    "title": title,
-                    "about": about,
-                    "price": price,
-                    "type": type,
-                    "timestamp": new Date().getTime(),
-                    "location": location,
-                    "img1": image1,
-                    "img2": image2,
-                    "img3": image3
-                };
-
-                let oldPost = postToBeEdit;
-
-                let postJSON = {
-                    oldPost,
-                    newPost
-                };
-
-                $.post("/edit-post", postJSON, function (result) {
-                    if (result === "OK") {
-                        // reload posts after edit
-                        //clearAllPosts();
-                        //requestPosts();
-
-                        updatePostFromList(newPost);
-                    }
-                });
-            }
-
-            function removePostFromView(id) {
-                $("#" + id + "div").remove();
-            }
-
-            function updatePostFromList(postJSON) {
-                let id = postJSON._id;
-                removePostFromView(id);
-                loadPostToList(postJSON);
-                /**
-                 let id = postJSON._id;
-
-                 $("#"+id+"title").text(postJSON.title);
-                 $("#"+id+"about").text(postJSON.about);*/
-            }
-
-            function loadPostToList(postJSON) {
-
-                var div = $("<div></div>");
-                div.attr("class", "container");
-                div.attr("id", postJSON._id + "div");
-
-                var headline = $("<h></h>");
-                headline.attr("class", "title");
-                headline.attr("id", postJSON._id + "title");
-                headline.text(postJSON.title);
-
-                var paragraph = $("<p></p>");
-                paragraph.attr("class", "about");
-                paragraph.attr("id", postJSON._id + "about");
-                paragraph.text(postJSON.about);
-
-                var deleteButton = $("<button></button>");
-                deleteButton.attr("class", "delete");
-                deleteButton.on("click", function () {
-                    canDelete = true;
-                    deletePost(postJSON);
-                });
-                deleteButton.text("delete me");
-
-                var editButton = $("<button></button>");
-
-                editButton.attr("class", "edit");
-                editButton.text("edit me");
-                editButton.on("click", function () {
-                    canEdit = true;
-                    enableEditPost(postJSON);
-                });
-
-                div.append(headline);
-                div.append(paragraph);
-                div.append(deleteButton);
-                div.append(editButton);
-
-                $("#my-posts-container").append(div);
-
-            }
-
-            /**
-             * Enable to hide pop up
-             */
-            function enablePopUp() {
+            };
+            $scope.loadEdit = function ($index) {
 
                 $("#edit-form").show();
                 $("#overLay").show();
 
-            }
+                if($scope.posts){
+                    $scope.editPost = $scope.posts[$index];
 
-            /**
-             * Enable to hide pop up
-             */
-            function enableRemovePopUp() {
-                let overlay = document.getElementById("overLay");
-                /**
-                 * Disable pop up on background
-                 */
-                overlay.onclick = function () {
-                    $("#edit-form").hide();
-                    $("#overLay").hide();
+                    if(!$scope.editPost.img1){
+                        $("#imageContainer1").hide();
+                    }
+
+
+                    if(!$scope.editPost.img2){
+                        $("#imageContainer2").hide();
+                    }
+
+                    if(!$scope.editPost.img3 ) {
+                        $("#imageContainer3").hide();
+                    }
+
+                    // set default value
+                    $scope.SelectInput = $scope.editPost.type;
+
+                    if($scope.SelectInput === 'job'){
+                        $scope.categories = [
+                            {type: "job", value: "Job"}
+                        ];
+                    }
+                    else if($scope.SelectInput === 'rent'){
+                        $scope.categories = [
+                            {type: "rent", value:"Rent"}
+                        ];
+                    }else{
+                        $scope.categories = [
+                            {type: "free-stuff", value: "Free Stuff"},
+                            {type: "sports", value: "Sports, Leisure and Games"},
+                            {type:"home-and-garden", value: "Home and Garden"},
+                            {type: "entertainment", value: "Movies, Books and Music"},
+                            {type: "electronics", value: "Electronics"},
+                            {type: "fashion", value: "Fashion"},
+                            {type: "other", value: "Other"}
+                        ];
+                    }
+
                 }
+
+
+            };
+
+            $scope.delete = function ($index) {
+                var post = $scope.posts[$index];
+                $scope.posts.splice($index, 1);
+                $http.delete("/delete-post", {params: {postId: post._id}}).then(function (response) {
+
+                })
             }
-
-            function clearAllPosts() {
-                $("#my-posts-container").empty();
-            }
-
-            /*$("hideLink").click(function () {
-                console.log("called button");
-                $(this).closest(".imgclass").hide();
-
-            });*/
-
-
-
-            $(document).on("click", "#hideLink1", function() {
-                $(this).closest(".imageOverlayContainer").hide();
-                //postToBeEdit.img1 = '';
-                deleteImg1=true;
-
-            });
-
-            $(document).on("click", "#hideLink2", function() {
-                $(this).closest(".imageOverlayContainer").hide();
-                //postToBeEdit.img2 = '';
-                deleteImg2=true;
-
-            });
-
-            $(document).on("click", "#hideLink3", function() {
-                $(this).closest(".imageOverlayContainer").hide();
-                //postToBeEdit.img3 = '';
-                deleteImg3=true;
-            });
-
-            $(document).on("click", "#edit-button", function() {
-               editPost();
-            });
 
 
 
         });
+
+        $(init);
+        function init() {
+
+            var userId = getCookie("userId");
+            if (!userId) {
+                window.location.href = '/index.html';
+            }
+            $("#title-dialog").dialog({
+                autoOpen: false, modal: true, show: "blind", hide: "blind"
+            });
+            $("#title-page").click(function () {
+                $("#title-dialog").dialog("open");
+            });
+            $("#edit-form").hide();
+            $("#overLay").hide();
+
+        }
+
+
     </script>
-
 </head>
-<body>
-
+<body ng-app="myApp" ng-controller="myCtrl">
 <div style="margin-bottom: 50px;" id="nag-container">
 
 </div>
@@ -393,16 +157,21 @@
     <p> Here, you can edit or delete your posts. Its an area to manage what you upload to the site</p>
 </div>
 
-<div id="my-posts-container">
+<!-- Load posts using AngularJS -->
+<div id="my-posts-container"  >
+
+    <div ng-repeat="post in posts" class="container">
+
+        <h2 class="title"> {{post.title}}</h2>
+        <p class="about">{{post.about}}</p>
+        <button ng-click="delete($index);" class="delete">Delete Me</button>
+        <button ng-click="loadEdit($index);" class="edit">Edit Me</button>
+    </div>
 
 </div>
 
-
-
 <!--Enable a user to leave popup box when user clicks bg-->
-<div id="overLay"></div>
-
-
+<div id="overLay" onclick="$('#overLay').hide(); $('#edit-form').hide();"></div>
 
 <!--Dynamically hide -->
 <div id = "edit-form">
@@ -411,54 +180,65 @@
     <div class="wrapperEdit">
 
         <label class ="labeltag" >Product Name :</label>
-       <!-- <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">-->
+        <!-- <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">-->
 
-        <input id="title" placeholder="title" type="text" class="EditInput" name="title" required>
+        <input id="title" placeholder="title" ng-model="editPost.title" type="text" class="EditInput" name="title" required>
 
         <label class ="labeltag">Price(USD) :</label>
-        <input class="EditInput" name="price"  id ="price" type="text" maxlength="20" placeholder="input cost">
-
+        <input class="EditInput" name="price"  id ="price" type="text" maxlength="20" placeholder="input cost" ng-model="editPost.price">
 
 
         <label class ="labeltag" for="type">Category:</label>
-        <select name="type" class="SelectInput" id="type">
-            <option value="free-stuff">Free Stuff</option>
-            <option value="sports">Sports, Leisure and Games</option>
-            <option value="home-and-garden">Home and Garden</option>
-            <option value="entertainment">Movies, Books and Music</option>
-            <option value="electronics">Electronics</option>
-            <option value="fashion">Fashion</option>
-            <option value="other">Other</option>
+
+        <select name="type" ng-model="SelectInput" class="SelectInput" id="type">
+
+            <option ng-model="SelectInput" ng-repeat="category in categories" value="{{category.type}}">{{category.value}}</option>
         </select>
 
 
-
-
         <label class ="labeltag"  >Location :-</label><div></div> <div></div> <div></div>
-        <label class ="labeltag"> Street :</label><input class="EditInput" id="street" name="street" type="text" maxlength="20">
-        <label class ="labeltag" >  City :</label><input class="EditInput" id="city" name="city" type="text" maxlength="20">
-        <label class="labeltag" >  ZipCode :</label><input class="EditInput" id="zip" name="zip" type="text" size="5">
-        <label class ="labeltag" > State :</label> <input class="EditInput" id="state" name="state" type="text" size="2">
+        <label class ="labeltag"> Street :</label><input ng-model="editPost.location.street" class="EditInput" id="street" name="street" type="text" maxlength="20">
+        <label class ="labeltag" >  City :</label><input ng-model="editPost.location.city" class="EditInput" id="city" name="city" type="text" maxlength="20">
+        <label class="labeltag" >  ZipCode :</label><input ng-model="editPost.location.zip" class="EditInput" id="zip" name="zip" type="text" size="5">
+        <label class ="labeltag" > State :</label> <input ng-model="editPost.location.state" class="EditInput" id="state" name="state" type="text" size="2">
 
         <label class ="labeltag" id="ProductDescription" >Product Description</label>
-        <textarea  id="about" name="about" placeholder="Enter your description" required></textarea>
+        <textarea ng-model="editPost.about"  id="about" name="about" placeholder="Enter your description" required></textarea>
 
 
 
         <label class ="labeltag">Images</label>
-        <div id="image-container"></div>
+
+        <div id="image-container">
+            <div id='imageContainer1' style="float: left; width: 33%"  class='imageOverlayContainer'>
+
+                <img class="imgclass" src="{{editPost.img1}}" ng-model="editPost.img1">
+
+                <div class='overlay'></div>
+
+                <div class='buttonDelete'><a id='hideLink1' href='#' ng-click="editPost.img1=''"> Delete </a></div>
+            </div>
+
+            <div id='imageContainer2' style="float: left; width: 33%" class='imageOverlayContainer'>
+                <img class="imgclass" src="{{editPost.img2}}" ng-model="editPost.img2">
+                <div class='overlay'></div>
+                <div class='buttonDelete'><a id='hideLink2' href='#' ng-click="editPost.img2=''"> Delete </a></div>
+            </div>
+
+            <div id='imageContainer3' style="float: left; width: 33%"  class='imageOverlayContainer'>
+                <img class="imgclass" src="{{editPost.img3}}" ng-model="editPost.img3">
+                <div class='overlay'></div>
+                <div class='buttonDelete'><a id='hideLink3' href='#' ng-click="editPost.img3=''"> Delete </a></div>
+            </div>
+        </div>
 
     </div>
 
     <!--<input type="file" name="imgUploader" id="fileup" multiple required>-->
     <br/>
 
-
-
-
-    <button  id="edit-button" type="submit" >Edit</button>
+    <button ng-click="onEditPost();"   id="edit-button" type="submit" >Edit</button>
 </div>
 
 
 </body>
-</html>
