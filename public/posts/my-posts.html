@@ -22,20 +22,8 @@
                 $scope.posts = null;
             };
 
-            $scope.categories = {
-                "free-stuff": "Free Stuff",
-                "sports": "Sports, Leisure and Games",
-                "home-and-garden": "Home and Garden",
-                "entertainment": "Movies, Books and Music",
-                "electronics": "Electronics",
-                "fashion": "Fashion",
-                "other": "Other"
-            };
-
             $http.get("/get-posts", {params: {userId: userId}}).then(function (response) {
-
                 $scope.posts = response.data;
-
             });
 
 
