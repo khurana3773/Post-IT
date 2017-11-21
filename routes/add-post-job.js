@@ -17,7 +17,7 @@ router.post('/',
 		var about = req.param("about");
 		var price = req.param("price");
 		var type = req.param("type");
-		var timestamp = req.param("timestamp");
+		var timestamp = new Date().getTime();
 
 		var location = {
 			"street": req.param("street"),

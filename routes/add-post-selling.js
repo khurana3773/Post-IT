@@ -7,9 +7,7 @@ var router = express.Router();
 
 router.post('/',
 	function (req, res) {
-
         console.log("add-post-selling");
-
 
 		var userId = req.cookies.userId;
 		// end
@@ -21,7 +19,7 @@ router.post('/',
 		var about = req.param("about");
 		var price = req.param("price");
 		var type = req.param("type");
-		var timestamp = req.param("timestamp");
+		var timestamp = new Date().getTime();
 
 		var location = {
 			"street": req.param("street"),
