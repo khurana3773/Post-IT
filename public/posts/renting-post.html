@@ -78,7 +78,7 @@
             var state = $("#state").val();
             if (state.match(/\d/)) {
                 alert("State cannot contain numbers.");
-                return false;
+                return false
             }
             
             return true;
@@ -99,7 +99,7 @@
 <div id = "formdiv">
 	<form id="upload" method="post" action= "/add-post-renting" onsubmit="return validateForm();">
 	    <label for="title">Product Name</label>
-        <input value="none" type="text" name="timestamp" id="timestamp" style="display: none;">
+
 	    <input placeholder="Title" type="text" id="title" name="title" required>
 	    <br/>
 		<label for="about">Product Description</label>
