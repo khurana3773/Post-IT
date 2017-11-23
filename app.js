@@ -43,6 +43,7 @@ var validate_code = require('./routes/validate-code');
 var login = require('./routes/login');
 var validate_signin = require('./routes/validate-signin');
 var category = require('./routes/category');
+var email = require('./routes/email');
 
 const Uploadaws = require('./routes/imageupload');
 const multipart = require('connect-multiparty');
@@ -137,6 +138,7 @@ app.use('/validate-code', validate_code);
 app.use('/login', login);
 app.use('/validate-signin', validate_signin);
 app.use('/category', category);
+app.use('/email', email);
 
 var file_name=[];
 var counter=0;

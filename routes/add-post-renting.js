@@ -19,7 +19,7 @@ router.post('/',
 		var img3 = req.param("img-3");
 
 		var about = req.param("about");
-		var price = req.param("price");
+		var price = parseInt(req.param("price"));
 		var type = req.param("type");
 		var timestamp = new Date().getTime();
 

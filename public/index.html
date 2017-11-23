@@ -18,7 +18,10 @@
         var userLoggedIn = false;
         var interval=null;
         var orig_img1=null;
-
+        var id= null;
+        var price= "0";
+        var maindiv= null;
+        var slideIndex=1;
         $(init);
         function init() {
 
@@ -27,18 +30,17 @@
             initShoppingList();
             initList();
             initSearchBox();
-            setCategoriesEvent();
+           // setCategoriesEvent();
 
             $("#popup").hide();
             $(".dropdown-content").hide();
-
+            $("#alt-view").hide();
             $("#shopping-list").hide();
             $("#overLay").hide();
 
 
-            $("#slider").slider({max: 50});
-            $("#slider").slider({change: handleSliderValue});
-
+            $("#slider").slider({max: 1000, value:0,step:10});
+            $("#slider").slider({stop: handleSliderValue});
 
             $(window).resize();
             
@@ -72,48 +74,56 @@
         /**
          * Set event for categories.
          */
-        function setCategoriesEvent(){
-            $(".category").click(searchForCategory);
+       function setCategoriesEvent( idd){
+           console.log("Inside here CAtegory event");
+           id = idd;
+           searchForCategory();
         }
         /**
          * Gets products with category from database.
          * Update product stream
          */
         function searchForCategory() {
-            var id = $(this).attr('id');
-            $("#products-list").empty();
-            $.ajax({url: ("http://"+$(location).attr('host'))+"/category", data: "type="+id,type:'GET',contentType: 'application/json' 
-            	,success: function(result){
-            	postsJSON = JSON.parse(result);
-            	console.log("starting");
-            	console.log(postsJSON);
-            	 for (let i = 0; i < postsJSON.length; i++) {
-                     let postJSON = postsJSON[i];
-                     if (postJSON !== null) {
-                    	 console.log("inside loop "+i);
 
-                         loadPostToList(postsJSON[i]);
-                         console.log("after loop "+i);
-                     }
-                 }
-             	}
+            id = $(this).attr('id');
+            console.log(id);
+            $("#products-list").empty();
+
+            $.ajax({
+                url: ("http://" + $(location).attr('host')) + "/category",
+                data: "type=" + id + ",price:" + price,
+                type: 'GET',
+                contentType: 'application/json'
+                ,
+                success: function (result) {
+                    if ($.trim(result)) {
+                        postsJSON = JSON.parse(result);
+                        console.log("starting");
+                        console.log(postsJSON);
+                        for (let i = 0; i < postsJSON.length; i++) {
+                            let postJSON = postsJSON[i];
+                            if (postJSON !== null) {
+                                console.log("inside loop " + i);
+
+                                loadPostToList(postsJSON[i]);
+                                console.log("after loop " + i);
+                            }
+                        }
+                    }
+                }
             });
-            
+        }
             //Creates elements and set their values and styling
             function loadPostToList(postJSON) {
-
             	var li = $("<li></li>");
             	
                 var div1 = $("<div></div>");
                 div1.attr("id",postJSON._id +"detail");
-                div1.css("display","none");
+                //div1.css("display","none");
+                div1.css("display","block");
                 var d = postJSON._id + "div";
- 
-                var div0 = $("<div></div>");
-                div0.attr("id", postJSON._id + "div0");
-                div0.css("display","block");
-                                
-                var div = $("<div onmouseover=\"over(this)\" onmouseout=\"out(this)\"></div>");
+
+                var div = $("<div onmouseover=\"over(this)\" onmouseout=\"out(this)\" )\"></div>");
                 div.attr("class", "product");
                 div.attr("id", postJSON._id + "div");        
 
@@ -122,6 +132,9 @@
                 title.attr("id", postJSON._id + "title");
                 title.text(postJSON.title);
                 title.css("text-align","center");
+                title.css("overflow","hidden");
+                title.css("white-space","nowrap");
+                title.css("text-overflow", "ellipsis");
 				
                 var img_1 = $("<img></img>");
                 img_1.attr("src",postJSON.img1);
@@ -149,21 +162,38 @@
                 desc.attr("id", postJSON._id + "desc");
                 desc.text(postJSON.about);
                 desc.css("text-align","center");
+                desc.css("overflow","hidden");
+                desc.css("white-space","nowrap");
+                desc.css("text-overflow", "ellipsis");
                 
                 var price = $("<p></p>");
                 price.attr("id", postJSON._id + "price");
                 price.text("$ " +postJSON.price);
                 price.css("text-align","center");
+
+                var div2 = $("<div></div>");
+                div2.css("text-align","center");
+
+                var clickME = $("<button onclick=\"onPop()\"></button>");
+                clickME.text("Click Me for more!");
+                clickME.css("text-align","center");
                 
                 var loc =$("<a></a>");
                 loc.text("Location");
                 loc.attr("id", postJSON._id + "loc");
                 loc.attr("href","");
                 loc.attr("target","_blank");
-                loc.css("text-align","center");
-                loc.css("display","block");
+                loc.css("text-align","left");
+                loc.css("display","none");
                 loc.css("font-weight","bold");
 				getLatitudeLongitude(postJSON.location,postJSON._id + "loc" );
+
+                var contact = $("<a></a>");
+                loc.text("Contact");
+                contact.attr("id", postJSON.userId);
+                contact.attr("subject", "Re:"+postJSON.title+"("+postJSON.type+")");
+                contact.css("text-align","right");
+                contact.css("display","none");
 
 				li.append(div);
                 div.append(title);
@@ -173,14 +203,18 @@
                		div.append(img_2);
 				if ($(img_3).src!== "" ||$(img_3).src!== "null"||$(img_3).src!== null)
                		div.append(img_3);
+
                 div.append(price);
                 div.append(div1);
                 div1.append(desc);
+                div1.append(div2);
+                div2.append(clickME);
                 div1.append(loc);
-                div.append(div1);                
+                div1.append(contact);
+
                 $("#products-list").append(li);
             }
-        }
+
         function displayNextImage() {
                 x = (x === images.length - 1) ? 0 : x + 1;
                 document.getElementById("img").src = images[x];
@@ -281,10 +315,10 @@
          * Filters products currently on stream by miles
          */
         function handleSliderValue(event, ui) {
-            var miles = ui.value;
-            $.get('/slider', {miles: miles}, function (result) {
-
-            });
+            price = ui.value;
+            $( "#p-distance" ).text( "Price Min : "+ui.value );
+            console.log("slider triggered"+ui.value);
+            searchForCategory();
         }
         // Will dynamically generate search bar population with ajax from our database
         function initCompleteSearchBox(){
@@ -395,9 +429,11 @@
         */   
         
         function over(e) {
+            console.log("inside over");
+              maindiv=e;
         	  orig_img1	=null;
-        	  var d= document.getElementById(e.id).getElementsByTagName("div")[0];
-              d.style.display="block";
+        	  //var d= document.getElementById(e.id).getElementsByTagName("div")[0];
+              //d.style.display="block";
               var images = [],
               x = 0;
               var image= document.getElementById(e.id).getElementsByClassName("pic");
@@ -410,32 +446,115 @@
 
               var $img = $("#"+e.id+' #img1'), i = 0, speed = 200;
               orig_img1=images[0];
-              console.log();
-              // Only if there are more than 1 images, allow pics to keep changing in every 3secs. 
+              // Only if there are more than 1 images, allow pics to keep changing in every 3secs.
 			  if(images.length>1)
 	              interval=window.setInterval(function() {
 	                $img.fadeOut(speed, function() {
 	                  $img.attr("src", images[(++i % images.length)]);
 	                  $img.fadeIn(speed);
 	                });
-	              }, 3000);
-			  
+	              }, 1500);
         	}
         /**
          * Allows unsettin of intervals if set for the product.
          * and undo the expansion effect
          */  
         function out(e) {
+            console.log("inside out");
+            console.log(e);
         	if (interval!==null){
 	        	clearInterval(interval);	
 	        	interval=null;
-        	}	
-      	  	var d= document.getElementById(e.id).getElementsByTagName("div")[0];
-      	  	d.style.display="none";
-      	    var $img = $("#"+e.id+' #img1');
-      	    $img.attr("src", orig_img1);
-      	    orig_img1=null;
+                var $img = $("#"+e.id+' #img1');
+                $img.attr("src", orig_img1);
+
+        	}
+            orig_img1=null;
+            maindiv=null;
       	}
+        /**
+         * Allows complete view of a product as poped-up alternative view
+         */
+        function onPop() {
+            console.log("inside onPop");
+            $("#alt-view").toggle();
+            $("#overLay").toggle();
+            var d= document.getElementById(maindiv.id);
+            var p=d.getElementsByTagName("p");
+            var div1=d.getElementsByTagName("div")[0];
+            var loc= div1.getElementsByTagName("a")[0];
+            var contact= div1.getElementsByTagName("a")[1];
+            var image= d.getElementsByClassName("pic");
+            console.log(d);
+            $(".mypics").remove();
+            if(orig_img1!==null)
+                out(maindiv);
+            $.each( image,function(index, value){
+                if( value.currentSrc!=="" && value.currentSrc!== null  && value.currentSrc!== "null"){
+                    var img = $("<img></img>");
+                    img.attr("src",value.src);
+                    img.height("300px").width("300px");
+                    img.css("margin-left","25%");
+                    img.attr("class","mypics");
+                    $("#first").before(img);
+                    x++;
+                }
+            });
+            slideIndex = 1;
+            showSigns(slideIndex);
+            $("#poptitle").text(p[0].innerHTML);
+            $("#popprice").text("Price: "+ p[1].innerHTML);
+            $("#popdesc").text(p[2].innerHTML);
+            if(userLoggedIn) {
+                $(".validuserenable").css("visibility","visible");
+                $("#poploc").attr("href", loc.href);
+                $.ajax({
+                    url: ("http://" + $(location).attr('host')) + "/email",
+                    data: "id=" + contact.id,
+                    type: 'POST',
+                    contentType: 'application/text'
+                    ,
+                    success: function (result) {
+                        if ($.trim(result)) {
+                            console.log("inside email: " + result);
+                            $("#popcontct").attr("href", "mailto:" + result);
+
+                        }
+                    }
+                });
+            }
+            // should be able to undo pop up
+
+            removePop();
+        }
+        /**
+         * Enable to hide pop up
+         */
+        function removePop() {
+            let overlay = document.getElementById("overLay");
+            /**
+             * Disable pop up on background
+             */
+
+            overlay.onclick = function () {
+                $("#alt-view").toggle();
+                $("#overLay").toggle();
+            }
+        }
+        function plusDivs(n) {
+            showSigns(slideIndex += n);
+        }
+
+        function showSigns(n) {
+            var i;
+            var x = document.getElementsByClassName("mypics");
+            if (n > x.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = x.length}
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            x[slideIndex-1].style.display = "block";
+        }
         
 </script>
 
@@ -475,25 +594,27 @@
     <div id="side-bar">
         <h3 class="categories">Categories</h3>
         <ul id="menu">
-            <li><div class="category" id="rent"><span class="ui-icon ui-icon-tag"></span>Rent</div></li>
-            <li><div class="category" id="free-stuff"><span class="ui-icon ui-icon-tag"></span>Free Stuff</div></li>
-            <li><div class="category" id="sports"><span class="ui-icon ui-icon-tag"></span>Sports, Leisure and Games</div></li>
-            <li><div class="category" id="home-and-garden"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
-            <li><div class="category" id="entertainment"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
-            <li><div class="category" id="electronics"><span class="ui-icon ui-icon-tag"></span>Electronics</div></li>
-            <li><div class="category" id="jobs"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
-            <li><div class="category" id="fashion"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
-            <li><div class="category" id="other"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
+            <li><div class="category" id="rent" onclick="setCategoriesEvent('rent')"><span class="ui-icon ui-icon-tag"></span>Rent</div></li>
+            <li><div class="category" id="free-stuff" onclick="setCategoriesEvent('free-stuff')"><span class="ui-icon ui-icon-tag"></span>Free Stuff</div></li>
+            <li><div class="category" id="sports" onclick="setCategoriesEvent('sports')"><span class="ui-icon ui-icon-tag"></span>Sports, Leisure and Games</div></li>
+            <li><div class="category" id="home-and-garden" onclick="setCategoriesEvent('home-and-garden')"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
+            <li><div class="category" id="entertainment" onclick="setCategoriesEvent('entertainment')"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
+            <li><div class="category" id="electronics" onclick="setCategoriesEvent('electronics')"><span class="ui-icon ui-icon-tag"></span>Electronics</div></li>
+            <li><div class="category" id="jobs" onclick="setCategoriesEvent('jobs')"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
+            <li><div class="category" id="fashion" onclick="setCategoriesEvent('fashion')"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
+            <li><div class="category" id="other" onclick="setCategoriesEvent('other')"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
         </ul>
 
 
-        <p id="p-distance">Distance in Miles</p>
+        <p id="p-distance">Price Min : 0 </p>
         <div id="slider"></div>
 
         <div id="slider-wrapper-label ">
-            <label for="slider">1</label>
-            <label for="slider" style="margin-left: 10em">50+ </label>
+            <label for="slider">0</label>
+            <label for="slider" style="margin-left: 10em">1000+</label>
         </div>
+
+
     </div>
 
     <!--Dynamically stream products here by category-->
@@ -501,6 +622,35 @@
         <ul id="products-list">
                         
         </ul>
+    </div>
+
+    <!--Enable a user to leave popup box when user clicks bg-->
+    <div id="overLay" onclick="$('#overLay').hide(); $('#alt-view').hide();"></div>
+
+    <!--Dynamically hide -->
+    <div id = "alt-view">
+
+
+            <h3 id="poptitle" style="text-align: center">Product Name :</h3>
+
+            <div  style="text-align: center; display: block;">
+                <div class="validuserenable" style="float:left;text-align:center;width:33%;visibility: hidden">
+                    <h3 style="text-align: left"><a id="poploc" target="_blank" >Location</a></h3>
+                </div>
+                <div style="float:left;text-align:center;width:33%"><h3 id="popprice" style="font-weight: bold">Price(USD) :</h3></div>
+                <div  class="validuserenable" style="float:left;text-align:center;width:33%;visibility: hidden">
+                    <h3 style="text-align: right"><a id="popcontct">Contact</a></h3>
+                </div>
+            </div>
+
+            <div id="designDiv">
+                <p id="popdesc" style="text-align: center"><p>
+            </div>
+            <div >
+                <button id ="first" style="margin-right: 100px;" onclick="plusDivs(-1)">&#10094;</button>
+                <button style="margin-left: 100px;" onclick="plusDivs(1)">&#10095;</button>
+            </div>
+
     </div>
     
     <!-- Contains references to shopping list-->

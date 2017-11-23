@@ -19,7 +19,7 @@ router.post('/', function (req, res) {
     	"userId": post.userId,
 		"title": post.title,
 		"about": post.about,
-		"price": post.price,
+		"price": parseInt(post.price),
 		"type": post.type,
 		"timestamp": post.timestamp,
 		"location": post.location,
