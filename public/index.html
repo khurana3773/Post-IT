@@ -43,7 +43,8 @@
             $("#slider").slider({stop: handleSliderValue});
 
             $(window).resize();
-            
+            //clear featured values
+            resetFeature();
             initLogin();
         }
 
@@ -83,12 +84,29 @@
          * Gets products with category from database.
          * Update product stream
          */
+        function resetFeature(){
+            $("#products-list").empty();
+            $("#flabel1").html("");
+            $("#flabel2").html("");
+            $("#featured img").removeAttr('src');
+            $("#flabel1").removeAttr("class","script1");
+            $("#flabel2").removeAttr("class","script2");
+            $("#ftitle").removeAttr("class","shadow text2");
+            $("#fprice").removeAttr("class","shadow text3");
+            $("#ftitle").html("");
+            $("#fprice").html("");
+            $("#featured").css('background-color','#e0e0dd');
+            $("#featured div")[0].style.backgroundColor='#e0e0dd';
+            $("#featured div")[1].style.backgroundColor='#e0e0dd';
+            $("#featured div")[0].style.display='block';
+            $("#featured div")[1].style.width='50%';
+        }
         function searchForCategory() {
 
             id = $(this).attr('id');
             console.log(id);
             $("#products-list").empty();
-
+            resetFeature();
             $.ajax({
                 url: ("http://" + $(location).attr('host')) + "/category",
                 data: "type=" + id + ",price:" + price,
@@ -104,7 +122,9 @@
                             let postJSON = postsJSON[i];
                             if (postJSON !== null) {
                                 console.log("inside loop " + i);
-
+                                if(i===0){
+                                    featurefill(postsJSON[i]);
+                                }
                                 loadPostToList(postsJSON[i]);
                                 console.log("after loop " + i);
                             }
@@ -139,7 +159,7 @@
                 var img_1 = $("<img></img>");
                 img_1.attr("src",postJSON.img1);
                 img_1.attr("class","pic");
-                img_1.height("100").width("100");
+                img_1.height("100").width("80%");
                 img_1.attr("id","img1");
                 
                 img_1.on("error", function(){
@@ -148,13 +168,13 @@
                 
                 var img_2 = $("<img></img>");
                 img_2.attr("src",postJSON.img2);
-                img_2.height("100").width("100");
+                img_2.height("100").width("80%");
                 img_2.attr("class","pic");
                 img_2.css("display","none");
                 
                 var img_3 = $("<img></img>");
                 img_3.attr("src",postJSON.img3);
-                img_3.height("100").width("100");
+                img_3.height("100").width("80%");
                 img_3.attr("class","pic");
                 img_3.css("display","none");
                 
@@ -177,6 +197,7 @@
                 var clickME = $("<button onclick=\"onPop()\"></button>");
                 clickME.text("Click Me for more!");
                 clickME.css("text-align","center");
+                clickME.css("visibility","hidden");
                 
                 var loc =$("<a></a>");
                 loc.text("Location");
@@ -214,6 +235,28 @@
 
                 $("#products-list").append(li);
             }
+        function featurefill(postJSON) {
+
+            if (postJSON.img1.length > 2) {
+                $("#featured img").attr("src", postJSON.img1);
+                console.log(postJSON.img1.length);
+            } else {
+                $("#featured div")[0].style.display="none";
+                $("#featured div")[1].style.width="100%";
+            }
+            $("#flabel1").html("Featuring");
+            $("#flabel2").html("Browse below for more!");
+            $("#ftitle").html(postJSON.title);
+            $("#fprice").html("For only $"+ postJSON.price);
+
+            $("#flabel1").attr("class","script1");
+            $("#flabel2").attr("class","script2");
+            $("#ftitle").attr("class","shadow text2");
+            $("#fprice").attr("class","shadow text3");
+            $("#featured").css('background-color',' #52a5c3');
+            $("#featured div")[0].style.backgroundColor='#52a5c3';
+            $("#featured div")[1].style.backgroundColor=' #52a5c3';
+        }
 
         function displayNextImage() {
                 x = (x === images.length - 1) ? 0 : x + 1;
@@ -316,7 +359,7 @@
          */
         function handleSliderValue(event, ui) {
             price = ui.value;
-            $( "#p-distance" ).text( "Price Min : "+ui.value );
+            $( "#p-distance" ).text( "Min Price $ "+ui.value );
             console.log("slider triggered"+ui.value);
             searchForCategory();
         }
@@ -436,6 +479,8 @@
               //d.style.display="block";
               var images = [],
               x = 0;
+              var buttonclick= document.getElementById(e.id).getElementsByTagName("button")[0];
+              buttonclick.style.visibility="visible";
               var image= document.getElementById(e.id).getElementsByClassName("pic");
               $.each( image,function(index, value){
             	  if( value.currentSrc!=="" && value.currentSrc!== null  && value.currentSrc!== "null"){ 
@@ -462,6 +507,8 @@
         function out(e) {
             console.log("inside out");
             console.log(e);
+            var buttonclick= document.getElementById(e.id).getElementsByTagName("button")[0];
+            buttonclick.style.visibility="hidden";
         	if (interval!==null){
 	        	clearInterval(interval);	
 	        	interval=null;
@@ -606,7 +653,7 @@
         </ul>
 
 
-        <p id="p-distance">Price Min : 0 </p>
+        <p id="p-distance">Min Price $ 0 </p>
         <div id="slider"></div>
 
         <div id="slider-wrapper-label ">
@@ -619,6 +666,20 @@
 
     <!--Dynamically stream products here by category-->
     <div id="products">
+        <div id ="featured">
+            <div style="float:left">
+                <img></img>
+
+            </div>
+            <div style="overflow: hidden">
+                <p id="flabel1"></p>
+                <p id ="ftitle"></p>
+                <p id="fprice"></p>
+                <br>
+                <p id="flabel2"></p>
+            </div>
+
+        </div>
         <ul id="products-list">
                         
         </ul>
