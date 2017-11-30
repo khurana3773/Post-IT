@@ -7,27 +7,27 @@ var router = express.Router();
  */
 router.post('/',
 	function (req, res) {
-		console.log("search");
-		let searchKey = req.param("searchKey");
-		console.log(searchKey);
 
-		// tester
-		var productJSON = {
-			userId: "12312321",
-			tag: ["a", "b", "c"],
-			location: "2001 Pacific Ave, Alameda, CA",
-			timestamp: "time"
-		};
+	var search = req.param("search");
 
-		var responses = [];
+        var collection = db.get("posts");
 
+        var query = {
+            title: {
+                $regex: search
+            }
+        };
+        // search the oldest 
+        collection.find(query, {sort: {timestamp: 1}}, function (err, docs) {
+            if(err){
 
-		for(var i = 0; i<4; i++){
-			responses.push(productJSON);
-		}
-		console.log(JSON.stringify(responses));
-		res.send(JSON.stringify(responses));
-
+            	res.status = 404;
+            	res.send("Error");
+            }else{
+            	res.status = 202;
+            	res.send(JSON.stringify(docs));
+            }
+        });
     }
 );
 
