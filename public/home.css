@@ -249,7 +249,7 @@ main{
  }
 #designDiv
 {
-    width:90%;
+    width:100%;
     height:fit-content;
     max-height:20%;
     overflow-y: scroll;
