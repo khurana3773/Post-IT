@@ -15,6 +15,39 @@ h1{
 	text-shadow:5px 5px 10px grey;
 }
 
+#nav {
+    background: #52809f;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+
+    margin: 0px;
+    padding: 0px;
+}
+#nav-wrapper {
+    width: 90%;
+    margin: 0px auto;
+    text-align: left;
+}
+#nav ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+#nav ul li {
+    display: inline-block;
+}
+#nav ul li:hover {
+    background: #52a5c3;
+}
+
+#nav ul li a, visited {
+    display: block;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+}
+
 #selling{
 	padding: 2px;
 	background: rgba(0,0,0, 0.82);
@@ -62,8 +95,9 @@ h1{
 
 #purpose{
 	width: 100%;
-	text-align:center;	
+	text-align:center;
 	height: 60%;
+	padding-top: 20px;
 }
 
 .button {
@@ -106,7 +140,7 @@ h1{
   right: 0;
 }
 .button.disabled {
-  opacity: 0.25; 
+  opacity: 0.25;
   cursor: not-allowed;
   display: inline-block;
   border-radius: 25px;

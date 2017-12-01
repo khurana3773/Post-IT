@@ -136,7 +136,7 @@
             //Creates elements and set their values and styling
             function loadPostToList(postJSON) {
             	var li = $("<li></li>");
-            	
+
                 var div1 = $("<div></div>");
                 div1.attr("id",postJSON._id +"detail");
                 //div1.css("display","none");
@@ -145,9 +145,9 @@
 
                 var div = $("<div onmouseover=\"over(this)\" onmouseout=\"out(this)\" )\"></div>");
                 div.attr("class", "product");
-                div.attr("id", postJSON._id + "div");        
+                div.attr("id", postJSON._id + "div");
 
-                
+
                 var title = $("<p></p>");
                 title.attr("id", postJSON._id + "title");
                 title.text(postJSON.title);
@@ -155,29 +155,29 @@
                 title.css("overflow","hidden");
                 title.css("white-space","nowrap");
                 title.css("text-overflow", "ellipsis");
-				
+
                 var img_1 = $("<img></img>");
                 img_1.attr("src",postJSON.img1);
                 img_1.attr("class","pic");
                 img_1.height("100").width("80%");
                 img_1.attr("id","img1");
-                
+
                 img_1.on("error", function(){
                 	if(this.src !== './img/NoImage.png' || this.src !== 'null') this.src = './img/NoImage.png';
-                });               
-                
+                });
+
                 var img_2 = $("<img></img>");
                 img_2.attr("src",postJSON.img2);
                 img_2.height("100").width("80%");
                 img_2.attr("class","pic");
                 img_2.css("display","none");
-                
+
                 var img_3 = $("<img></img>");
                 img_3.attr("src",postJSON.img3);
                 img_3.height("100").width("80%");
                 img_3.attr("class","pic");
                 img_3.css("display","none");
-                
+
                 var desc = $("<p></p>");
                 desc.attr("id", postJSON._id + "desc");
                 desc.text(postJSON.about);
@@ -185,7 +185,7 @@
                 desc.css("overflow","hidden");
                 desc.css("white-space","nowrap");
                 desc.css("text-overflow", "ellipsis");
-                
+
                 var price = $("<p></p>");
                 price.attr("id", postJSON._id + "price");
                 price.text("$ " +postJSON.price);
@@ -198,7 +198,7 @@
                 clickME.text("Click Me for more!");
                 clickME.css("text-align","center");
                 clickME.css("visibility","hidden");
-                
+
                 var loc =$("<a></a>");
                 loc.text("Location");
                 loc.attr("id", postJSON._id + "loc");
@@ -275,7 +275,7 @@
             var images = [], x = -1;
             images[0] = "image1.jpg";
             images[1] = "image2.jpg";
-            images[2] = "image3.jpg";    
+            images[2] = "image3.jpg";
 
         function initSearchBox() {
             $("#search-bar").keyup(function(event){
@@ -457,9 +457,9 @@
 
             $("#products").append(li);
         }*/
-        
+
         function loadToPopUp(productJSON) {
-            
+
         }
 
         function loadNagBar() {
@@ -469,8 +469,8 @@
         /**
         * Allows drop down /expansion effect
         * once user hovers on a product
-        */   
-        
+        */
+
         function over(e) {
             console.log("inside over");
               maindiv=e;
@@ -483,7 +483,7 @@
               buttonclick.style.visibility="visible";
               var image= document.getElementById(e.id).getElementsByClassName("pic");
               $.each( image,function(index, value){
-            	  if( value.currentSrc!=="" && value.currentSrc!== null  && value.currentSrc!== "null"){ 
+            	  if( value.currentSrc!=="" && value.currentSrc!== null  && value.currentSrc!== "null"){
             		  images[x]=value.src;
             		  x++;
             	  }
@@ -503,14 +503,14 @@
         /**
          * Allows unsettin of intervals if set for the product.
          * and undo the expansion effect
-         */  
+         */
         function out(e) {
             console.log("inside out");
             console.log(e);
             var buttonclick= document.getElementById(e.id).getElementsByTagName("button")[0];
             buttonclick.style.visibility="hidden";
         	if (interval!==null){
-	        	clearInterval(interval);	
+	        	clearInterval(interval);
 	        	interval=null;
                 var $img = $("#"+e.id+' #img1');
                 $img.attr("src", orig_img1);
@@ -602,7 +602,7 @@
             }
             x[slideIndex-1].style.display = "block";
         }
-        
+
 </script>
 
 </head>
@@ -629,8 +629,8 @@
 
     <div class="dropdown-content">
         <ul id="dropdown-list">
-            <li><a href="profile.html"> Profile </a></li>
-            <li><a href="#"> Settings </a></li>
+            <!--<li><a href="profile.html"> Profile </a></li>
+            <li><a href="#"> Settings </a></li> -->
             <li><a href="posts/my-posts.html"> My Posts </a></li>
             <li><a href="about.html"> Want a job or contact us?</a></li>
         </ul>
@@ -681,7 +681,7 @@
 
         </div>
         <ul id="products-list">
-                        
+
         </ul>
     </div>
 
@@ -713,7 +713,7 @@
             </div>
 
     </div>
-    
+
     <!-- Contains references to shopping list-->
     <div id="shopping-list">
         <p>Shopping List</p>
