@@ -21,6 +21,8 @@
         var id= null;
         var price= "0";
         var maindiv= null;
+        var searchbox= false;
+        var searchvalue= null;
         var slideIndex=1;
         $(init);
         function init() {
@@ -30,7 +32,6 @@
             initShoppingList();
             initList();
             initSearchBox();
-           // setCategoriesEvent();
 
             $("#popup").hide();
             $(".dropdown-content").hide();
@@ -72,17 +73,19 @@
             }
 
         }
+        
         /**
          * Set event for categories.
          */
        function setCategoriesEvent( idd){
-           console.log("Inside here CAtegory event");
            id = idd;
+           searchvalue = null;
+       	   searchbox = false;
            searchForCategory();
         }
+        
         /**
-         * Gets products with category from database.
-         * Update product stream
+         * Resets variable, products list and feature variables
          */
         function resetFeature(){
             $("#products-list").empty();
@@ -101,10 +104,13 @@
             $("#featured div")[0].style.display='block';
             $("#featured div")[1].style.width='50%';
         }
+        
+        /**
+         * Gets products with category from database.
+         * Update product stream
+         */
         function searchForCategory() {
-
             id = $(this).attr('id');
-            console.log(id);
             $("#products-list").empty();
             resetFeature();
             $.ajax({
@@ -116,30 +122,26 @@
                 success: function (result) {
                     if ($.trim(result)) {
                         postsJSON = JSON.parse(result);
-                        console.log("starting");
-                        console.log(postsJSON);
                         for (let i = 0; i < postsJSON.length; i++) {
                             let postJSON = postsJSON[i];
                             if (postJSON !== null) {
-                                console.log("inside loop " + i);
                                 if(i===0){
                                     featurefill(postsJSON[i]);
                                 }
                                 loadPostToList(postsJSON[i]);
-                                console.log("after loop " + i);
                             }
                         }
                     }
                 }
             });
         }
-            //Creates elements and set their values and styling
-            function loadPostToList(postJSON) {
+        
+        //Creates elements and set their values and styling
+        function loadPostToList(postJSON) {
             	var li = $("<li></li>");
 
                 var div1 = $("<div></div>");
                 div1.attr("id",postJSON._id +"detail");
-                //div1.css("display","none");
                 div1.css("display","block");
                 var d = postJSON._id + "div";
 
@@ -219,7 +221,6 @@
 				li.append(div);
                 div.append(title);
 				div.append(img_1);
-				console.log($(img_2).src);
 				if ($(img_2).src!== "" ||$(img_2).src!== "null"||$(img_2).src!== null)
                		div.append(img_2);
 				if ($(img_3).src!== "" ||$(img_3).src!== "null"||$(img_3).src!== null)
@@ -234,12 +235,14 @@
                 div1.append(contact);
 
                 $("#products-list").append(li);
-            }
+         }
+        
+        // To fill the Feature content with first json object if any    
         function featurefill(postJSON) {
 
             if (postJSON.img1.length > 2) {
                 $("#featured img").attr("src", postJSON.img1);
-                console.log(postJSON.img1.length);
+
             } else {
                 $("#featured div")[0].style.display="none";
                 $("#featured div")[1].style.width="100%";
@@ -257,26 +260,27 @@
             $("#featured div")[0].style.backgroundColor='#52a5c3';
             $("#featured div")[1].style.backgroundColor=' #52a5c3';
         }
-
+		
         function displayNextImage() {
                 x = (x === images.length - 1) ? 0 : x + 1;
                 document.getElementById("img").src = images[x];
-            }
+        }
 
-            function displayPreviousImage() {
+        function displayPreviousImage() {
                 x = (x <= 0) ? images.length - 1 : x - 1;
                 document.getElementById("img").src = images[x];
-            }
+        }
 
-            function startTimer() {
+        function startTimer() {
                 setInterval(displayNextImage, 3000);
-            }
+        }
 
             var images = [], x = -1;
             images[0] = "image1.jpg";
             images[1] = "image2.jpg";
             images[2] = "image3.jpg";
-
+		
+        // Search bar event listener once return/enter key pressed     
         function initSearchBox() {
             $("#search-bar").keyup(function(event){
                 if(event.keyCode === 13){
@@ -288,13 +292,48 @@
                         $("#search-bar").effect("shake", {times: 4, distance: 10}, 1000);
                         return;
                     }
-
-                    requestProduct(searchValue, appendToProductStream);
-                    //clear search bar value
-                    $("#search-bar").val("");
+                    else{
+                    	//clear search bar value
+                    	$("#search-bar").val("");
+                    	price= "0";
+                    	resetFeature();
+                    	requestProduct(searchValue);
+                    }
                 }
             });
         }
+        
+        //Updates product view once return/enter key pressed on search bar    
+        function requestProduct(searchValue) {
+        	searchvalue = searchValue;
+        	searchbox = true;
+            id = $(this).attr('id');
+            $("#products-list").empty();
+            resetFeature();
+            $.ajax({
+                url: ("http://" + $(location).attr('host')) + "/search",
+                data: "search=" + searchValue + ",price:" + price,
+                type: 'GET',
+                contentType: 'application/json'
+                ,
+                success: function (result) {
+                    if ($.trim(result)) {
+                        postsJSON = JSON.parse(result);
+                        for (let i = 0; i < postsJSON.length; i++) {
+                            let postJSON = postsJSON[i];
+                            if (postJSON !== null) {
+                                if(i===0){
+                                    featurefill(postsJSON[i]);
+                                }
+                                loadPostToList(postsJSON[i]);
+                            }
+                        }
+                    }
+                }
+            });
+
+        }
+        
         function initShoppingList(){
 
             $("#shopping-list").draggable();
@@ -313,11 +352,13 @@
             });
 
         }
+        
         function initList() {
             $(".product").draggable({ revert: 'invalid' });
 
             $(".product").css("zIndex", 2);
         }
+        
         /**
          * Handles what happens when user decides to add product to list.
          * Wish List/Shopping List UI is a list view. Is link to product.
@@ -354,15 +395,20 @@
         function appendProduct(productId) {
 
         }
+        
         /**
          * Filters products currently on stream by miles
          */
         function handleSliderValue(event, ui) {
             price = ui.value;
             $( "#p-distance" ).text( "Min Price $ "+ui.value );
-            console.log("slider triggered"+ui.value);
-            searchForCategory();
+            if (!searchbox){
+            	searchForCategory();
+            }else{
+            	requestProduct(searchvalue);
+            }
         }
+        
         // Will dynamically generate search bar population with ajax from our database
         function initCompleteSearchBox(){
             $("#search-bar").keyup(function () {
@@ -370,6 +416,7 @@
                 requestAutoComplete(val, setCompleteSearchBox);
             });
         }
+        
         // search input is an array
         function setCompleteSearchBox(searchInput){
             $("#search-bar").autocomplete({
@@ -439,25 +486,6 @@
         }
 
 
-/*        function appendToStream(productJSON) {
-            let title = productJSON.title;
-            let about = productJSON.about;
-            let productId = productJSON._id;
-            let location = productJSON.location;
-
-            let li = $("<li></li>");
-            let div = $("<div class='product' id=' \"div\"+productId'></div>");
-
-            div.bind("click", loadToPopUp(productJSON));
-
-            let pTitle = $("<p></p>").text(title);
-
-            div.append(pTitle);
-            li.append(div);
-
-            $("#products").append(li);
-        }*/
-
         function loadToPopUp(productJSON) {
 
         }
@@ -470,9 +498,8 @@
         * Allows drop down /expansion effect
         * once user hovers on a product
         */
-
         function over(e) {
-            console.log("inside over");
+        	
               maindiv=e;
         	  orig_img1	=null;
         	  //var d= document.getElementById(e.id).getElementsByTagName("div")[0];
@@ -505,8 +532,6 @@
          * and undo the expansion effect
          */
         function out(e) {
-            console.log("inside out");
-            console.log(e);
             var buttonclick= document.getElementById(e.id).getElementsByTagName("button")[0];
             buttonclick.style.visibility="hidden";
         	if (interval!==null){
@@ -519,11 +544,12 @@
             orig_img1=null;
             maindiv=null;
       	}
+        
         /**
          * Allows complete view of a product as poped-up alternative view
          */
         function onPop() {
-            console.log("inside onPop");
+
             $("#alt-view").toggle();
             $("#overLay").toggle();
             var d= document.getElementById(maindiv.id);
@@ -532,7 +558,7 @@
             var loc= div1.getElementsByTagName("a")[0];
             var contact= div1.getElementsByTagName("a")[1];
             var image= d.getElementsByClassName("pic");
-            console.log(d);
+
             $(".mypics").remove();
             if(orig_img1!==null)
                 out(maindiv);
@@ -563,7 +589,6 @@
                     ,
                     success: function (result) {
                         if ($.trim(result)) {
-                            console.log("inside email: " + result);
                             $("#popcontct").attr("href", "mailto:" + result);
 
                         }
@@ -574,6 +599,7 @@
 
             removePop();
         }
+        
         /**
          * Enable to hide pop up
          */
@@ -588,6 +614,7 @@
                 $("#overLay").toggle();
             }
         }
+        
         function plusDivs(n) {
             showSigns(slideIndex += n);
         }
