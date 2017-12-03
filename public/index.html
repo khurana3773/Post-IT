@@ -141,15 +141,21 @@
                 div1.attr("id",postJSON._id +"detail");
                 //div1.css("display","none");
                 div1.css("display","block");
+
+
                 var d = postJSON._id + "div";
 
+             //   var div = $("<div onmouseover=\"over(this)\" onmouseout=\"out(this)\" )\"></div>");
                 var div = $("<div onmouseover=\"over(this)\" onmouseout=\"out(this)\" )\"></div>");
+
+                div.draggable({helper: 'clone'});
                 div.attr("class", "product");
                 div.attr("id", postJSON._id + "div");
-
+              //  $("#products-list").on("DOMNodeInserted", ".product", function() { $(this).draggable(); });
 
                 var title = $("<p></p>");
                 title.attr("id", postJSON._id + "title");
+                title.addClass("productTitle");
                 title.text(postJSON.title);
                 title.css("text-align","center");
                 title.css("overflow","hidden");
@@ -234,6 +240,10 @@
                 div1.append(contact);
 
                 $("#products-list").append(li);
+
+
+
+
             }
         function featurefill(postJSON) {
 
@@ -297,13 +307,22 @@
         }
         function initShoppingList(){
 
+            let userId = getCookie("userId");
+
+            var dataPost={
+                "userId" : userId
+            }
+
+
+
             $("#shopping-list").draggable();
             $("#shopping-list").resizable({
                 handles: 'n, e, s, w'
             });
+            $("#dragTest").draggable({  revert: "invalid" });
+
             $("#shopping-list").droppable(
                 {
-                    accept: '.product',
                     over: dragObject
                 }
             );
@@ -311,6 +330,22 @@
             $("#deleteProductBtn").bind("click", function () {
                 $(".yellow").remove();
             });
+
+            $.ajax({
+                url: ("http://" + $(location).attr('host')) + "/get-wishlist-posts",
+                data: dataPost ,
+                type: 'GET',
+                contentType: 'application/json'
+                ,
+                success: function (result) {
+                    if ($.trim(result)) {
+                        console.log("inside wishlist: " + result);
+                        createListView(JSON.parse(result));
+
+                    }
+                }
+            });
+
 
         }
         function initList() {
@@ -325,33 +360,92 @@
         function dragObject(event, ui){
             //$("#product").remove();
 
+            wishListAllItems=[];
             let product = ui.draggable;
+            $(product).clone(true);
+            let productTitle = $(product).children('.productTitle');
+//            alert(productTitle.text())
+            var wishListItem = {};
+            wishListItem['title'] = productTitle.text();
+
 
             let id = $(ui.draggable).attr("id");
-            alert(id);
 
-            ui.draggable.remove();
+            id = id.substring(0,id.length-3)
+            wishListItem['postId']=id;
+           // alert(id.substring(0,id.length-3));
 
-            createListView(null);
-        }
 
-        function createListView(productJSON) {
-            let title = $("<p>Example</p>");
+            $.ajax({
+                url: ("http://" + $(location).attr('host')) + "/add-post-wishlist",
+                data: wishListItem ,
+                type: 'POST'
+                ,
+                success: function (result) {
 
-            let anItem = $("<li></li>");
-            anItem.bind("click", function(){
-                $(this).toggleClass('yellow');
+                    responseJSON = JSON.parse(result);
+                    if(responseJSON.alreadyExists=='yes')
+                    {
+                        alert("exists already");
+
+                    }else
+                    {
+                        wishListAllItems.push(wishListItem);
+                        createListView(wishListAllItems);
+                    }
+                }
             });
 
-            anItem.append(title);
-            $("#list").append(anItem);
+
+
+
+
+            //todo : intimate customer about item already being in wishlist
+//            $.post( '/add-post-wishlist', wishListItem,function(data) {
+//                    alert("finished call");
+//                    alert(JSON.stringify(data));
+//                    var exists = data.alreadyExist;
+//                    if(exist.toString().trim()==='yes'.trim())
+//                    {
+//                        wishListAllItems.push(wishListItem);
+//                        createListView(wishListAllItems);
+//                    }
+//                    else
+//                    {
+//                        alert("else condition");
+//                    }
+//
+//                } , 'application/json'
+//            );
+
 
         }
+
+
+        function createListView(productJSON) {
+            //var data = productJSON;
+            $.each(productJSON, function(i, item) {
+
+                let title = $("<p></p>");
+                title.text(item['title']);
+
+                let anItem = $("<li></li>");
+                anItem.bind("click", function(){
+                    $(this).toggleClass('yellow');
+                });
+
+                anItem.append(title);
+                $("#list").append(anItem);
+            });
+        }
+
+        //todo: use this method instead of calling all functionality in dragobject
         /**
          * Add product id into user's shopping list
          * MongoDB
          */
         function appendProduct(productId) {
+
 
         }
         /**
@@ -608,6 +702,8 @@
 </head>
 <body>
 
+
+
 <div class="mainBody">
     <div id="nav">
         <div id="nav-wrapper">
@@ -623,6 +719,7 @@
 
                 <li id="login"><a href="login.html">Login</a></li>
                 <li id="sign-out"><a onclick="onSignOut()">Sign Out</a></li>
+                <li id="dragTest">Drag me</li>
             </ul>
         </div>
     </div>
@@ -717,7 +814,7 @@
     <!-- Contains references to shopping list-->
     <div id="shopping-list">
         <p>Shopping List</p>
-        <ul style="padding: 0px;" id="list"data-role="listview">
+        <ul style="padding: 0px;" id="list" data-role="listview">
 
         </ul>
 
