@@ -5,19 +5,20 @@ var router = express.Router();
  * Handles input value from search box
  * Returns a json
  */
-router.post('/',
+router.get('/',
 	function (req, res) {
 
-	var search = req.param("search");
-
+		var db = req.db;
         var collection = db.get("posts");
+        var input=req.param("search").split(",");
 
         var query = {
             title: {
-                $regex: search
-            }
+                $regex: input[0], $options : 'i'
+            },
+            price:{$gte:parseInt(input[1].split(":")[1])}
         };
-        // search the oldest 
+
         collection.find(query, {sort: {timestamp: 1}}, function (err, docs) {
             if(err){
 
