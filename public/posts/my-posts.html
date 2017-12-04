@@ -52,6 +52,13 @@
 
                 }
             };
+
+//            $scope.hideImageContainer = function ($event,img){
+//                $event.get
+//
+//
+//            };
+
             $scope.loadEdit = function ($index) {
 
                 $("#edit-form").show();
@@ -60,18 +67,18 @@
                 if($scope.posts){
                     $scope.editPost = $scope.posts[$index];
 
-                    if(!$scope.editPost.img1){
-                        $("#imageContainer1").hide();
-                    }
-
-
-                    if(!$scope.editPost.img2){
-                        $("#imageContainer2").hide();
-                    }
-
-                    if(!$scope.editPost.img3 ) {
-                        $("#imageContainer3").hide();
-                    }
+//                    if(!$scope.editPost.img1){
+//                        $("#imageContainer1").hide();
+//                    }
+//
+//
+//                    if(!$scope.editPost.img2){
+//                        $("#imageContainer2").hide();
+//                    }
+//
+//                    if(!$scope.editPost.img3 ) {
+//                        $("#imageContainer3").hide();
+//                    }
 
                     // set default value
                     $scope.SelectInput = $scope.editPost.type;
@@ -113,6 +120,8 @@
 
 
         });
+
+
 
         $(init);
         function init() {
@@ -206,8 +215,11 @@
 
         <label class ="labeltag">Images</label>
 
+
+
+
         <div id="image-container">
-            <div id='imageContainer1' style="float: left; width: 33%"  class='imageOverlayContainer'>
+            <div id='imageContainer1' style="float: left; width: 33%"  class='imageOverlayContainer' ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
 
                 <img class="imgclass" src="{{editPost.img1}}" ng-model="editPost.img1">
 
@@ -216,17 +228,28 @@
                 <div class='buttonDelete'><a id='hideLink1' href='#' ng-click="editPost.img1=''"> Delete </a></div>
             </div>
 
-            <div id='imageContainer2' style="float: left; width: 33%" class='imageOverlayContainer'>
+            <div id='imageContainer2' style="float: left; width: 33%" class='imageOverlayContainer' ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
                 <img class="imgclass" src="{{editPost.img2}}" ng-model="editPost.img2">
                 <div class='overlay'></div>
                 <div class='buttonDelete'><a id='hideLink2' href='#' ng-click="editPost.img2=''"> Delete </a></div>
             </div>
 
-            <div id='imageContainer3' style="float: left; width: 33%"  class='imageOverlayContainer'>
-                <img class="imgclass" src="{{editPost.img3}}" ng-model="editPost.img3">
+            <div id='imageContainer3' style="float: left; width: 33%"  class='imageOverlayContainer' ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
+                <img class="imgclass" id="testImgDnd" src="{{editPost.img3}}" ng-model="editPost.img3">
                 <div class='overlay'></div>
                 <div class='buttonDelete'><a id='hideLink3' href='#' ng-click="editPost.img3=''"> Delete </a></div>
             </div>
+
+            <!--<div id="drop_zone" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">-->
+                <!--<input id="inp" type='file'>-->
+                    <!--<p id="b64"></p>-->
+                <!--<img id="img" height="150">-->
+                <!--<strong>Drag one or more files to this Drop Zone ...</strong>-->
+            <!--</div>-->
+
+            <input id="inp" type='file'>
+            <p id="b64"></p>
+            <img id="img" height="150">
         </div>
 
     </div>
@@ -239,3 +262,91 @@
 
 
 </body>
+
+<script>
+
+
+
+  //  document.getElementById("inp").addEventListener("change", readFile)
+
+
+
+
+
+    function drop_handler(ev) {
+        console.log("Drop");
+        ev.preventDefault();
+        // If dropped items aren't files, reject them
+        var dt = ev.dataTransfer;
+        if (dt.items) {
+            // Use DataTransferItemList interface to access the file(s)
+            for (var i=0; i < dt.items.length; i++) {
+                if (dt.items[i].kind == "file") {
+                    var f = dt.items[i].getAsFile();
+                    var FR= new FileReader();
+
+                    FR.addEventListener("load", function(e) {
+                      //  document.getElementById("testImgDnd").src       = e.target.result;
+                       let angScope =  angular.element(document.getElementById("testImgDnd")).scope();
+                       //todo : have a more generic implemetation than the one below.
+                        //todo : use angulars drag and drop instead of HTML5
+                       angScope.$apply(function () {
+                           if(angScope.editPost.img1=='')
+                           {
+                               angScope.editPost.img1 = e.target.result;
+                           }
+                           else if(angScope.editPost.img2=='')
+                           {
+                               angScope.editPost.img2 = e.target.result;
+                           }
+                           else if(angScope.editPost.img3=='')
+                           {
+                               angScope.editPost.img4 = e.target.result;
+                           }
+                           else
+                           {
+                               alert("Only 3 images can be uploaded!");
+                           }
+
+
+
+                       })
+
+                      //  document.getElementById("b64").innerHTML = e.target.result;
+                    });
+
+                    FR.readAsDataURL( f );
+                    console.log("... file[" + i + "].name = " + f.name);
+                }
+            }
+        } else {
+            // Use DataTransfer interface to access the file(s)
+            for (var i=0; i < dt.files.length; i++) {
+                console.log("... file[" + i + "].name = " + dt.files[i].name);
+            }
+        }
+    }
+
+    function dragover_handler(ev) {
+        console.log("dragOver");
+        // Prevent default select and drag behavior
+        ev.preventDefault();
+    }
+
+
+    function dragend_handler(ev) {
+        console.log("dragEnd");
+        // Remove all of the drag data
+        var dt = ev.dataTransfer;
+        if (dt.items) {
+            // Use DataTransferItemList interface to remove the drag data
+            for (var i = 0; i < dt.items.length; i++) {
+                dt.items.remove(i);
+            }
+        } else {
+            // Use DataTransfer interface to remove the drag data
+            ev.dataTransfer.clearData();
+        }
+    }
+
+</script>
