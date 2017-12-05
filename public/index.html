@@ -684,7 +684,6 @@
             var loc= div1.getElementsByTagName("a")[0];
             var contact= div1.getElementsByTagName("a")[1];
             var image= d.getElementsByClassName("pic");
-
             $(".mypics").remove();
             if(orig_img1!==null)
                 out(maindiv);
@@ -710,7 +709,7 @@
                 $.ajax({
                     url: ("http://" + $(location).attr('host')) + "/email",
                     data: "id=" + contact.id,
-                    type: 'POST',
+                    type: 'GET',
                     contentType: 'application/text'
                     ,
                     success: function (result) {
