@@ -13,7 +13,7 @@ router.post('/',
 		// // end
 		// var postId = req.param("id");
 
-        console.log(JSON.stringify(req.body));
+   //     console.log(JSON.stringify(req.body));
 
 
         //

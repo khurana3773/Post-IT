@@ -363,7 +363,40 @@
             );
 
             $("#deleteProductBtn").bind("click", function () {
-                $(".yellow").remove();
+               var deleteWishListData=[];
+
+                $(".yellow").each(function (index) {
+                    let eachData = {};
+                    eachData['postId'] = $(this).data("dbId");
+
+                    deleteWishListData.push(eachData);
+                    $.ajax({
+                        url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
+                        data: eachData ,
+                        type: 'POST',
+                        success: function (result) {
+                            console.log("deleted from wishlist");
+                        }
+                    });
+                })
+                $(".yellow").remove()
+
+               //console.log(JSON.stringify(deleteWishListData));
+
+//
+//                $.ajax({
+//                    url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
+//                    data: deleteWishListData,
+//                    type: 'POST',
+//                    success: function (result) {
+//                        console.log("deleted from wishlist");
+//                    }
+//                });
+//                 $(".yellow").remove()
+
+
+
+
             });
 
             $.ajax({
@@ -469,7 +502,10 @@
                 let anItem = $("<li></li>");
                 anItem.bind("click", function(){
                     $(this).toggleClass('yellow');
+                    //console.log($(this).data("dbId"));
                 });
+
+                anItem.data("dbId",String(item['postId']));
 
                 anItem.append(title);
                 $("#list").append(anItem);
@@ -719,6 +755,9 @@
             }
             x[slideIndex-1].style.display = "block";
         }
+
+
+
 
 </script>
 
