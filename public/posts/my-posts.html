@@ -138,7 +138,11 @@
             });
             $("#edit-form").hide();
             $("#overLay").hide();
-
+//            $("#chooseFile").change(function (event) {
+//                var file = event.files.item(0);
+//                addImageToImgContainers(file);
+//
+//            })
         }
 
 
@@ -235,7 +239,9 @@
             </div>
 
             <div id='imageContainer3' style="float: left; width: 33%"  class='imageOverlayContainer' ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
-                <img class="imgclass" id="testImgDnd" src="{{editPost.img3}}" ng-model="editPost.img3">
+
+                <img class="imgclass" id="testImgDnd" src="{{editPost.img3}}" ng-model="editPost.img3" >
+
                 <div class='overlay'></div>
                 <div class='buttonDelete'><a id='hideLink3' href='#' ng-click="editPost.img3=''"> Delete </a></div>
             </div>
@@ -247,9 +253,8 @@
                 <!--<strong>Drag one or more files to this Drop Zone ...</strong>-->
             <!--</div>-->
 
-            <input id="inp" type='file'>
-            <p id="b64"></p>
-            <img id="img" height="150">
+            <!--<input id="chooseFile" type='file' >-->
+
         </div>
 
     </div>
@@ -283,39 +288,7 @@
             for (var i=0; i < dt.items.length; i++) {
                 if (dt.items[i].kind == "file") {
                     var f = dt.items[i].getAsFile();
-                    var FR= new FileReader();
-
-                    FR.addEventListener("load", function(e) {
-                      //  document.getElementById("testImgDnd").src       = e.target.result;
-                       let angScope =  angular.element(document.getElementById("testImgDnd")).scope();
-                       //todo : have a more generic implemetation than the one below.
-                        //todo : use angulars drag and drop instead of HTML5
-                       angScope.$apply(function () {
-                           if(angScope.editPost.img1=='')
-                           {
-                               angScope.editPost.img1 = e.target.result;
-                           }
-                           else if(angScope.editPost.img2=='')
-                           {
-                               angScope.editPost.img2 = e.target.result;
-                           }
-                           else if(angScope.editPost.img3=='')
-                           {
-                               angScope.editPost.img3 = e.target.result;
-                           }
-                           else
-                           {
-                               alert("Only 3 images can be uploaded!");
-                           }
-
-
-
-                       })
-
-                      //  document.getElementById("b64").innerHTML = e.target.result;
-                    });
-
-                    FR.readAsDataURL( f );
+                    addImageToImgContainers(f);
                     console.log("... file[" + i + "].name = " + f.name);
                 }
             }
@@ -325,6 +298,43 @@
                 console.log("... file[" + i + "].name = " + dt.files[i].name);
             }
         }
+    }
+
+    function addImageToImgContainers(f)
+    {
+        var FR= new FileReader();
+
+        FR.addEventListener("load", function(e) {
+            //  document.getElementById("testImgDnd").src       = e.target.result;
+            let angScope =  angular.element(document.getElementById("testImgDnd")).scope();
+            //todo : have a more generic implemetation than the one below.
+            //todo : use angulars drag and drop instead of HTML5
+            angScope.$apply(function () {
+                if(angScope.editPost.img1=='')
+                {
+                    angScope.editPost.img1 = e.target.result;
+                }
+                else if(angScope.editPost.img2=='')
+                {
+                    angScope.editPost.img2 = e.target.result;
+                }
+                else if(angScope.editPost.img3=='')
+                {
+                    angScope.editPost.img3 = e.target.result;
+                }
+                else
+                {
+                    alert("Only 3 images can be uploaded!");
+                }
+
+
+
+            })
+
+            //  document.getElementById("b64").innerHTML = e.target.result;
+        });
+
+        FR.readAsDataURL( f );
     }
 
     function dragover_handler(ev) {
