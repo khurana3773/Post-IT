@@ -20,12 +20,15 @@ var index = require('./routes/index');
 var add_post_job = require('./routes/add-post-job');
 var add_post_renting = require('./routes/add-post-renting');
 var add_post_selling = require('./routes/add-post-selling');
+var add_post_wishlist = require('./routes/add-post-wishlist');
 var auto_complete = require('./routes/auto-complete');
 var create_post = require('./routes/create-post');
 var delete_post = require('./routes/delete-post');
+var delete_post_wishlist = require('./routes/delete-post-wishlist');
 var edit_post = require('./routes/edit-post');
 var get_post = require('./routes/get-post');
 var get_posts = require('./routes/get-posts');
+var get_wishlist_posts = require('./routes/get-wishlist-posts');
 var get_posts_stream = require('./routes/get-posts-stream');
 var login_validation = require('./routes/login-validation');
 var pop_up = require('./routes/pop-up');
@@ -111,16 +114,20 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({limit: '150mb'}));
 app.use(bodyParser.json({limit: '150mb'}));
 
+
 app.use('/', index);
 app.use('/add-post-job', add_post_job);
 app.use('/add-post-renting', add_post_renting);
 app.use('/add-post-selling', add_post_selling);
+app.use('/add-post-wishlist',add_post_wishlist);
 app.use('/auto-complete', auto_complete);
 app.use('/create-post', create_post);
 app.use('/delete-post', delete_post);
+app.use('/delete-post-wishlist',delete_post_wishlist);
 app.use('/edit-post', edit_post);
 app.use('/get-post', get_post);
 app.use('/get-posts', get_posts);
+app.use('/get-wishlist-posts', get_wishlist_posts)
 app.use('/get-posts-stream', get_posts_stream);
 app.use('/login-validation', login_validation);
 app.use('/pop-up', pop_up);

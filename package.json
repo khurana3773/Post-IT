@@ -2,9 +2,10 @@
   "name": "cmpe280-webapp",
   "version": "1.0.0",
   "description": "a project ",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon app.js",
+	"start": "node app.js"
   },
   "repository": {
     "type": "git",

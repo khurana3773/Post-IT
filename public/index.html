@@ -73,7 +73,7 @@
             }
 
         }
-        
+
         /**
          * Set event for categories.
          */
@@ -83,7 +83,7 @@
        	   searchbox = false;
            searchForCategory();
         }
-        
+
         /**
          * Resets variable, products list and feature variables
          */
@@ -104,7 +104,7 @@
             $("#featured div")[0].style.display='block';
             $("#featured div")[1].style.width='50%';
         }
-        
+
         /**
          * Gets products with category from database.
          * Update product stream
@@ -135,7 +135,7 @@
                 }
             });
         }
-        
+
         //Creates elements and set their values and styling
         function loadPostToList(postJSON) {
             	var li = $("<li></li>");
@@ -143,15 +143,21 @@
                 var div1 = $("<div></div>");
                 div1.attr("id",postJSON._id +"detail");
                 div1.css("display","block");
+
+
                 var d = postJSON._id + "div";
 
+             //   var div = $("<div onmouseover=\"over(this)\" onmouseout=\"out(this)\" )\"></div>");
                 var div = $("<div onmouseover=\"over(this)\" onmouseout=\"out(this)\" )\"></div>");
+
+                div.draggable({helper: 'clone'});
                 div.attr("class", "product");
                 div.attr("id", postJSON._id + "div");
-
+              //  $("#products-list").on("DOMNodeInserted", ".product", function() { $(this).draggable(); });
 
                 var title = $("<p></p>");
                 title.attr("id", postJSON._id + "title");
+                title.addClass("productTitle");
                 title.text(postJSON.title);
                 title.css("text-align","center");
                 title.css("overflow","hidden");
@@ -237,7 +243,7 @@
                 $("#products-list").append(li);
          }
         
-        // To fill the Feature content with first json object if any    
+        // To fill the Feature content with first json object if any
         function featurefill(postJSON) {
 
             if (postJSON.img1.length > 2) {
@@ -260,7 +266,7 @@
             $("#featured div")[0].style.backgroundColor='#52a5c3';
             $("#featured div")[1].style.backgroundColor=' #52a5c3';
         }
-		
+
         function displayNextImage() {
                 x = (x === images.length - 1) ? 0 : x + 1;
                 document.getElementById("img").src = images[x];
@@ -279,8 +285,8 @@
             images[0] = "image1.jpg";
             images[1] = "image2.jpg";
             images[2] = "image3.jpg";
-		
-        // Search bar event listener once return/enter key pressed     
+
+        // Search bar event listener once return/enter key pressed
         function initSearchBox() {
             $("#search-bar").keyup(function(event){
                 if(event.keyCode === 13){
@@ -302,8 +308,8 @@
                 }
             });
         }
-        
-        //Updates product view once return/enter key pressed on search bar    
+
+        //Updates product view once return/enter key pressed on search bar
         function requestProduct(searchValue) {
         	searchvalue = searchValue;
         	searchbox = true;
@@ -333,32 +339,90 @@
             });
 
         }
-        
+
         function initShoppingList(){
+
+            let userId = getCookie("userId");
+
+            var dataPost={
+                "userId" : userId
+            }
+
+
 
             $("#shopping-list").draggable();
             $("#shopping-list").resizable({
                 handles: 'n, e, s, w'
             });
+            $("#dragTest").draggable({  revert: "invalid" });
+
             $("#shopping-list").droppable(
                 {
-                    accept: '.product',
                     over: dragObject
                 }
             );
 
             $("#deleteProductBtn").bind("click", function () {
-                $(".yellow").remove();
+               var deleteWishListData=[];
+
+                $(".yellow").each(function (index) {
+                    let eachData = {};
+                    eachData['postId'] = $(this).data("dbId");
+
+                    deleteWishListData.push(eachData);
+                    $.ajax({
+                        url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
+                        data: eachData ,
+                        type: 'POST',
+                        success: function (result) {
+                            console.log("deleted from wishlist");
+                        }
+                    });
+                })
+                $(".yellow").remove()
+
+               //console.log(JSON.stringify(deleteWishListData));
+
+//
+//                $.ajax({
+//                    url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
+//                    data: deleteWishListData,
+//                    type: 'POST',
+//                    success: function (result) {
+//                        console.log("deleted from wishlist");
+//                    }
+//                });
+//                 $(".yellow").remove()
+
+
+
+
             });
 
+            $.ajax({
+                url: ("http://" + $(location).attr('host')) + "/get-wishlist-posts",
+                data: dataPost ,
+                type: 'GET',
+                contentType: 'application/json'
+                ,
+                success: function (result) {
+                    if ($.trim(result)) {
+                        console.log("inside wishlist: " + result);
+                        createListView(JSON.parse(result));
+
+                    }
+                }
+            });
+
+
         }
-        
+
         function initList() {
             $(".product").draggable({ revert: 'invalid' });
 
             $(".product").css("zIndex", 2);
         }
-        
+
         /**
          * Handles what happens when user decides to add product to list.
          * Wish List/Shopping List UI is a list view. Is link to product.
@@ -366,36 +430,98 @@
         function dragObject(event, ui){
             //$("#product").remove();
 
+            wishListAllItems=[];
             let product = ui.draggable;
+            $(product).clone(true);
+            let productTitle = $(product).children('.productTitle');
+//            alert(productTitle.text())
+            var wishListItem = {};
+            wishListItem['title'] = productTitle.text();
+
 
             let id = $(ui.draggable).attr("id");
-            alert(id);
 
-            ui.draggable.remove();
+            id = id.substring(0,id.length-3)
+            wishListItem['postId']=id;
+           // alert(id.substring(0,id.length-3));
 
-            createListView(null);
-        }
 
-        function createListView(productJSON) {
-            let title = $("<p>Example</p>");
+            $.ajax({
+                url: ("http://" + $(location).attr('host')) + "/add-post-wishlist",
+                data: wishListItem ,
+                type: 'POST'
+                ,
+                success: function (result) {
 
-            let anItem = $("<li></li>");
-            anItem.bind("click", function(){
-                $(this).toggleClass('yellow');
+                    responseJSON = JSON.parse(result);
+                    if(responseJSON.alreadyExists=='yes')
+                    {
+                        alert("exists already");
+
+                    }else
+                    {
+                        wishListAllItems.push(wishListItem);
+                        createListView(wishListAllItems);
+                    }
+                }
             });
 
-            anItem.append(title);
-            $("#list").append(anItem);
+
+
+
+
+            //todo : intimate customer about item already being in wishlist
+//            $.post( '/add-post-wishlist', wishListItem,function(data) {
+//                    alert("finished call");
+//                    alert(JSON.stringify(data));
+//                    var exists = data.alreadyExist;
+//                    if(exist.toString().trim()==='yes'.trim())
+//                    {
+//                        wishListAllItems.push(wishListItem);
+//                        createListView(wishListAllItems);
+//                    }
+//                    else
+//                    {
+//                        alert("else condition");
+//                    }
+//
+//                } , 'application/json'
+//            );
+
 
         }
+
+
+        function createListView(productJSON) {
+            //var data = productJSON;
+            $.each(productJSON, function(i, item) {
+
+                let title = $("<p></p>");
+                title.text(item['title']);
+
+                let anItem = $("<li></li>");
+                anItem.bind("click", function(){
+                    $(this).toggleClass('yellow');
+                    //console.log($(this).data("dbId"));
+                });
+
+                anItem.data("dbId",String(item['postId']));
+
+                anItem.append(title);
+                $("#list").append(anItem);
+            });
+        }
+
+        //todo: use this method instead of calling all functionality in dragobject
         /**
          * Add product id into user's shopping list
          * MongoDB
          */
         function appendProduct(productId) {
 
+
         }
-        
+
         /**
          * Filters products currently on stream by miles
          */
@@ -408,7 +534,7 @@
             	requestProduct(searchvalue);
             }
         }
-        
+
         // Will dynamically generate search bar population with ajax from our database
         function initCompleteSearchBox(){
             $("#search-bar").keyup(function () {
@@ -416,7 +542,7 @@
                 requestAutoComplete(val, setCompleteSearchBox);
             });
         }
-        
+
         // search input is an array
         function setCompleteSearchBox(searchInput){
             $("#search-bar").autocomplete({
@@ -499,7 +625,7 @@
         * once user hovers on a product
         */
         function over(e) {
-        	
+
               maindiv=e;
         	  orig_img1	=null;
         	  //var d= document.getElementById(e.id).getElementsByTagName("div")[0];
@@ -544,7 +670,7 @@
             orig_img1=null;
             maindiv=null;
       	}
-        
+
         /**
          * Allows complete view of a product as poped-up alternative view
          */
@@ -599,7 +725,7 @@
 
             removePop();
         }
-        
+
         /**
          * Enable to hide pop up
          */
@@ -614,7 +740,7 @@
                 $("#overLay").toggle();
             }
         }
-        
+
         function plusDivs(n) {
             showSigns(slideIndex += n);
         }
@@ -630,10 +756,15 @@
             x[slideIndex-1].style.display = "block";
         }
 
+
+
+
 </script>
 
 </head>
 <body>
+
+
 
 <div class="mainBody">
     <div id="nav">
@@ -650,6 +781,7 @@
 
                 <li id="login"><a href="login.html">Login</a></li>
                 <li id="sign-out"><a onclick="onSignOut()">Sign Out</a></li>
+                <li id="dragTest">Drag me</li>
             </ul>
         </div>
     </div>
@@ -744,7 +876,7 @@
     <!-- Contains references to shopping list-->
     <div id="shopping-list">
         <p>Shopping List</p>
-        <ul style="padding: 0px;" id="list"data-role="listview">
+        <ul style="padding: 0px;" id="list" data-role="listview">
 
         </ul>
 
