@@ -9,7 +9,7 @@ router.get('/', function (req, res) {
 	var db = req.db;
 	var collections = db.get("wishlist");
 
-	console.log(req);
+//	console.log(req);
 	var userId = req.param("userId");
 
 	//adding title for simplification of calls

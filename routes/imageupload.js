@@ -119,7 +119,7 @@ exports.upload = (req, res) => {
 				img[counter]=imageName;
 				createItemObject(function (err, result){
 								if(err){
-									console.log(err);
+								//	console.log(err);
 									collection.remove( postJSON);
 									return res.end("<h1 style=\"text-align:center\">Something went wrong in saving images!<h1>"
 

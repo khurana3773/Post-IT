@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
 
 
 	collections.find({userId: userId}, {}, function (e, docs) {
-		console.log(docs);
+//		console.log(docs);
 		res.send(JSON.stringify(docs));
     });
 });
