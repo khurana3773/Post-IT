@@ -11,6 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="selling-post.css">
 	<script>
 
+        var count = 1;
  
 
         $(document).ready(function () {
@@ -34,13 +35,14 @@
                         var reader = new FileReader();
 
                         reader.onload = function (event) {
-                            if(count > 3){
-                                alert("Images limit is 3!");
-                                return;
-							}
 
-                            let img = $("<img/>");
+
+                            var img = $("<img/>");
                             img.attr('id', 'img'+count);
+
+                            img.attr("height", 100);
+                            img.attr("width", 100);
+
                             img.attr("src", event.target.result);
                             $("#photo-holder").append(img);
 
