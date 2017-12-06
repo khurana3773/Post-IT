@@ -258,7 +258,7 @@
                 onPop2($(this).data("allInfoJson"))
             });
 
-           var deleteButton = $("<a href=''>X</a>");
+           var deleteButton = $("<a>X</a>");
            deleteButton.attr("class","deleteFromWishlist");
 
 
@@ -293,9 +293,6 @@
             title.text(postJSON['title']);
 
 
-
-
-
             $(contentDiv).append(title);
 
 
@@ -322,16 +319,9 @@
 
 
 
-
-
-
-
-
-
-
-
+           $(mainDiv).append(contentDiv);
            $(mainDiv).append(imageDiv);
-            $(mainDiv).append(contentDiv);
+
 
             return mainDiv;
         }
@@ -1097,7 +1087,7 @@
 
 
 
-        <button id='deleteProductBtn'>Delete</button>
+        <!--<button id='deleteProductBtn'>Delete</button>-->
     </div>
 </div>
 
