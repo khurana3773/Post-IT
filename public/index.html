@@ -149,6 +149,7 @@
 
              //   var div = $("<div onmouseover=\"over(this)\" onmouseout=\"out(this)\" )\"></div>");
                 var div = $("<div onmouseover=\"over(this)\" onmouseout=\"out(this)\" )\"></div>");
+                div.data("allInfoJson",postJSON);
 
                 div.draggable({helper: 'clone'});
                 div.attr("class", "product");
@@ -242,7 +243,57 @@
 
                 $("#products-list").append(li);
          }
-        
+
+        //used to generate div for wishlist
+       function  generateDivForWishlist(postJSON)
+        {
+//            alert("in Generate Div");
+//            alert(JSON.stringify(postJSON));
+//            alert((postJSON['title']))
+
+            var mainDiv = $("<div></div>");
+            mainDiv.attr("class","mainDivPostWishlist");
+            mainDiv.data("allInfoJson",postJSON);
+            mainDiv.click(function () {
+                alert("clicked");
+            })
+
+
+            //make 2 divs ,one for image one for content
+            var imageDiv = $("<div></div>");
+            imageDiv.attr("class","imgDivPostWishlist");
+
+            var contentDiv = $("<div></div>");
+            contentDiv.attr("class","contentDivPostWishlist");
+
+            //add image to image div
+            var img_1 = $("<img/>");
+            img_1.attr("src",postJSON.img1);
+            img_1.attr("class","imgPostWishlist");
+
+
+            img_1.on("error", function(){
+                if(this.src !== '../img/NoImage.png' || this.src !== 'null') this.src = '../img/NoImage.png';
+            });
+
+            imageDiv.append(img_1);
+
+            //add content to contentdiv
+            var title = $("<p></p>");
+            //      title.attr("id", postJSON._id + "title");
+            title.addClass("contentPostWishlist");
+            title.text(postJSON['title']);
+            $(contentDiv).append(title);
+
+            $(mainDiv).append(imageDiv);
+            $(mainDiv).append(contentDiv);
+
+            return mainDiv;
+        }
+
+
+
+
         // To fill the Feature content with first json object if any
         function featurefill(postJSON) {
 
@@ -408,7 +459,33 @@
                 success: function (result) {
                     if ($.trim(result)) {
                         console.log("inside wishlist: " + result);
-                        createListView(JSON.parse(result));
+                       let wishListItems = JSON.parse(result)
+
+
+                        $.each(wishListItems, function(i, item) {
+                            let wishListItem =  wishListItems[i];
+                            wishListItem['_id'] = wishListItem['postId']
+
+                        $.ajax({
+                            url: ("http://" + $(location).attr('host')) + "/get-post",
+                            data: wishListItem ,
+                            type: 'GET'
+                            ,
+                            success: function (result) {
+
+                                let  responseJSON = JSON.parse(result);
+
+
+                             //   wishListAllItems.push(wishListItem);
+                                //add eachloop
+                                //   createListView(wishListAllItems);
+
+                                createListView2(responseJSON[0]);
+
+                            }
+                         });
+                        });
+
 
                     }
                 }
@@ -431,8 +508,8 @@
             //$("#product").remove();
 
             wishListAllItems=[];
-            let product = ui.draggable;
-            $(product).clone(true);
+            let product = $(ui.draggable).clone();
+          //  $(product).clone();
             let productTitle = $(product).children('.productTitle');
 //            alert(productTitle.text())
             var wishListItem = {};
@@ -460,8 +537,19 @@
 
                     }else
                     {
-                        wishListAllItems.push(wishListItem);
-                        createListView(wishListAllItems);
+                            wishListItem['_id'] = wishListItem['postId']
+                            $.ajax({
+                                url: ("http://" + $(location).attr('host')) + "/get-post",
+                                data: wishListItem ,
+                                type: 'GET'
+                                ,
+                                success: function (result) {
+
+                                    let  responseJSON = JSON.parse(result);
+                                    createListView2(responseJSON[0]);
+
+                                }
+                            });
                     }
                 }
             });
@@ -491,6 +579,11 @@
 
         }
 
+
+        function createListView2(prodJson) {
+           let div = generateDivForWishlist(prodJson);
+           $("#shopping-list").append(div);
+        }
 
         function createListView(productJSON) {
             //var data = productJSON;
@@ -626,15 +719,15 @@
         */
         function over(e) {
 
-              maindiv=e;
-        	  orig_img1	=null;
-        	  //var d= document.getElementById(e.id).getElementsByTagName("div")[0];
-              //d.style.display="block";
-              var images = [],
-              x = 0;
-              var buttonclick= document.getElementById(e.id).getElementsByTagName("button")[0];
-              buttonclick.style.visibility="visible";
-              var image= document.getElementById(e.id).getElementsByClassName("pic");
+            maindiv=e;
+            orig_img1	=null;
+            //var d= document.getElementById(e.id).getElementsByTagName("div")[0];
+            //d.style.display="block";
+            var images = [],
+                x = 0;
+            var buttonclick= document.getElementById(e.id).getElementsByTagName("button")[0];
+            buttonclick.style.visibility="visible";
+            var image= document.getElementById(e.id).getElementsByClassName("pic");
               $.each( image,function(index, value){
             	  if( value.currentSrc!=="" && value.currentSrc!== null  && value.currentSrc!== "null"){
             		  images[x]=value.src;
@@ -726,6 +819,69 @@
             removePop();
         }
 
+
+        function onPop2(postJSON) {
+
+            $("#alt-view").toggle();
+            $("#overLay").toggle();
+            var d= document.getElementById(postJSON['id']);
+            var p=d.getElementsByTagName("p");
+            var div1=d.getElementsByTagName("div")[0];
+            var loc= div1.getElementsByTagName("a")[0];
+            var contact= div1.getElementsByTagName("a")[1];
+            var image= d.getElementsByClassName("pic");
+
+            image = []
+            image.push(postJSON['img1'])
+            image.push(postJSON['img2'])
+            image.push(postJSON['img3'])
+
+
+
+
+            $(".mypics").remove();
+            if(orig_img1!==null)
+                out(maindiv);
+            $.each( image,function(index, value){
+                if( value.currentSrc!=="" && value.currentSrc!== null  && value.currentSrc!== "null"){
+                    var img = $("<img></img>");
+                    img.attr("src",value.src);
+                    img.height("300px").width("300px");
+                    img.css("margin","auto");
+                    img.attr("class","mypics");
+                    $("#first").before(img);
+                    x++;
+                }
+            });
+            slideIndex = 1;
+            showSigns(slideIndex);
+            $("#poptitle").text(postJSON['title']);
+            $("#popprice").text(postJSON['price']);
+            $("#popdesc").text(postJSON['about']);
+            if(userLoggedIn) {
+                $("#poploc").attr("href", loc.href);
+                $.ajax({
+                    url: ("http://" + $(location).attr('host')) + "/email",
+                    data: "id=" + contact.id,
+                    type: 'POST',
+                    contentType: 'application/text'
+                    ,
+                    success: function (result) {
+                        if ($.trim(result)) {
+                            $("#popcontct").attr("href", "mailto:" + result);
+
+                        }
+                    }
+                });
+            }
+            // should be able to undo pop up
+
+            removePop();
+        }
+
+
+
+
         /**
          * Enable to hide pop up
          */
@@ -781,7 +937,7 @@
 
                 <li id="login"><a href="login.html">Login</a></li>
                 <li id="sign-out"><a onclick="onSignOut()">Sign Out</a></li>
-                <li id="dragTest">Drag me</li>
+
             </ul>
         </div>
     </div>
@@ -875,10 +1031,12 @@
 
     <!-- Contains references to shopping list-->
     <div id="shopping-list">
-        <p>Shopping List</p>
-        <ul style="padding: 0px;" id="list" data-role="listview">
+        <!--<p>Shopping List </p>-->
+        <!--<ul style="padding: 0px;" id="list" data-role="listview">-->
 
-        </ul>
+        <!--</ul>-->
+
+
 
         <button id='deleteProductBtn'>Delete</button>
     </div>
