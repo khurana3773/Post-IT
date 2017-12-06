@@ -837,8 +837,9 @@
             $(".mypics").remove();
 
             $.each( image,function(index, value){
-                alert(value);
-                if( value.currentSrc!=="" && value.currentSrc!== null  && value.currentSrc!== "null"){
+                alert("<start>"+value+"<end>")
+
+                if( value!=="" && value!== null  && value!== "null" ){
                     var img = $("<img></img>");
                     img.attr("src",value);
                     img.height("300px").width("300px");
