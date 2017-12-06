@@ -255,7 +255,7 @@
             mainDiv.attr("class","mainDivPostWishlist");
             mainDiv.data("allInfoJson",postJSON);
             mainDiv.click(function () {
-                alert("clicked");
+                onPop2($(this).data("allInfoJson"))
             })
 
 
@@ -790,6 +790,7 @@
                     img.attr("class","mypics");
                     $("#first").before(img);
                     x++;
+
                 }
             });
             slideIndex = 1;
@@ -824,12 +825,6 @@
 
             $("#alt-view").toggle();
             $("#overLay").toggle();
-            var d= document.getElementById(postJSON['id']);
-            var p=d.getElementsByTagName("p");
-            var div1=d.getElementsByTagName("div")[0];
-            var loc= div1.getElementsByTagName("a")[0];
-            var contact= div1.getElementsByTagName("a")[1];
-            var image= d.getElementsByClassName("pic");
 
             image = []
             image.push(postJSON['img1'])
@@ -840,12 +835,12 @@
 
 
             $(".mypics").remove();
-            if(orig_img1!==null)
-                out(maindiv);
+
             $.each( image,function(index, value){
+                alert(value);
                 if( value.currentSrc!=="" && value.currentSrc!== null  && value.currentSrc!== "null"){
                     var img = $("<img></img>");
-                    img.attr("src",value.src);
+                    img.attr("src",value);
                     img.height("300px").width("300px");
                     img.css("margin","auto");
                     img.attr("class","mypics");
@@ -859,15 +854,27 @@
             $("#popprice").text(postJSON['price']);
             $("#popdesc").text(postJSON['about']);
             if(userLoggedIn) {
-                $("#poploc").attr("href", loc.href);
+                $(".validuserenable").css("visibility","visible");
+                var address={}
+                address['street'] = postJSON['street']
+                address['city'] = postJSON['city']
+                address['zip'] = postJSON['zip']
+                address['state'] = postJSON['state']
+
+                getLatitudeLongitude(address,'poploc');
+
+
+               // $("#poploc").attr("href", loc.href);
+
                 $.ajax({
                     url: ("http://" + $(location).attr('host')) + "/email",
-                    data: "id=" + contact.id,
+                    data: "id=" + postJSON['userId'],
                     type: 'POST',
                     contentType: 'application/text'
                     ,
                     success: function (result) {
                         if ($.trim(result)) {
+
                             $("#popcontct").attr("href", "mailto:" + result);
 
                         }
