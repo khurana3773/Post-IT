@@ -156,16 +156,19 @@ main{
 
 #shopping-list{
     position: fixed;
+
     height: 93vh;
     width: 20vw;
     text-align: center;
-    top: 69px;
-    left: 80%;
+    /*top: 69px;*/
+    /*left: 80%;*/
     z-index: 0;
-    background-color: #ccfffc;
+    background-color: rgb(224, 224, 221);
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     overflow:scroll;
     overflow-x:hidden;
+    font-size: 14px;
+    font-weight: bolder;
 }
 
 
@@ -409,5 +412,15 @@ button{
 
 }
 
+/*.deleteFromWishlist {*/
+    /*width: 10%;*/
+    /*height: 10  %;*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+/*}*/
+.deleteFromWishlist {
+    z-index: 10;
+}
 /*Suraj End*/
 

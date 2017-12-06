@@ -256,7 +256,15 @@
             mainDiv.data("allInfoJson",postJSON);
             mainDiv.click(function () {
                 onPop2($(this).data("allInfoJson"))
-            })
+            });
+
+           var deleteButton = $("<a href=''>X</a>");
+           deleteButton.attr("class","deleteFromWishlist");
+
+
+
+
+
 
 
             //make 2 divs ,one for image one for content
@@ -283,9 +291,46 @@
             //      title.attr("id", postJSON._id + "title");
             title.addClass("contentPostWishlist");
             title.text(postJSON['title']);
+
+
+
+
+
             $(contentDiv).append(title);
 
-            $(mainDiv).append(imageDiv);
+
+           deleteButton.click(function () {
+               let mainDivToDelete =$(this).closest('.mainDivPostWishlist');
+               let postJSONToDelete = mainDivToDelete.data('allInfoJson');
+//               alert(JSON.stringify(postJSONToDelete));
+               // backend need postId parameter
+               postJSONToDelete['postId'] = postJSONToDelete['_id'];
+
+               $.ajax({
+                   url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
+                   data: postJSONToDelete ,
+                   type: 'POST',
+                   success: function (result) {
+                       console.log("deleted from wishlist");
+                   }
+               });
+               $(mainDivToDelete).remove();
+
+           });
+
+           $(contentDiv).append(deleteButton);
+
+
+
+
+
+
+
+
+
+
+
+           $(mainDiv).append(imageDiv);
             $(mainDiv).append(contentDiv);
 
             return mainDiv;
@@ -412,6 +457,15 @@
                     over: dragObject
                 }
             );
+
+            $("#shopping-list").position({
+                my:        "right top",
+                at:        "right bottom+30px",
+                of:        $("#nav"),
+                collision: "fit"
+
+
+            })
 
             $("#deleteProductBtn").bind("click", function () {
                var deleteWishListData=[];
@@ -836,7 +890,6 @@
             $(".mypics").remove();
 
             $.each( image,function(index, value){
-                alert("<start>"+value+"<end>")
 
                 if( value!=="" && value!== null  && value!== "null" ){
                     var img = $("<img></img>");
@@ -851,7 +904,7 @@
             slideIndex = 1;
             showSigns(slideIndex);
             $("#poptitle").text(postJSON['title']);
-            $("#popprice").text(postJSON['price']);
+            $("#popprice").text("PRICE : $"+postJSON['price']);
             $("#popdesc").text(postJSON['about']);
             if(userLoggedIn) {
                 $(".validuserenable").css("visibility","visible");
@@ -868,7 +921,7 @@
                 $.ajax({
                     url: ("http://" + $(location).attr('host')) + "/email",
                     data: "id=" + postJSON['userId'],
-                    type: 'POST',
+                    type: 'GET',
                     contentType: 'application/text'
                     ,
                     success: function (result) {
@@ -1037,7 +1090,7 @@
 
     <!-- Contains references to shopping list-->
     <div id="shopping-list">
-        <!--<p>Shopping List </p>-->
+        <p>SHOPPING LIST</p>
         <!--<ul style="padding: 0px;" id="list" data-role="listview">-->
 
         <!--</ul>-->
