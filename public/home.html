@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <!-- Add Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA12J6t5guwaxlwmAn_XTULgPfJk_n_Qto&callback=googleMaps"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="home.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="home.css">
+    <script src="util/util.js"></script>
+    <script src="util/request.js"></script>
+    <script src="util/handler.js"></script>
+
+</head>
+<body>
+
+
+
+<div class="mainBody">
+    <div id="nav">
+        <div id="nav-wrapper">
+            <ul>
+                <button onclick="dropdownAnimateDown();" class="nag-button">&#9776;</button>
+
+                <li><a href="home.html">Home</a></li>
+                <li><a href="/create-post">Post Something</a></li>
+                <!--Button to display shopping list -->
+                <button onclick="$('#shopping-list').toggle();" class="nag-button">Wish List</button>
+                <!-- Search Bar -->
+                <input id="search-bar" name="search" type="text" placeholder="What are you looking for?">
+
+                <li id="login"><a href="login.html">Login</a></li>
+                <li id="sign-out"><a onclick="onSignOut()">Sign Out</a></li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="dropdown-content">
+        <ul id="dropdown-list">
+            <!--<li><a href="profile.html"> Profile </a></li>
+            <li><a href="#"> Settings </a></li> -->
+            <li><a href="posts/my-posts.html"> My Posts </a></li>
+            <li><a href="about.html"> Want a job or contact us?</a></li>
+        </ul>
+    </div>
+
+
+    <!-- Sidebar -->
+    <div id="side-bar">
+        <h3 class="categories">Categories</h3>
+        <ul id="menu">
+            <li><div class="category" id="rent" onclick="setCategoriesEvent('rent')"><span class="ui-icon ui-icon-tag"></span>Rent</div></li>
+            <li><div class="category" id="free-stuff" onclick="setCategoriesEvent('free-stuff')"><span class="ui-icon ui-icon-tag"></span>Free Stuff</div></li>
+            <li><div class="category" id="sports" onclick="setCategoriesEvent('sports')"><span class="ui-icon ui-icon-tag"></span>Sports, Leisure and Games</div></li>
+            <li><div class="category" id="home-and-garden" onclick="setCategoriesEvent('home-and-garden')"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
+            <li><div class="category" id="entertainment" onclick="setCategoriesEvent('entertainment')"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
+            <li><div class="category" id="electronics" onclick="setCategoriesEvent('electronics')"><span class="ui-icon ui-icon-tag"></span>Electronics</div></li>
+            <li><div class="category" id="jobs" onclick="setCategoriesEvent('jobs')"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
+            <li><div class="category" id="fashion" onclick="setCategoriesEvent('fashion')"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
+            <li><div class="category" id="other" onclick="setCategoriesEvent('other')"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
+        </ul>
+
+
+        <p id="p-distance" style="font-weight: bolder;font-size: 1.17em;">Min Price $ 0 </p>
+        <div id="slider"></div>
+
+        <div id="slider-wrapper-label ">
+            <label for="slider">0</label>
+            <label for="slider" style="margin-left: 10em">1000+</label>
+        </div>
+
+
+    </div>
+
+    <!--Dynamically stream products here by category-->
+    <div id="products">
+        <div id ="featured">
+            <div style="float:left">
+                <img></img>
+
+            </div>
+            <div style="overflow: hidden">
+                <p id="flabel1"></p>
+                <p id ="ftitle"></p>
+                <p id="fprice"></p>
+                <br>
+                <p id="flabel2"></p>
+            </div>
+
+        </div>
+        <ul id="products-list">
+
+        </ul>
+    </div>
+
+    <!--Enable a user to leave popup box when user clicks bg-->
+    <div id="overLay" onclick="$('#overLay').hide(); $('#alt-view').hide();"></div>
+
+    <!--Dynamically hide -->
+    <div id = "alt-view">
+            <h3 id="poptitle" style="text-align: center">Product Name :</h3>
+
+            <div  style="text-align: center; display: block;">
+                <div class="validuserenable" style="float:left;text-align:center;width:33%;visibility: hidden">
+                    <h3 style="text-align: left"><a id="poploc" target="_blank" >Location</a></h3>
+                </div>
+                <div style="float:left;text-align:center;width:33%"><h3 id="popprice" style="font-weight: bold">Price(USD) :</h3></div>
+                <div  class="validuserenable" style="float:left;text-align:center;width:33%;visibility: hidden">
+                    <h3 style="text-align: right"><a id="popcontct">Contact</a></h3>
+                </div>
+            </div>
+
+            <div id="designDiv">
+                <p id="popdesc" style="text-align: center"><p>
+            </div>
+            <div>
+                <button id ="first" style="margin-right: 100px;" onclick="plusDivs(-1)">&#10094;</button>
+                <button style="margin-left: 100px;" onclick="plusDivs(1)">&#10095;</button>
+            </div>
+    </div>
+
+    <!-- Contains references to shopping list-->
+    <div id="shopping-list">
+        <p>SHOPPING LIST</p>
+        <!--<ul style="padding: 0px;" id="list" data-role="listview">-->
+        <!--</ul>-->
+        <!--<button id='deleteProductBtn'>Delete</button>-->
+    </div>
+</div>
+
+</body>
+</html>
