@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 body{
-    background-color: #e0e0dd;
+   # background-color: #e0e0dd;
     font-family: "Roboto", sans-serif;
     font-weight: normal !important;
 }
@@ -57,10 +57,11 @@ ul {
 }
 .category{
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bolder;
-    background-color: #f5f5f2;
-    width: 200px;
+    #background-color: #f5f5f2;
+    #width: 200px;
+    width: auto;
     height: 40px;
     margin-bottom: 5px;
 }
@@ -148,6 +149,7 @@ main{
     height:20%;
     z-index: 2;
     float: left;
+    border: 1px solid #52809f;
     #border: outset;
     #box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
@@ -228,7 +230,8 @@ width: 100%;
 }
 
 .category:hover{
-    background-color: white;
+    #background-color: white;
+    background-color:  #52a5c3;
 }
 
 #side-bar{
@@ -248,7 +251,7 @@ width: 100%;
     margin-right: auto;
     display: block;
     padding: 5%;
-    border: 1px solid #52809f;
+   # border: 1px solid #52809f;
 }
 .map {
    margin-top: 2px;

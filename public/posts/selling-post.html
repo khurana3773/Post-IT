@@ -11,15 +11,8 @@
 	<link rel="stylesheet" type="text/css" href="selling-post.css">
 	<script>
 
-		var count = 1;
-
-		var app = angular.module('myApp',[]);
-
-		app.controller('myCtrl', function ($scope, $http) {
-
-
-        });
-
+        var count = 1;
+ 
 
         $(document).ready(function () {
             var ignoreDrag = function(e) {
@@ -42,13 +35,14 @@
                         var reader = new FileReader();
 
                         reader.onload = function (event) {
-                            if(count > 3){
-                                alert("Images limit is 3!");
-                                return;
-							}
 
-                            let img = $("<img/>");
+
+                            var img = $("<img/>");
                             img.attr('id', 'img'+count);
+
+                            img.attr("height", 100);
+                            img.attr("width", 100);
+
                             img.attr("src", event.target.result);
                             $("#photo-holder").append(img);
 
@@ -104,7 +98,7 @@
 </div>
 
 
-<div ng-app="myApp" ng-controller="myCtrl" id = "formdiv">
+<div id = "formdiv">
 
 	<form id="upload" method="post" action= "/add-post-selling" onsubmit="return validateForm();">
 	    <label for="title">Product Name</label>
