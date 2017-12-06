@@ -14,8 +14,9 @@ form {
     max-width: 300px;
     margin: 10px auto;
     padding: 10px 20px;
-    background: #f4f7f8;
+    #background: #f4f7f8;
     border-radius: 8px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
 #formApp-container{
@@ -109,3 +110,37 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
+
+#nav {
+    background: #52809f;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+
+    margin: 0px;
+    padding: 0px;
+}
+#nav-wrapper {
+    width: 90%;
+    margin: 0px auto;
+    text-align: left;
+}
+#nav ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+#nav ul li {
+    display: inline-block;
+}
+#nav ul li:hover {
+    background: #52a5c3;
+}
+
+#nav ul li a, visited {
+    display: block;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+}
+        
