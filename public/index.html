@@ -831,9 +831,6 @@
             image.push(postJSON['img2'])
             image.push(postJSON['img3'])
 
-
-
-
             $(".mypics").remove();
 
             $.each( image,function(index, value){
@@ -863,7 +860,6 @@
                 address['state'] = postJSON['state']
 
                 getLatitudeLongitude(address,'poploc');
-
 
                // $("#poploc").attr("href", loc.href);
 

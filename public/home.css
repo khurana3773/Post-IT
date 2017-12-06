@@ -387,7 +387,7 @@ button{
 /*Suraj Start*/
 
 .contentDivPostWishlist {
-
+    background-color: white;
 }
 /*Image div*/
 .imgDivPostWishlist{
@@ -398,7 +398,7 @@ button{
 
 /*Actual Image*/
 .imgPostWishlist{
-    width: 100%;
+    width: 80%;
     /*max-width: 33vw ;    */
 }
 
