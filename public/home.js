@@ -237,7 +237,7 @@ function  generateDivForWishlist(postJSON)
 {
 //            alert("in Generate Div");
 //            alert(JSON.stringify(postJSON));
-//            alert((postJSON['title']))
+//           alert((postJSON));
 
     var mainDiv = $("<div></div>");
     mainDiv.attr("class","mainDivPostWishlist");
@@ -263,14 +263,21 @@ function  generateDivForWishlist(postJSON)
     contentDiv.attr("class","contentDivPostWishlist");
 
     //add image to image div
+
+
     var img_1 = $("<img/>");
-    img_1.attr("src",postJSON.img1);
     img_1.attr("class","imgPostWishlist");
+    try {
+        img_1.attr("src",postJSON['img1']);
+    }
+    catch(err) {
+        img_1.attr("src",'../img/NoImage.png');
+    }
 
 
-    img_1.on("error", function(){
-        if(this.src !== '../img/NoImage.png' || this.src !== 'null') this.src = '../img/NoImage.png';
-    });
+
+
+
 
     imageDiv.append(img_1);
 
@@ -291,14 +298,7 @@ function  generateDivForWishlist(postJSON)
         // backend need postId parameter
         postJSONToDelete['postId'] = postJSONToDelete['_id'];
 
-        $.ajax({
-            url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
-            data: postJSONToDelete ,
-            type: 'POST',
-            success: function (result) {
-                console.log("deleted from wishlist");
-            }
-        });
+        deletePostFromWishlist(postJSONToDelete);
         $(mainDivToDelete).remove();
 
     });
@@ -313,8 +313,18 @@ function  generateDivForWishlist(postJSON)
 
     return mainDiv;
 }
-
-
+//deletes a post from wishlist, json should have ID of the post as '_id'.
+function deletePostFromWishlist(postJSONToDelete)
+{
+    $.ajax({
+        url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
+        data: postJSONToDelete ,
+        type: 'POST',
+        success: function (result) {
+            console.log("deleted from wishlist");
+        }
+    });
+}
 
 
 // To fill the Feature content with first json object if any
@@ -414,7 +424,17 @@ function requestProduct(searchValue) {
 
 }
 
+
+function errorHandler () {
+    $('img').error( handleError);
+}
+
+function handleError (){
+     this.src = '../img/NoImage.png';
+}
+
 function initShoppingList(){
+
 
     let userId = getCookie("userId");
 
@@ -443,44 +463,40 @@ function initShoppingList(){
         collision: "fit"
 
 
-    })
-
-    $("#deleteProductBtn").bind("click", function () {
-        var deleteWishListData=[];
-
-        $(".yellow").each(function (index) {
-            let eachData = {};
-            eachData['postId'] = $(this).data("dbId");
-
-            deleteWishListData.push(eachData);
-            $.ajax({
-                url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
-                data: eachData ,
-                type: 'POST',
-                success: function (result) {
-                    console.log("deleted from wishlist");
-                }
-            });
-        })
-        $(".yellow").remove()
-
-        //console.log(JSON.stringify(deleteWishListData));
-
-//
-//                $.ajax({
-//                    url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
-//                    data: deleteWishListData,
-//                    type: 'POST',
-//                    success: function (result) {
-//                        console.log("deleted from wishlist");
-//                    }
-//                });
-//                 $(".yellow").remove()
-
-
-
-
     });
+
+//     $("#deleteProductBtn").bind("click", function () {
+//         var deleteWishListData=[];
+//
+//         $(".yellow").each(function (index) {
+//             let eachData = {};
+//             eachData['postId'] = $(this).data("dbId");
+//
+//             deleteWishListData.push(eachData);
+//             $.ajax({
+//                 url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
+//                 data: eachData ,
+//                 type: 'POST',
+//                 success: function (result) {
+//                     console.log("deleted from wishlist");
+//                 }
+//             });
+//         })
+//         $(".yellow").remove()
+//
+//         //console.log(JSON.stringify(deleteWishListData));
+//
+// //
+// //                $.ajax({
+// //                    url: ("http://" + $(location).attr('host')) + "/delete-post-wishlist",
+// //                    data: deleteWishListData,
+// //                    type: 'POST',
+// //                    success: function (result) {
+// //                        console.log("deleted from wishlist");
+// //                    }
+// //                });
+// //                 $(".yellow").remove()
+//     });
 
     $.ajax({
         url: ("http://" + $(location).attr('host')) + "/get-wishlist-posts",
@@ -506,6 +522,12 @@ function initShoppingList(){
                         success: function (result) {
 
                             let  responseJSON = JSON.parse(result);
+                            if(responseJSON.length==0)
+                            {
+                                deletePostFromWishlist(wishListItem);
+                                alert("One of your Wishlisted Post No Longer Exists.");
+                                return true;
+                            }
 
 
                             //   wishListAllItems.push(wishListItem);
