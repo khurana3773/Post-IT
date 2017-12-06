@@ -1,0 +1,42 @@
+ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+}
+textarea {
+            resize: none;
+            display: block;
+}
+#nav {
+    background: #52809f;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+
+    margin: 0px;
+    padding: 0px;
+}
+#nav-wrapper {
+    width: 90%;
+    margin: 0px auto;
+    text-align: left;
+}
+#nav ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+#nav ul li {
+    display: inline-block;
+}
+#nav ul li:hover {
+    background: #52a5c3;
+}
+
+#nav ul li a, visited {
+    display: block;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+}

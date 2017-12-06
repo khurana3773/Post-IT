@@ -22,7 +22,7 @@ input {
 }
 
 body {
-    background-color: whitesmoke;
+    #background-color: whitesmoke;
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -31,10 +31,12 @@ body {
 .form {
     text-align: center;
     padding: 15% 30% 0% 30%;
+    
 }
 
 fieldset {
     padding: 50px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
 #code {
@@ -47,4 +49,8 @@ fieldset {
 button {
     width: 40%;
     border-radius: 8px;
+}
+
+button:hover{
+    background: #52a5c3;
 }
