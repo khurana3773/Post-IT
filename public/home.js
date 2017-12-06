@@ -75,8 +75,8 @@ function setCategoriesEvent( idd){
 /**
  * Resets variable, products list and feature variables
  */
-function resetFeature(){
-    $("#products-list").empty();
+function resetFeature(){        	if(id){
+
     $("#flabel1").html("");
     $("#flabel2").html("");
     $("#featured img").removeAttr('src');
@@ -91,6 +91,8 @@ function resetFeature(){
     $("#featured div")[1].style.backgroundColor='#e0e0dd';
     $("#featured div")[0].style.display='block';
     $("#featured div")[1].style.width='50%';
+}
+    $("#products-list").empty();
 }
 
 /**
@@ -435,8 +437,24 @@ function handleError (){
 
 function initShoppingList(){
 
-
     let userId = getCookie("userId");
+
+    $("#wishListButton").click(function() {
+
+        if(userLoggedIn) {
+            $('#shopping-list').toggle();
+        }
+        else
+        {
+            window.location.href = "login.html";
+        }
+
+    });
+
+
+
+
+
 
     var dataPost={
         "userId" : userId

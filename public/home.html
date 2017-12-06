@@ -28,7 +28,7 @@
                 <li><a href="home.html">Home</a></li>
                 <li><a href="/create-post">Post Something</a></li>
                 <!--Button to display shopping list -->
-                <button onclick="$('#shopping-list').toggle();" class="nag-button">Wish List</button>
+                <button  id="wishListButton" class="nag-button">Wish List</button>
                 <!-- Search Bar -->
                 <input id="search-bar" name="search" type="text" placeholder="What are you looking for?">
 
@@ -59,7 +59,7 @@
             <li><div class="category" id="home-and-garden" onclick="setCategoriesEvent('home-and-garden')"><span class="ui-icon ui-icon-tag"></span>Home and Garden</div></li>
             <li><div class="category" id="entertainment" onclick="setCategoriesEvent('entertainment')"><span class="ui-icon ui-icon-tag"></span>Movies, Books and Music</div></li>
             <li><div class="category" id="electronics" onclick="setCategoriesEvent('electronics')"><span class="ui-icon ui-icon-tag"></span>Electronics</div></li>
-            <li><div class="category" id="jobs" onclick="setCategoriesEvent('jobs')"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
+            <li><div class="category" id="jobs" onclick="setCategoriesEvent('job')"><span class="ui-icon ui-icon-tag"></span>Jobs</div></li>
             <li><div class="category" id="fashion" onclick="setCategoriesEvent('fashion')"><span class="ui-icon ui-icon-tag"></span>Fashion</div></li>
             <li><div class="category" id="other" onclick="setCategoriesEvent('other')"><span class="ui-icon ui-icon-tag"></span>Other</div></li>
         </ul>
@@ -78,17 +78,16 @@
 
     <!--Dynamically stream products here by category-->
     <div id="products">
-        <div id ="featured">
-            <div style="float:left">
-                <img></img>
-
+        <div id ="featured" style="background-color:#52a5c3;">
+            <div style="float:left;background-color:#52a5c3;">
+                <img src="./img/logo.jpg"></img>
             </div>
-            <div style="overflow: hidden">
-                <p id="flabel1"></p>
-                <p id ="ftitle"></p>
+            <div style="overflow: hidden;background-color:#52a5c3;">
+                <p id="flabel1" class="script1"> Welcome to Post It!</p>
+                <p id ="ftitle"  class="shadow text3">Search through our various Categories! </p>
                 <p id="fprice"></p>
                 <br>
-                <p id="flabel2"></p>
+                <p id="flabel2"  class="script2">Lets go Spartan!!</p>
             </div>
 
         </div>
