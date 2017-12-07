@@ -148,7 +148,7 @@ exports.upload = (req, res) => {
 
 			collection.update( postJSON,{$set: param});
 
-			res.redirect("index.html");
+			res.redirect("home.html");
 		}
 
 	});

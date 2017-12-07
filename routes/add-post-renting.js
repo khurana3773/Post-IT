@@ -51,7 +51,7 @@ router.post('/',
 				res.redirect("renting-post.html");
 			}else{
 				// success
-				res.redirect("index.html");
+				res.redirect("home.html");
 			}
 		});
 

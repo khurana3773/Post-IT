@@ -47,7 +47,7 @@ router.post('/',
 				res.redirect("job-post.html");
 			}else{
 				// success
-				res.redirect("index.html");
+				res.redirect("home.html");
 			}
 		});
 

@@ -49,7 +49,7 @@ router.post('/',
 				res.redirect("selling-post.html");
 			}else{
 				// success
-				res.redirect("index.html");
+				res.redirect("home.html");
 			}
 		});
 

@@ -34,18 +34,18 @@ function requestAutoComplete(val, setCompleteSearchBox){
  *  }
  *
  */
-function requestProduct(searchValue, appendToProductStream) {
-    $.get('/search', {searchKey: searchValue}, function (result) {
-        // the result will be a string array
-        // as a search could return more than one item
-        let productList = JSON.parse(result);
-        // loop through
-        for(let i = 0; i < productList.length; i++){
-            appendToProductStream(productList[i]);
-        }
-
-    });
-}
+// function requestProduct(searchValue, appendToProductStream) {
+//     $.get('/search', {searchKey: searchValue}, function (result) {
+//         // the result will be a string array
+//         // as a search could return more than one item
+//         let productList = JSON.parse(result);
+//         // loop through
+//         for(let i = 0; i < productList.length; i++){
+//             appendToProductStream(productList[i]);
+//         }
+//
+//     });
+// }
 
 
 function requestProductPopup(id, callback) {
