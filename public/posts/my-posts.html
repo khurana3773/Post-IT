@@ -225,7 +225,7 @@
         <div id="image-container">
             <div id='imageContainer1' style="float: left; width: 33%"  class='imageOverlayContainer' ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
 
-                <img class="imgclass" src="{{editPost.img1}}" ng-model="editPost.img1">
+                <img class="imgclass" src="{{editPost.img1 || '../img/DropImageHere.jpg'}}" ng-model="editPost.img1">
 
                 <div class='overlay'></div>
 
@@ -233,14 +233,14 @@
             </div>
 
             <div id='imageContainer2' style="float: left; width: 33%" class='imageOverlayContainer' ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
-                <img class="imgclass" src="{{editPost.img2}}" ng-model="editPost.img2">
+                <img class="imgclass" src="{{editPost.img2 || '../img/DropImageHere.jpg'}}" ng-model="editPost.img2">
                 <div class='overlay'></div>
                 <div class='buttonDelete'><a id='hideLink2' href='#' ng-click="editPost.img2=''"> Delete </a></div>
             </div>
 
             <div id='imageContainer3' style="float: left; width: 33%"  class='imageOverlayContainer' ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
 
-                <img class="imgclass" id="testImgDnd" src="{{editPost.img3}}" ng-model="editPost.img3" >
+                <img class="imgclass" id="testImgDnd" src="{{editPost.img3 || '../img/DropImageHere.jpg'}}" ng-model="editPost.img3" >
 
                 <div class='overlay'></div>
                 <div class='buttonDelete'><a id='hideLink3' href='#' ng-click="editPost.img3=''"> Delete </a></div>
