@@ -20,6 +20,7 @@ function init() {
     initShoppingList();
     initList();
     initSearchBox();
+    getScrollData();
 
     $("#popup").hide();
     $(".dropdown-content").hide();
@@ -71,6 +72,53 @@ function setCategoriesEvent( idd){
     searchbox = false;
     searchForCategory();
 }
+
+
+function getScrollData(){
+          $.ajax({
+              url: ("http://" + $(location).attr('host')) + "/scrollData",
+              //data: "",
+              type: 'GET',
+              contentType: 'application/json'
+              ,
+
+              success: function (result) {
+                  if ($.trim(result)) {
+                      postsJSON = JSON.parse(result);
+                      console.log("starting json reading");
+                      console.log(postsJSON);
+                      for (let i = 0; i < postsJSON.length; i++) {
+                          let postJSON = postsJSON[i];
+                          if (postJSON !== null) {
+                              loadPostToScroll(postsJSON[i]);
+                          }
+                      }
+                  }
+              }
+            });
+        }
+
+
+        function loadPostToScroll(postJSON){
+          //var title = $("<p></p>");
+          var title = $("<marquee></marquee>");
+          title.attr("behavior","scroll");
+          title.attr("direction","up");
+          title.attr("direction","up");
+          title.height("80").width("80%");
+          //title.attr("height","10");
+
+          title.attr("id", postJSON._id + "title");
+          title.text(postJSON.title);
+          var newdiv = $("<br><p>Price: $");
+          var newdiv2 = $("</p></br>");
+          title.append(newdiv);
+          title.append(postJSON.price);
+          title.append(newdiv2);
+          title.css("text-align","center");
+          $("#scroll-text").append(title);
+        }
+
 
 /**
  * Resets variable, products list and feature variables
@@ -988,8 +1036,3 @@ function showSigns(n) {
     }
     x[slideIndex-1].style.display = "block";
 }
-
-
-
-
-
