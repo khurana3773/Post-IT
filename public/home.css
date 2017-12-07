@@ -1,9 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 body{
-   # background-color: #e0e0dd;
+    background-color: #e0e0dd;
     font-family: "Roboto", sans-serif;
     font-weight: normal !important;
+    margin:0px;
 }
 
 ul {
@@ -38,7 +39,7 @@ ul {
     padding: 0px;
 }
 #nav-wrapper {
-    width: 90%;
+    width: 100%;
     margin: 0px auto;
     text-align: left;
 }
@@ -98,6 +99,8 @@ ul {
     margin-top: 3em;
     padding-left: 30px;
     width:16%; position: fixed;
+    height: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .nag-button{
@@ -442,4 +445,83 @@ display: inline;
     right: 5px;
     z-index: 10;
 }
+
+#shopping-list{
+    height: 100%;
+    width: 18.5%;
+    position: fixed;
+    right : 0;
+    z-index: 5;
+    overflow-x: hidden;
+
+
+}
+
+#shopping-list > p{
+    /*line-height: 50px;*/
+    margin: 0px;
+    background-color: #f94545;
+    /*padding: 0.5em;*/
+
+}
+
+.mainDivPostWishlist{
+    padding: 1em;
+    /*border: solid 0.1em;*/
+    margin : 0.4em;
+    background-color: white;
+    cursor: pointer;
+
+}
+
+.imgPostWishlist{
+    width: 50%;
+    -webkit-border-radius: 70%;
+    -moz-border-radius: 70%;
+    -ms-border-radius: 70%;
+    -o-border-radius: 70%;
+    border-radius: 70%;
+}
+
+/*#shopping-list {*/
+    /*height: 100%;*/
+    /*width: 25%;*/
+    /*position: fixed;*/
+    /*z-index: 1;*/
+    /*top : 0;*/
+    /*left: 0;*/
+    /*background-color: #111;*/
+    /*overflow-x: hidden;*/
+
+    /*padding-top: 60px;*/
+/*}*/
+
+.#shopping-list a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+
+
+
+
+
+
+
 /*Suraj End*/

@@ -318,10 +318,16 @@ function  generateDivForWishlist(postJSON)
     var img_1 = $("<img/>");
     img_1.attr("class","imgPostWishlist");
     try {
-        img_1.attr("src",postJSON['img1']);
+        if(postJSON['img1']=="")
+        {
+            img_1.attr("src",'./img/NoImage.png');
+        }
+        else {
+            img_1.attr("src", postJSON['img1']);
+        }
     }
     catch(err) {
-        img_1.attr("src",'../img/NoImage.png');
+        img_1.attr("src",'./img/NoImage.png');
     }
 
 
@@ -480,41 +486,38 @@ function errorHandler () {
 }
 
 function handleError (){
-     this.src = '../img/NoImage.png';
+     this.src = './img/NoImage.png';
+}
+
+
+function toggleWishList() {
+
+    if(userLoggedIn) {
+        $("#shopping-list").find('p').css("line-height",($("#nav").height()+"px"));
+        $('#shopping-list').toggle("slide", {direction:'right'});
+    }
+    else
+    {
+        window.location.href = "login.html";
+    }
+
 }
 
 function initShoppingList(){
 
     let userId = getCookie("userId");
 
-    $("#wishListButton").click(function() {
-
-        if(userLoggedIn) {
-            $('#shopping-list').toggle();
-        }
-        else
-        {
-            window.location.href = "login.html";
-        }
-
-    });
-
-
-
-
-
+    $("#wishListButton").click(toggleWishList);
 
     var dataPost={
         "userId" : userId
-    }
+    };
 
-
-
-    $("#shopping-list").draggable();
-    $("#shopping-list").resizable({
-        handles: 'n, e, s, w'
-    });
-    $("#dragTest").draggable({  revert: "invalid" });
+   // $("#shopping-list").draggable();
+   //  $("#shopping-list").resizable({
+   //      handles: 'n, e, s, w'
+   //  });
+   //  $("#dragTest").draggable({  revert: "invalid" });
 
     $("#shopping-list").droppable(
         {
@@ -522,14 +525,16 @@ function initShoppingList(){
         }
     );
 
-    $("#shopping-list").position({
-        my:        "right top",
-        at:        "right bottom+30px",
-        of:        $("#nav"),
-        collision: "fit"
 
 
-    });
+    // $("#shopping-list").position({
+    //     my:        "right top",
+    //     at:        "right bottom+30px",
+    //     of:        $("#nav"),
+    //     collision: "fit"
+    //
+    //
+    // });
 
 //     $("#deleteProductBtn").bind("click", function () {
 //         var deleteWishListData=[];
@@ -653,7 +658,7 @@ function dragObject(event, ui){
             responseJSON = JSON.parse(result);
             if(responseJSON.alreadyExists=='yes')
             {
-                alert("exists already");
+                alertify.success("This post Already Exists in your WishList");
 
             }else
             {
@@ -953,9 +958,16 @@ function onPop2(postJSON) {
     image.push(postJSON['img2'])
     image.push(postJSON['img3'])
 
+
+
     $(".mypics").remove();
 
     $.each( image,function(index, value){
+        //fix if no image is present, this will display no image in alt-view
+        if(index==0 && value=="")
+        {
+            value="./img/NoImage.png";
+        }
 
         if( value!=="" && value!== null  && value!== "null" ){
             var img = $("<img></img>");
