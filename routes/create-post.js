@@ -11,7 +11,7 @@ router.get("/", function (req, res) {
 
     	res.redirect("create-post.html");
 	}else{
-    	res.redirect("index.html");
+    	res.redirect("login.html");
 	}
 });
 
