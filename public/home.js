@@ -605,7 +605,7 @@ function initShoppingList(){
                             if(responseJSON.length==0)
                             {
                                 deletePostFromWishlist(wishListItem);
-                                alert("One of your Wishlisted Post No Longer Exists.");
+                                alertify.success("One of your Wishlisted Post No Longer Exists.");
                                 return true;
                             }
 
