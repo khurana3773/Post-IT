@@ -351,7 +351,7 @@ function  generateDivForWishlist(postJSON)
         event.stopPropagation();
         let mainDivToDelete =$(this).closest('.mainDivPostWishlist');
         let postJSONToDelete = mainDivToDelete.data('allInfoJson');
-//               alert(JSON.stringify(postJSONToDelete));
+
         // backend need postId parameter
         postJSONToDelete['postId'] = postJSONToDelete['_id'];
 
@@ -359,6 +359,7 @@ function  generateDivForWishlist(postJSON)
         $(mainDivToDelete).fadeOut("slow",function () {
             $(mainDivToDelete).remove();
         })
+        alertify.success("Post Removed from WishList");
 
 
     });
