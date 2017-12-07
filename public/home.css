@@ -164,16 +164,21 @@ main{
 .product{
     display: inline-block;
 	border-radius: 25px;
-    margin: 5px;
+    margin: 0.3em;
     padding: 5px;
     margin-bottom: 2em;
-    width:30%;
+    width:31%;
     height:20%;
     z-index: 2;
     float: left;
-    border: 1px solid #52809f;
+    /*   border: 1px solid #52809f;*/
     #border: outset;
     #box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.product:hover{
+    border-left: solid #0a2fff thick;
+    transition: 0.4s;
 }
 
 #shopping-list{
@@ -193,6 +198,9 @@ main{
     font-weight: bolder;
 }
 
+#currentIndexShower > *{
+    display: inline;
+}
 
 .close{
 	width: 30px;
@@ -476,6 +484,7 @@ display: inline;
     /*line-height: 50px;*/
     margin: 0px;
     background-color: #f94545;
+    margin-bottom: 0.4em;
     /*padding: 0.5em;*/
 
 }
@@ -495,6 +504,7 @@ display: inline;
 .mainDivPostWishlist:hover{
     margin: 0em;
     transition: 0.3s;
+    
 }
 
 .imgPostWishlist{

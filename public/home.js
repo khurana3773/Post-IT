@@ -241,7 +241,11 @@ function loadPostToList(postJSON) {
     var div2 = $("<div></div>");
     div2.css("text-align","center");
 
-    var clickME = $("<button onclick=\"onPop()\"></button>");
+    var clickME = $("<button></button>");
+    clickME.data("allInfoJson",postJSON);
+    clickME.click(function () {
+        onPop2($(this).data("allInfoJson"));
+    });
     clickME.text("Click Me for more!");
     clickME.css("text-align","center");
     clickME.css("visibility","hidden");
@@ -980,15 +984,18 @@ function onPop2(postJSON) {
             img.height("300px").width("300px");
             img.css("margin","auto");
             img.attr("class","mypics");
-            $("#first").before(img);
+             $("#currentIndexShower").before(img);
             x++;
         }
     });
+    $("#xMarks").text(slideIndex);
+    $("#xOutOf").text($(".mypics").length);
     slideIndex = 1;
     showSigns(slideIndex);
     $("#poptitle").text(postJSON['title']);
     $("#popprice").text("PRICE : $"+postJSON['price']);
     $("#popdesc").text(postJSON['about']);
+
     if(userLoggedIn) {
         $(".validuserenable").css("visibility","visible");
         var address={}
@@ -1052,4 +1059,7 @@ function showSigns(n) {
         x[i].style.display = "none";
     }
     x[slideIndex-1].style.display = "block";
+    // todo : remove this hard binding from this function. this is used in alt-view to show current Index
+    $("#xMarks").text(slideIndex);
+
 }
