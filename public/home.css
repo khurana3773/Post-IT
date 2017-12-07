@@ -256,9 +256,10 @@ width: 100%;
 
 .category:hover{
     #background-color: white;
-    background-color:  #52a5c3;
+    #background-color:  #52a5c3;
     transition: 0.3s;
     font-size: 14px;
+    border-left: solid 10px;
 
 }
 
