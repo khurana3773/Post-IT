@@ -440,10 +440,17 @@ display: inline;
     /*left: 0;*/
 /*}*/
 .deleteFromWishlist {
+    color: white;
     cursor: pointer;
     position: absolute;
-    right: 5px;
+    right: 8px;
     z-index: 10;
+    transition : 0.5s;
+}
+
+.deleteFromWishlist:hover{
+     color: black;
+
 }
 
 #shopping-list{
@@ -466,7 +473,8 @@ display: inline;
 }
 
 .mainDivPostWishlist{
-    padding: 1em;
+    /*display: inline-flex;*/
+    padding: 0.2em;
     /*border: solid 0.1em;*/
     margin : 0.4em;
     background-color: white;
