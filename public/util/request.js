@@ -33,7 +33,7 @@ function requestAutoComplete(val, setCompleteSearchBox){
  *      location (the location users want to sell at)
  *  }
  *
- */
+ *
 function requestProduct(searchValue, appendToProductStream) {
     $.get('/search', {searchKey: searchValue}, function (result) {
         // the result will be a string array
@@ -45,7 +45,7 @@ function requestProduct(searchValue, appendToProductStream) {
         }
 
     });
-}
+}*/
 
 
 function requestProductPopup(id, callback) {

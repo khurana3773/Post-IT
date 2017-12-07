@@ -10,6 +10,7 @@ router.get('/',
 
 		var db = req.db;
         var collection = db.get("posts");
+        console.log(req.param("search"));
         var input=req.param("search").split(",");
 
         var query = {

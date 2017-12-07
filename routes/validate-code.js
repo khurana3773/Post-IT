@@ -35,7 +35,7 @@ router.post('/',
 
 					}else{
 						res.cookie("userId", userId);
-						res.redirect("/index.html");
+						res.redirect("/home.html");
 					}
                 });
 			}

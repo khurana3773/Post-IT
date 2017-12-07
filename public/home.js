@@ -436,8 +436,8 @@ function initSearchBox() {
     $("#search-bar").keyup(function(event){
         if(event.keyCode === 13){
             //TODO: Enable search from database
-            let searchValue = $("#search-bar").val();
-
+            searchValue = $("#search-bar").val();
+            console.log("inside Searchbox"+searchValue);
             if(!searchValue){
                 // shake it
                 $("#search-bar").effect("shake", {times: 4, distance: 10}, 1000);
@@ -445,25 +445,28 @@ function initSearchBox() {
             }
             else{
                 //clear search bar value
-                $("#search-bar").val("");
+                console.log("Before calling "+searchValue);
                 price= "0";
-                resetFeature();
+                //resetFeature();
                 requestProduct(searchValue);
+                $("#search-bar").val("");
             }
         }
     });
 }
 
 //Updates product view once return/enter key pressed on search bar
-function requestProduct(searchValue) {
-    searchvalue = searchValue;
+function requestProduct(searchVal) {
+	console.log("inside request"+searchVal);
+    searchvalue = searchVal;
     searchbox = true;
     id = $(this).attr('id');
     $("#products-list").empty();
     resetFeature();
+    console.log("inside request"+searchvalue);
     $.ajax({
         url: ("http://" + $(location).attr('host')) + "/search",
-        data: "search=" + searchValue + ",price:" + price,
+        data: "search=" + searchvalue + ",price:" + price,
         type: 'GET',
         contentType: 'application/json'
         ,
